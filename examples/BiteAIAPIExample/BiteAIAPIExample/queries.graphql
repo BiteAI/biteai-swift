@@ -1,0 +1,315 @@
+fragment Errors on ErrorsType {
+  errors {
+    field
+    messages
+  }
+}
+
+fragment ImageFragment on ImageNode {
+  id
+  url
+}
+
+fragment BrandFragment on BrandNode {
+  id
+  name
+}
+
+fragment UnitFragment on UnitNode {
+  id
+  singularName
+  abbreviatedSingularName
+  pluralName
+  abbreviatedPluralName
+  details
+  granularity
+}
+
+fragment ServingFragment on ServingNode {
+    grams
+    amount
+    details
+    unit {
+      ... UnitFragment
+    }
+}
+
+fragment NutritionFactFragment on NutritionNode {
+    id
+    isDefault
+    servingText
+    servingsPerPackage
+    calories
+    totalFat
+    saturatedFat
+    monounsaturatedFat
+    polyunsaturatedFat
+    transFat
+    totalCarb
+    sugars
+    fiber
+    protein
+    cholesterol
+    sodium
+    potassium
+    calcium
+    iron
+    magnesium
+    phosphorus
+    zinc
+    copper
+    manganese
+    selenium
+    vitaminARae
+    vitaminAIu
+    retinol
+    alphaCarotene
+    betaCarotene
+    betaCryptoxanthin
+    lycopene
+    thiamin
+    riboflavin
+    niacin
+    pantothenicAcid
+    vitaminB6
+    folate
+    folicAcid
+    vitaminB12
+    choline
+    vitaminC
+    vitaminD
+    vitaminE
+    vitaminK
+    water
+    ash
+    caffeine
+    alcohol
+    addedSugars
+    omega3
+    omega6
+    theobromine
+    luteinZeaxanthin
+    serving{
+      ...ServingFragment
+    }
+}
+
+fragment NutritionFactRefFragment on NutritionNode {
+  id
+}
+
+fragment ItemSummaryFragment on ItemNode {
+  id
+  name
+  details
+  isGeneric
+  brand {
+    ...BrandFragment
+  }
+}
+
+fragment ItemDetailsFragment on ItemNode {
+    id
+    name
+    details
+    brand {
+      ...BrandFragment
+    }
+    parents(first: 5) {
+      edges {
+        node{
+          ... ItemSummaryFragment
+        }
+      }
+    }
+
+    children(first: 10) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          ... ItemSummaryFragment
+        }
+      }
+    }
+
+    isGeneric
+    nutritionFacts   {
+      edges{
+        node {
+          ...NutritionFactFragment
+        }
+      }
+    }
+}
+
+fragment EntryFragment on EntryNode {
+  id
+  servingAmount
+  item {
+    ...ItemSummaryFragment
+  }
+  image {
+    ...ImageFragment
+  }
+  nutritionFact {
+    ...NutritionFactRefFragment
+  }
+}
+
+fragment MealFragment on MealNode {
+    id
+    title
+    description
+    localEatenAtTime
+    utcEatenAtTime
+    timeCreated
+    timeModified
+    entries {
+      edges {
+        node {
+          ...EntryFragment
+        }
+      }
+    }
+    images {
+      edges {
+        node {
+          ...ImageFragment
+        }
+      }
+    }
+}
+
+query searchAutocomplete($query: String!) {
+    searchAutocomplete(query: $query) {
+        brands {
+            id
+            name
+        }
+        items {
+            id
+            name
+        }
+    }
+}
+
+query itemsIdentifierLookup($barcode: String!, $pageSize: Int!) {
+  itemsIdentifierLookup(barcode: $barcode, first: $pageSize) {
+    edges {
+      node {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+query itemsBulkLookup($ids: [ID]!, $pageSize: Int!) {
+  itemsBulkLookup(ids: $ids first: $pageSize) {
+    edges{
+      node{
+        ...ItemDetailsFragment
+      }
+    }
+  }
+}
+
+
+mutation createOrUpdateMeal($id: ID, $title: String,  $description: String,
+  $localEatenAtTime: DateTime!, $utcEatenAtTime: DateTime!){
+  createOrUpdateMeal(input: {id: $id, title: $title, description: $description,
+  localEatenAtTime: $localEatenAtTime, utcEatenAtTime: $utcEatenAtTime}) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+mutation deleteMeal($meal: ID!) {
+  deleteMeal(meal: $meal) {
+    id
+  }
+}
+
+query allMeals($first: Int, $last: Int, $before: String, $after: String) {
+allMeals(first: $first, last: $last, before: $before, after: $after) {
+    edges {
+      node {
+        ...MealFragment
+      }
+    }
+  }
+}
+
+query getMeal($id: ID!) {
+  meal(id: $id) {
+    ...MealFragment
+  }
+}
+
+mutation addEntryToMeal($meal: ID!, $id: ID, $item: ID,
+$nutritionFact: ID, $image: ID, $servingAmount: Float) {
+addOrUpdateEntryToMeal(input: {meal: $meal, id: $id, item: $item,
+  nutritionFact: $nutritionFact, image:  $image,
+  servingAmount: $servingAmount}) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+mutation deleteEntryFromMeal($meal: ID!, $entry: ID!) {
+  deleteEntryFromMeal(meal: $meal, entry: $entry) {
+    ... on ErrorsType {
+      ...Errors
+    }
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+mutation addImageToMeal($meal: ID!, $image: ID!) {
+  addImageToMeal(meal: $meal, image: $image) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+mutation deleteImageFromMeal($meal: ID!, $image: ID!) {
+  deleteImageFromMeal(meal: $meal, image: $image) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+
+
+
