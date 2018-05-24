@@ -15,6 +15,18 @@ fragment BrandFragment on BrandNode {
   name
 }
 
+fragment BrandBasicSearchFragment on BrandBasicSearchType {
+  id
+  name
+}
+
+fragment BrandSummarySearchFragment on BrandSummarySearchType  {
+  id
+  name
+  manufacturer
+  type
+}
+
 fragment UnitFragment on UnitNode {
   id
   singularName
@@ -108,6 +120,27 @@ fragment ItemSummaryFragment on ItemNode {
   }
 }
 
+fragment ItemBasicSearchFragment on ItemBasicSearchType {
+  id
+  name
+}
+
+fragment ItemSummarySearchFragment on ItemSummarySearchType {
+  id
+  name
+  brand {
+    ...BrandSummarySearchFragment
+  }
+  details
+  isGeneric
+  parents {
+    ...ItemBasicSearchFragment
+  }
+  children {
+    ...ItemBasicSearchFragment
+  }
+}
+
 fragment ItemDetailsFragment on ItemNode {
     id
     name
@@ -188,14 +221,20 @@ fragment MealFragment on MealNode {
 query searchAutocomplete($query: String!) {
     searchAutocomplete(query: $query) {
         brands {
-            id
-            name
+          ...BrandBasicSearchFragment
         }
         items {
-            id
-            name
+          ...ItemBasicSearchFragment
         }
     }
+}
+
+query itemsSearch($query: String!) {
+  itemsSearch(query: $query) {
+    items {
+      ...ItemSummarySearchFragment
+    }
+  }
 }
 
 query itemsIdentifierLookup($barcode: String!, $pageSize: Int!) {

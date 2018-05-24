@@ -36,12 +36,12 @@ class ViewController: UIViewController {
       return
     }
     userStatusLabel.text = "Exists"
-    userIDLabel.text = user.userID
+    userIDLabel.text = user.id
     tokenLabel.text = user.token    
   }
   
   @IBAction func createUser(_ sender: UIButton) {
-    try! BiteAPIClient.createUser() {[weak self] (result, userID, error) in
+    try! BiteAPIClient.createUser() {[weak self] (result, username, error) in
       guard result == true else {
         DispatchQueue.main.async {
           self?.userStatusLabel.text = "Error creating"

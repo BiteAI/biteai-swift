@@ -41,17 +41,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-  <key>NSAppTransportSecurity</key>
-  <dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-  </dict>
-  <key>BiteAI</key>
-  <dict>
-    <key>AppKey</key>
-    <string>[INSERT KEY]</string>
-    <key>BaseURL</key>
-    <string>http://localhost:8000</string>
-  </dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>BiteAI</key>
+	<dict>
+		<key>AppKey</key>
+		<string>09b6cf37ed69d28cdd416b54a4ef86f6b6c89ed8</string>
+		<key>BaseURL</key>
+		<string>https://api-beta-staging.bite.ai</string>
+	</dict>
 </dict>
 </plist>

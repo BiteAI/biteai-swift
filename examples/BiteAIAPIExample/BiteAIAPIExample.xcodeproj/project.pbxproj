@@ -17,6 +17,7 @@
 		0A444A1320A5E5B4003C7B73 /* BiteAIAPIExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A444A1220A5E5B4003C7B73 /* BiteAIAPIExampleTests.swift */; };
 		0A444A1E20A5E5B4003C7B73 /* BiteAIAPIExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A444A1D20A5E5B4003C7B73 /* BiteAIAPIExampleUITests.swift */; };
 		0A5DA5BB20B31483008C7B85 /* MealCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DA5BA20B31483008C7B85 /* MealCreateViewController.swift */; };
+		0A83486E20B67CD800C3D67D /* ItemsSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A83486D20B67CD800C3D67D /* ItemsSearchController.swift */; };
 		0AE140B120A94C6600E7D95D /* BarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE140B020A94C6600E7D95D /* BarcodeViewController.swift */; };
 		52346787A82A0B67E4EC2A43 /* Pods_BiteAIAPIExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E23F6153EB848497B4B1B8D /* Pods_BiteAIAPIExampleTests.framework */; };
 		78D377DC424961E0C98A1CCC /* Pods_BiteAIAPIExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 782F4F1A8C63A4E531A1505F /* Pods_BiteAIAPIExample.framework */; };
@@ -55,6 +56,7 @@
 		0A444A1D20A5E5B4003C7B73 /* BiteAIAPIExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiteAIAPIExampleUITests.swift; sourceTree = "<group>"; };
 		0A444A1F20A5E5B4003C7B73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A5DA5BA20B31483008C7B85 /* MealCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealCreateViewController.swift; sourceTree = "<group>"; };
+		0A83486D20B67CD800C3D67D /* ItemsSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsSearchController.swift; sourceTree = "<group>"; };
 		0AE140B020A94C6600E7D95D /* BarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeViewController.swift; sourceTree = "<group>"; };
 		0BCCF3020EB481FC1DA8CB6E /* Pods-BiteAIAPIExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiteAIAPIExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BiteAIAPIExample/Pods-BiteAIAPIExample.debug.xcconfig"; sourceTree = "<group>"; };
 		2FCC52585D49E0A4C625105E /* Pods_BiteAIAPIExampleUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BiteAIAPIExampleUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +131,7 @@
 				0A444A1C20A5E5B4003C7B73 /* BiteAIAPIExampleUITests */,
 				0AE140B020A94C6600E7D95D /* BarcodeViewController.swift */,
 				0A5DA5BA20B31483008C7B85 /* MealCreateViewController.swift */,
+				0A83486D20B67CD800C3D67D /* ItemsSearchController.swift */,
 			);
 			path = BiteAIAPIExample;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				0A5DA5BB20B31483008C7B85 /* MealCreateViewController.swift in Sources */,
 				0A444A0020A5E5B2003C7B73 /* ViewController.swift in Sources */,
 				0A4449FE20A5E5B2003C7B73 /* AppDelegate.swift in Sources */,
+				0A83486E20B67CD800C3D67D /* ItemsSearchController.swift in Sources */,
 				0AE140B120A94C6600E7D95D /* BarcodeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,4 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
+#Mac
+.DS_Store
+
 ### Objective-C template
 # Xcode
 #
