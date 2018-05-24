@@ -195,7 +195,7 @@
             </objects>
             <point key="canvasLocation" x="32.799999999999997" y="1231.9340329835084"/>
         </scene>
-        <!--Search-->
+        <!--AutoComplete-->
         <scene sceneID="FC3-Do-MU5">
             <objects>
                 <viewController id="Ycb-PO-HGl" customClass="SearchViewController" customModule="BiteAIAPIExample" customModuleProvider="target" sceneMemberID="viewController">
@@ -204,7 +204,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kOZ-oJ-7R4">
-                                <rect key="frame" x="0.0" y="78" width="375" height="589"/>
+                                <rect key="frame" x="0.0" y="78" width="375" height="540"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -228,7 +228,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="C83-e8-Qgv"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Search" id="o4j-5r-ZrV"/>
+                    <tabBarItem key="tabBarItem" title="AutoComplete" id="o4j-5r-ZrV"/>
                     <connections>
                         <outlet property="searchBar" destination="aei-Rm-w2T" id="Fu0-va-nmc"/>
                         <outlet property="tableView" destination="kOZ-oJ-7R4" id="3rW-lo-u9c"/>
@@ -236,7 +236,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohr-Ej-0bv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="972" y="-650"/>
+            <point key="canvasLocation" x="972" y="-650.82458770614699"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="oaP-m5-yoL">
@@ -253,11 +253,55 @@
                         <segue destination="Ycb-PO-HGl" kind="relationship" relationship="viewControllers" id="pwG-uY-mCk"/>
                         <segue destination="cYz-vb-B6T" kind="relationship" relationship="viewControllers" id="KBZ-MX-RGe"/>
                         <segue destination="sAi-zI-wVw" kind="relationship" relationship="viewControllers" id="lAi-fH-rNV"/>
+                        <segue destination="3vV-Hz-Y0R" kind="relationship" relationship="viewControllers" id="S8l-t0-Go1"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKT-MV-hI5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="32.799999999999997" y="31.934032983508249"/>
+        </scene>
+        <!--Search-->
+        <scene sceneID="VEg-TQ-FA4">
+            <objects>
+                <viewController id="3vV-Hz-Y0R" customClass="ItemsSearchController" customModule="BiteAIAPIExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rT7-jv-7tX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="abv-39-XXb">
+                                <rect key="frame" x="0.0" y="78" width="375" height="540"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TableCell" id="r0i-kc-UcN">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="r0i-kc-UcN" id="xx3-Jc-Uf2">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="TableCell"/>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Ye-WE-MCB">
+                                <rect key="frame" x="0.0" y="20" width="375" height="56"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="VKN-CL-gyM"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Search" id="s51-PT-2iW"/>
+                    <connections>
+                        <outlet property="searchBar" destination="1Ye-WE-MCB" id="FnS-jr-vgl"/>
+                        <outlet property="tableView" destination="abv-39-XXb" id="Gq7-ZF-M0K"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2cJ-NW-fDa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-676" y="640.92953523238384"/>
         </scene>
     </scenes>
 </document>

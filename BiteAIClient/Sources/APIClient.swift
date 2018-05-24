@@ -21,7 +21,8 @@ public enum BiteAIClientError: Error {
 
 public struct BiteAIUser {
   public var token: String
-  public var userID: String
+  public var id: String
+  public var username: String?
 }
 
 public struct Image {
@@ -198,25 +199,6 @@ public struct NutritionFact {
   }
 }
 
-public struct AutocompleteResult {
-  public var id: GraphQLID
-  public var name: String
-  init(id: GraphQLID, name: String) {
-    self.id = id
-    self.name = name
-  }
-}
-
-public struct AutocompelteResults {
-  public var brands: [AutocompleteResult]
-  public var items: [AutocompleteResult]
-  
-  init(brands: [AutocompleteResult], items: [AutocompleteResult]) {
-    self.brands = brands
-    self.items = items
-  }
-}
-
 public struct Brand {
   public var id: GraphQLID?
   public var name: String?
@@ -227,25 +209,42 @@ public struct Brand {
     self.id = brand.id
     self.name = brand.name
   }
+  
+  public init(brand: GraphQLInterface.BrandSummarySearchFragment) {
+    self.id = brand.id
+    self.name = brand.name
+    // TODO(vinay): Add in the other brands which come in. Server's BrandNode is missing them
+  }
+  
+  public init(brand: GraphQLInterface.BrandBasicSearchFragment) {
+    self.id = brand.id
+    self.name = brand.name
+  }
 }
 
-protocol ItemSummaryProtocol {
-  var id: GraphQLID? {get set}
-  var name: String? {get set}
-  var details: String? {get set}
-  var brand: Brand? {get set}
-  var isGeneric: Bool? {get set}
-}
-
-public struct ItemSummary: ItemSummaryProtocol {
+public class  ItemSummary {
   public var id: GraphQLID?
   public var name: String?
   public var details: String?
   public var brand: Brand?
   public var isGeneric: Bool?
+  public var parents: [ItemSummary]
+  public var children: [ItemSummary]
   
-  public init() { }
-  init(itemSummary: GraphQLInterface.ItemSummaryFragment) {
+  public init() {
+    self.parents = [ItemSummary]()
+    self.children = [ItemSummary]()
+  }
+  
+  convenience init(itemBasic: GraphQLInterface.ItemBasicSearchFragment) {
+    self.init()
+    self.id = itemBasic.id
+    self.name = itemBasic.name
+  }
+  
+  convenience init(itemSummary: GraphQLInterface.ItemSummaryFragment) {
+    self.init()
+    
     self.id = itemSummary.id
     self.name = itemSummary.name
     self.details = itemSummary.details
@@ -255,7 +254,9 @@ public struct ItemSummary: ItemSummaryProtocol {
     nil
   }
   
-  init(itemDetails: GraphQLInterface.ItemDetailsFragment) {
+  convenience init(itemDetails: GraphQLInterface.ItemDetailsFragment) {
+    self.init()
+    
     self.id = itemDetails.id
     self.name = itemDetails.name
     self.details = itemDetails.details
@@ -264,39 +265,47 @@ public struct ItemSummary: ItemSummaryProtocol {
     nil
   }
   
-}
-
-public struct ItemDetails : ItemSummaryProtocol {
-  public var id: GraphQLID?
-  public var name: String?
-  public var details: String?
-  public var brand: Brand?
-  public var isGeneric: Bool?
-  
-  public var children: [ItemSummary]
-  public var parents: [ItemSummary]
-  public var nutritionFacts: [NutritionFact]
-  
-  public init() {
-    self.children = [ItemSummary]()
-    self.parents = [ItemSummary]()
-    self.nutritionFacts = [NutritionFact]()
-  }
-  
-  init(itemSummary: GraphQLInterface.ItemSummaryFragment) {
+  convenience init(itemSummary: GraphQLInterface.ItemSummarySearchFragment) {
+    //TOOD(vinay): figure out how to get the search & itemnodes  to share a fragment
+    // so that we can cut down on this useless code.
     self.init()
-
+    
     self.id = itemSummary.id
     self.name = itemSummary.name
     self.details = itemSummary.details
-    self.brand = itemSummary.brand != nil ?
-      Brand(brand: itemSummary.brand!.fragments.brandFragment) :
-    nil
+    self.isGeneric = itemSummary.isGeneric
+    
+    if itemSummary.brand != nil {
+      self.brand = Brand(brand: itemSummary.brand!.fragments.brandSummarySearchFragment)
+    }
+    
+    var parentIterator =  itemSummary.parents?.makeIterator()
+    while var parentItem = parentIterator?.next() {
+      if parentItem != nil {
+        self.parents.append(ItemSummary(itemBasic: parentItem!.fragments.itemBasicSearchFragment))
+      }
+    }
+    
+    var childrenIterator = itemSummary.parents?.makeIterator()
+    while var childItem = childrenIterator?.next() {
+      if childItem != nil {
+        self.children.append(ItemSummary(itemBasic: childItem!.fragments.itemBasicSearchFragment))
+      }
+    }
+  }
+}
+
+public class ItemDetails : ItemSummary{
+  public var nutritionFacts: [NutritionFact]
+  
+  override init() {
+    self.nutritionFacts = [NutritionFact]()
+    super.init()
   }
   
-  init(itemDetails: GraphQLInterface.ItemDetailsFragment) {
+ convenience init(itemDetails: GraphQLInterface.ItemDetailsFragment) {
     self.init()
-    
+
     self.id = itemDetails.id
     self.name = itemDetails.name
     self.details = itemDetails.details
@@ -304,33 +313,71 @@ public struct ItemDetails : ItemSummaryProtocol {
       Brand(brand: itemDetails.brand!.fragments.brandFragment) :
       nil
     
-    if (itemDetails.children != nil) {
-      var childrenIterator = itemDetails.children?.edges.makeIterator()
-      while var child = childrenIterator?.next() {
-        let itemSummary = child?.node?.fragments.itemSummaryFragment
-        if itemSummary != nil {
-          self.children.append(ItemSummary(itemSummary: itemSummary!))
-        }
+    var childrenIterator = itemDetails.children?.edges.makeIterator()
+    while var child = childrenIterator?.next() {
+      let itemSummary = child?.node?.fragments.itemSummaryFragment
+      if itemSummary != nil {
+        self.children.append(ItemSummary(itemSummary: itemSummary!))
       }
     }
     
-    if (itemDetails.parents != nil) {
-      var parentIterator = itemDetails.parents?.edges.makeIterator()
-      while var parent = parentIterator?.next() {
-        let itemSummary = parent?.node?.fragments.itemSummaryFragment
-        if itemSummary != nil {
-          self.parents.append(ItemSummary(itemSummary: itemSummary!))
-        }
+    var parentIterator = itemDetails.parents?.edges.makeIterator()
+    while var parent = parentIterator?.next() {
+      let itemSummary = parent?.node?.fragments.itemSummaryFragment
+      if itemSummary != nil {
+        self.parents.append(ItemSummary(itemSummary: itemSummary!))
       }
     }
+   
+    var nutritionFactIterator = itemDetails.nutritionFacts?.edges.makeIterator()
+    while var nutritionFact  = nutritionFactIterator?.next() {
+      if nutritionFact?.node?.fragments.nutritionFactFragment != nil {
+        self.nutritionFacts.append(NutritionFact(
+          nutritionFact: nutritionFact!.node!.fragments.nutritionFactFragment))
+      }
+    }
+  }
+}
+
+public struct SearchResults {
+  public var items: [ItemSummary]?
+  public var brands: [Brand]?
+  
+  init(searchResults: GraphQLInterface.ItemsSearchQuery.Data.ItemsSearch?) {
+    self.items = [ItemSummary]()
+    self.brands = nil // There are no brands in the ItemsSearch
     
-    if (itemDetails.nutritionFacts != nil) {
-      var nutritionFactIterator = itemDetails.nutritionFacts?.edges.makeIterator()
-      while var nutritionFact  = nutritionFactIterator?.next() {
-        if nutritionFact?.node?.fragments.nutritionFactFragment != nil {
-          self.nutritionFacts.append(NutritionFact(
-            nutritionFact: nutritionFact!.node!.fragments.nutritionFactFragment))
-        }
+    var itemsIterator = searchResults?.items?.makeIterator()
+    while var item = itemsIterator?.next() {
+      if item != nil {
+        self.items!.append(ItemSummary(itemSummary: item!.fragments.itemSummarySearchFragment))
+      }
+    }
+  }
+}
+
+public struct AutocompelteResults {
+  public var brands: [Brand]
+  public var items: [ItemSummary]
+  
+  init() {
+    self.brands = [Brand]()
+    self.items = [ItemSummary]()
+  }
+  init(autoCompleteResults: GraphQLInterface.SearchAutocompleteQuery.Data.SearchAutocomplete) {
+    self.init()
+    
+    var itemsIterator = autoCompleteResults.items?.makeIterator()
+    while var item = itemsIterator?.next() {
+      if item != nil && item?.name != nil {
+        self.items.append(ItemSummary(itemBasic: item!.fragments.itemBasicSearchFragment))
+      }
+    }
+
+    var brandsIterator = autoCompleteResults.brands?.makeIterator()
+    while var brand = brandsIterator?.next() {
+      if brand != nil && brand?.name != nil {
+        brands.append(Brand(brand: brand!.fragments.brandBasicSearchFragment ))
       }
     }
   }
@@ -357,7 +404,6 @@ public struct Entry {
         nutritionFactRef: entry.nutritionFact!.fragments.nutritionFactRefFragment)
     }
   }
-  
 }
 
 class MealDateFormatter {
@@ -458,17 +504,24 @@ fileprivate class UserKeychainStorage : NSObject {
       let userID = keyChainItem[kSecAttrAccount as String] as? String else {
         throw BiteAIClientError.userKeychainStorageDataUndecodable
     }
-    return BiteAIUser(token: token, userID: userID)
+    return BiteAIUser(
+      token: token,
+      id: userID,
+      username: keyChainItem[kSecAttrLabel as String] as? String)
   }
   
   fileprivate class func setUser(server: String, user: BiteAIUser) throws {
     let tokenData = user.token.data(using: String.Encoding.utf8)!
-    let  query: [String: Any] = [
+    var query: [String: Any] = [
       kSecClass as String: UserKeychainStorage.StorageClass,
       kSecAttrServer as String: server,
-      kSecAttrAccount as String: user.userID,
-      kSecValueData as String: tokenData
+      kSecValueData as String: tokenData,
+      kSecAttrAccount as String: user.id
     ]
+    if user.username != nil {
+      query[kSecAttrLabel as String] =  user.username!
+    }
+    
     let addStatus = SecItemAdd(query as CFDictionary, nil)
     guard addStatus == errSecSuccess else {
       throw BiteAIClientError.userKeychainStorageUnknownError(status: addStatus)
@@ -544,7 +597,7 @@ public class BiteAPIClient {
   }
   
   public class func createUser(resultHandler: @escaping (
-    _ success: Bool, _ userID: String?, _ error: BiteAIClientError?) -> Void) throws {
+    _ success: Bool, _ username: String?, _ error: BiteAIClientError?) -> Void) throws {
     // Ensure there isn't an existing user
     guard (try? getUser()) == nil else {
       resultHandler(false, nil, BiteAIClientError.userAlreadyExists)
@@ -569,27 +622,29 @@ public class BiteAPIClient {
       do {
         let jsonData = try JSONSerialization.jsonObject(with: data!, options: [])
         guard let responseDictionary = jsonData as? [String: Any],
-          let userID = responseDictionary["user_id"] as? String,
+          let id = responseDictionary["id"] as? String,
+          responseDictionary.keys.contains("username"),
           let token = responseDictionary["token"] as? String else {
           resultHandler(false, nil, BiteAIClientError.userCreationError)
           return
         }
-
-        let user = BiteAIUser(token: token, userID: userID)
+        let user = BiteAIUser(
+          token: token,
+          id: id, username:
+          responseDictionary["username"] as? String)
         do {
           try UserKeychainStorage.setUser(server: BiteAPIClient.getBaseURLHost(), user: user)
         } catch BiteAIClientError.userKeychainStorageUnknownError(let status){
           resultHandler(
             false,
-            user.userID,
+            user.username,
             BiteAIClientError.userKeychainStorageUnknownError(status: status))
           return
         }
-        resultHandler(true, user.userID, nil)
+        resultHandler(true, user.username, nil)
       } catch {
         resultHandler(false,  nil, BiteAIClientError.userCreationError)
       }
-
     }
     task.resume()
   }
@@ -603,6 +658,22 @@ public class BiteAPIClient {
     return BiteAPIClient.sharedClient!
   }
   
+  public typealias searchHandler = (_ result: SearchResults?, _ error: Error?) -> Void
+  @discardableResult public func itemsSearch(query: String, resultHandler: searchHandler?) -> Cancellable {
+    return self.apolloClient.fetch(
+    query: GraphQLInterface.ItemsSearchQuery(query: query),
+    cachePolicy: CachePolicy.fetchIgnoringCacheData) {
+      results, error in
+      if resultHandler != nil {
+        guard error == nil else {
+            resultHandler!(nil, error)
+            return
+        }
+        
+        resultHandler!(SearchResults(searchResults: results?.data?.itemsSearch), nil)
+      }
+    }
+  }
   // TODO(vinay): Need to figure out the template which lets us do the unpacking to return the results
   public typealias searchAutoCompleteHandler = (_ result: AutocompelteResults?, _ error: Error?) -> Void
   @discardableResult  public func searchAutocomplete(
@@ -611,22 +682,13 @@ public class BiteAPIClient {
     return self.apolloClient.fetch(query: GraphQLInterface.SearchAutocompleteQuery(query: queryText)) {
       result, error in
       if resultHandler != nil {
-        var items = [AutocompleteResult]()
-        var itemsIterator = result?.data?.searchAutocomplete?.items?.makeIterator()
-        while var item = itemsIterator?.next() {
-          if item != nil && item?.name != nil {
-            items.append(AutocompleteResult(id: item!.id, name: item!.name!))
-          }
+        guard result != nil && error == nil,
+        let autocompleteResults = result?.data?.searchAutocomplete else {
+          resultHandler!(nil, error)
+          return
         }
-        var brands = [AutocompleteResult]()
-        var brandsIterator = result?.data?.searchAutocomplete?.brands?.makeIterator()
-        while var brand = brandsIterator?.next() {
-          if brand != nil && brand?.name != nil {
-            brands.append(AutocompleteResult(id: brand!.id, name: brand!.name!))
-          }
-        }
-
-        resultHandler!(AutocompelteResults(brands: brands, items: items) , error)
+        
+        resultHandler!(AutocompelteResults(autoCompleteResults: autocompleteResults), nil)
       }
     }
   }
