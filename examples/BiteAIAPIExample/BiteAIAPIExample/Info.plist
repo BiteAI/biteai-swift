@@ -49,9 +49,9 @@
 	<key>BiteAI</key>
 	<dict>
 		<key>AppKey</key>
-		<string>09b6cf37ed69d28cdd416b54a4ef86f6b6c89ed8</string>
+		<string>[Insert Key]</string>
 		<key>BaseURL</key>
-		<string>https://api-beta-staging.bite.ai</string>
+		<string>https://api-beta.bite.ai</string>
 	</dict>
 </dict>
 </plist>
