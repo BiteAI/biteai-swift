@@ -7,7 +7,7 @@ target 'BiteAIAPIExample' do
 
   # Pods for BiteAIAPIExample
   pod "Apollo"
-  pod "BiteAIClient", :path => '../../BiteAIClient/BiteAIClient.podspec'
+  pod "BiteAIClient", :path => '../../BiteAIClient.podspec'
   
   target 'BiteAIAPIExampleTests' do
     inherit! :search_paths
