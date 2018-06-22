@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '9.0'
   s.source       = { :git => "git@github.com:BiteAI/bite-api-client-ios.git", :tag => "#{s.version}" }
 
-  s.source_files  = "Sources/*.swift", "BiteAIClient/**/*.swift"
+  s.source_files  = "BiteAIClient/Sources/*.swift", "BiteAIClient/Sources/**/*.swift"
 
   s.dependency "Apollo"
 
