@@ -10,7 +10,7 @@ iOS Client for the Bite API
 
 1. Add `BiteAIClient` pod to your project
     ```
-    pod "BiteAIClient", :path => '../../BiteAIClient/BiteAIClient.podspec'
+    pod "BiteAIClient", :git => 'git@github.com:BiteAI/biteai-swift.git', :tag => 'v0.0.1-alpha'
     ```
 
 1. Setup Info in Plist

@@ -1,0 +1,124 @@
+fragment EntryFragment on EntryNode {
+  id
+  servingAmount
+  item {
+    ...ItemSummaryFragment
+  }
+  image {
+    ...ImageFragment
+  }
+  nutritionFact {
+    ...NutritionFactRefFragment
+  }
+}
+
+fragment MealFragment on MealNode {
+    id
+    title
+    description
+    localEatenAtTime
+    utcEatenAtTime
+    timeCreated
+    timeModified
+    entries {
+      edges {
+        node {
+          ...EntryFragment
+        }
+      }
+    }
+    images {
+      edges {
+        node {
+          ...ImageFragment
+        }
+      }
+    }
+}
+
+
+mutation createOrUpdateMeal($id: ID, $title: String,  $description: String,
+  $localEatenAtTime: DateTime!, $utcEatenAtTime: DateTime!){
+  createOrUpdateMeal(input: {id: $id, title: $title, description: $description,
+  localEatenAtTime: $localEatenAtTime, utcEatenAtTime: $utcEatenAtTime}) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+mutation deleteMeal($meal: ID!) {
+  deleteMeal(meal: $meal) {
+    id
+  }
+}
+
+query allMeals($first: Int, $last: Int, $before: String, $after: String) {
+allMeals(first: $first, last: $last, before: $before, after: $after) {
+    edges {
+      node {
+        ...MealFragment
+      }
+    }
+  }
+}
+
+query getMeal($id: ID!) {
+  meal(id: $id) {
+    ...MealFragment
+  }
+}
+
+mutation addEntryToMeal($meal: ID!, $id: ID, $item: ID,
+$nutritionFact: ID, $image: ID, $servingAmount: Float) {
+addOrUpdateEntryToMeal(input: {meal: $meal, id: $id, item: $item,
+  nutritionFact: $nutritionFact, image:  $image,
+  servingAmount: $servingAmount}) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+mutation deleteEntryFromMeal($meal: ID!, $entry: ID!) {
+  deleteEntryFromMeal(meal: $meal, entry: $entry) {
+    ... on ErrorsType {
+      ...Errors
+    }
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+mutation addImageToMeal($meal: ID!, $image: ID!) {
+  addImageToMeal(meal: $meal, image: $image) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
+
+mutation deleteImageFromMeal($meal: ID!, $image: ID!) {
+  deleteImageFromMeal(meal: $meal, image: $image) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
