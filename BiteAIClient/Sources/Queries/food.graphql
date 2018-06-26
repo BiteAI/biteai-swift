@@ -1,0 +1,167 @@
+fragment ImageFragment on ImageNode {
+  id
+  url
+}
+
+fragment BrandFragment on BrandNode {
+  id
+  name
+}
+
+fragment UnitFragment on UnitNode {
+  id
+  singularName
+  abbreviatedSingularName
+  pluralName
+  abbreviatedPluralName
+  details
+  granularity
+}
+
+fragment ServingFragment on ServingNode {
+    grams
+    amount
+    details
+    unit {
+      ... UnitFragment
+    }
+}
+
+fragment NutritionFactFragment on NutritionNode {
+    id
+    isDefault
+    servingText
+    servingsPerPackage
+    calories
+    totalFat
+    saturatedFat
+    monounsaturatedFat
+    polyunsaturatedFat
+    transFat
+    totalCarb
+    sugars
+    fiber
+    protein
+    cholesterol
+    sodium
+    potassium
+    calcium
+    iron
+    magnesium
+    phosphorus
+    zinc
+    copper
+    manganese
+    selenium
+    vitaminARae
+    vitaminAIu
+    retinol
+    alphaCarotene
+    betaCarotene
+    betaCryptoxanthin
+    lycopene
+    thiamin
+    riboflavin
+    niacin
+    pantothenicAcid
+    vitaminB6
+    folate
+    folicAcid
+    vitaminB12
+    choline
+    vitaminC
+    vitaminD
+    vitaminE
+    vitaminK
+    water
+    ash
+    caffeine
+    alcohol
+    addedSugars
+    omega3
+    omega6
+    theobromine
+    luteinZeaxanthin
+    serving{
+      ...ServingFragment
+    }
+}
+
+fragment NutritionFactRefFragment on NutritionNode {
+  id
+}
+
+fragment ItemSummaryFragment on ItemNode {
+  id
+  name
+  details
+  isGeneric
+  brand {
+    ...BrandFragment
+  }
+}
+
+fragment ItemDetailsFragment on ItemNode {
+    id
+    name
+    details
+    brand {
+      ...BrandFragment
+    }
+    parents(first: 5) {
+      edges {
+        node{
+          ... ItemSummaryFragment
+        }
+      }
+    }
+
+    children(first: 10) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          ... ItemSummaryFragment
+        }
+      }
+    }
+
+    isGeneric
+    nutritionFacts   {
+      edges{
+        node {
+          ...NutritionFactFragment
+        }
+      }
+    }
+}
+
+
+query itemsIdentifierLookup($barcode: String!, $pageSize: Int!) {
+  itemsIdentifierLookup(barcode: $barcode, first: $pageSize) {
+    edges {
+      node {
+        ... ItemSummaryFragment
+      }
+    }
+  }
+}
+
+query itemsBulkLookup($ids: [ID]!, $pageSize: Int!) {
+  itemsBulkLookup(ids: $ids first: $pageSize) {
+    edges{
+      node{
+        ...ItemDetailsFragment
+      }
+    }
+  }
+}
+
+
+
+
+

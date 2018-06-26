@@ -1,0 +1,6 @@
+fragment Errors on ErrorsType {
+  errors {
+    field
+    messages
+  }
+}

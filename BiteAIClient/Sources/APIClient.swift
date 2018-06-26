@@ -35,6 +35,8 @@ public struct Image {
   }
 }
 
+public typealias ImageRef = GraphQLID
+
 public struct Unit {
   public var id: GraphQLID?
   public var singularName: String?
@@ -339,65 +341,18 @@ public class ItemDetails : ItemSummary{
   }
 }
 
-public struct SearchResults {
-  public var items: [ItemSummary]?
-  public var brands: [Brand]?
-  
-  init(searchResults: GraphQLInterface.ItemsSearchQuery.Data.ItemsSearch?) {
-    self.items = [ItemSummary]()
-    self.brands = nil // There are no brands in the ItemsSearch
-    
-    var itemsIterator = searchResults?.items?.makeIterator()
-    while var item = itemsIterator?.next() {
-      if item != nil {
-        self.items!.append(ItemSummary(itemSummary: item!.fragments.itemSummarySearchFragment))
-      }
-    }
-  }
-}
-
-public struct AutocompelteResults {
-  public var brands: [Brand]
-  public var items: [ItemSummary]
-  
-  init() {
-    self.brands = [Brand]()
-    self.items = [ItemSummary]()
-  }
-  init(autoCompleteResults: GraphQLInterface.SearchAutocompleteQuery.Data.SearchAutocomplete) {
-    self.init()
-    
-    var itemsIterator = autoCompleteResults.items?.makeIterator()
-    while var item = itemsIterator?.next() {
-      if item != nil && item?.name != nil {
-        self.items.append(ItemSummary(itemBasic: item!.fragments.itemBasicSearchFragment))
-      }
-    }
-
-    var brandsIterator = autoCompleteResults.brands?.makeIterator()
-    while var brand = brandsIterator?.next() {
-      if brand != nil && brand?.name != nil {
-        brands.append(Brand(brand: brand!.fragments.brandBasicSearchFragment ))
-      }
-    }
-  }
-}
-
-public struct Entry {
+public class BaseEntry {
   public var id: GraphQLID?
   public var servingAmount: Double?
   public var item: ItemSummary?
-  public var image: Image?
   public var nutritionFactRef: NutritionFactRef?
-  
+
   public init() { }
-  init(entry: GraphQLInterface.EntryFragment) {
+
+  public init(entry: GraphQLInterface.EntryFragment) {
     self.id = entry.id
     self.servingAmount = entry.servingAmount
     self.item = ItemSummary(itemSummary: entry.item.fragments.itemSummaryFragment)
-    if entry.image != nil {
-      self.image = Image(imageFragment: entry.image!.fragments.imageFragment)
-    }
     
     if entry.nutritionFact != nil {
       self.nutritionFactRef = NutritionFactRef(
@@ -405,6 +360,44 @@ public struct Entry {
     }
   }
 }
+
+public class EntrySummary : BaseEntry {
+  public var imageRef : ImageRef?
+  
+  override public init(entry: GraphQLInterface.EntryFragment) {
+    super.init(entry: entry)
+    if entry.image != nil {
+      self.imageRef = entry.image!.fragments.imageFragment.id
+    }
+  }
+  
+  public init(entrySummary: GraphQLInterface.EntrySummarySearchFragment) {
+    super.init()
+    self.id = entrySummary.id
+    self.servingAmount = entrySummary.servingAmount
+    self.item = ItemSummary(itemSummary: (entrySummary.item?.fragments.itemSummarySearchFragment)!)
+    
+    if entrySummary.nutritionFact != nil {
+      self.nutritionFactRef = NutritionFactRef(id: entrySummary.nutritionFact!)
+    }
+  }
+}
+
+public class Entry : BaseEntry {
+  public var image: Image?
+  
+  override public init() {
+    super.init()
+  }
+  override public init(entry: GraphQLInterface.EntryFragment) {
+    super.init(entry: entry)
+    if entry.image != nil {
+      self.image = Image(imageFragment: entry.image!.fragments.imageFragment)
+    }
+  }
+}
+
+public typealias RecentEntry = (lastEatenAt: Date, entry: EntrySummary)
 
 class MealDateFormatter {
   private static var sharedFormatter: MealDateFormatter? = nil
@@ -475,6 +468,73 @@ public struct Meal {
         if image?.node != nil {
           self.images.append(Image(imageFragment: image!.node!.fragments.imageFragment))
         }
+      }
+    }
+  }
+}
+
+public struct SearchResults {
+  public var items: [ItemSummary]?
+  public var brands: [Brand]?
+  public var recentEntries: [RecentEntry]?
+
+  init(searchResults: GraphQLInterface.ItemsSearchQuery.Data.ItemsSearch?) {
+    self.items = [ItemSummary]()
+    var itemsIterator = searchResults?.items?.makeIterator()
+    while var item = itemsIterator?.next() {
+      if item != nil {
+        self.items!.append(ItemSummary(itemSummary: item!.fragments.itemSummarySearchFragment))
+      }
+    }
+  }
+  
+  init(facetedResults: GraphQLInterface.FacetedSearchQuery.Data.FacetedSearch) {
+    self.items = [ItemSummary]()
+    var itemsIterator = facetedResults.items?.makeIterator()
+    while var item = itemsIterator?.next() {
+      self.items!.append(ItemSummary(itemSummary: item!.fragments.itemSummarySearchFragment))
+    }
+    
+    self.brands = [Brand]()
+    var brandsIterator = facetedResults.brands?.makeIterator()
+    while var brand = brandsIterator?.next() {
+      self.brands?.append(Brand(brand: brand!.fragments.brandSummarySearchFragment))
+    }
+    
+    self.recentEntries = [RecentEntry]()
+    var recentEntriesIterator = facetedResults.recent?.entries?.makeIterator()
+    while var recentEntry = recentEntriesIterator?.next() {
+      let lastEatenAt : Date? = MealDateFormatter.shared().localDateTimeFormatter.date(
+        from: recentEntry!.lastEatenAt!)
+      self.recentEntries!.append(RecentEntry(
+        lastEatenAt: lastEatenAt!,
+        entry: EntrySummary(entrySummary: recentEntry!.entry!.fragments.entrySummarySearchFragment)))
+    }
+  }
+}
+
+public struct AutocompelteResults {
+  public var brands: [Brand]
+  public var items: [ItemSummary]
+  
+  init() {
+    self.brands = [Brand]()
+    self.items = [ItemSummary]()
+  }
+  init(autoCompleteResults: GraphQLInterface.SearchAutocompleteQuery.Data.SearchAutocomplete) {
+    self.init()
+    
+    var itemsIterator = autoCompleteResults.items?.makeIterator()
+    while var item = itemsIterator?.next() {
+      if item != nil && item?.name != nil {
+        self.items.append(ItemSummary(itemBasic: item!.fragments.itemBasicSearchFragment))
+      }
+    }
+    
+    var brandsIterator = autoCompleteResults.brands?.makeIterator()
+    while var brand = brandsIterator?.next() {
+      if brand != nil && brand?.name != nil {
+        brands.append(Brand(brand: brand!.fragments.brandBasicSearchFragment ))
       }
     }
   }
@@ -674,6 +734,28 @@ public class BiteAPIClient {
       }
     }
   }
+  
+  @discardableResult public func facetedSearch(
+    query: String,
+    localDateTime: Date?,
+    resultHandler: searchHandler?) -> Cancellable {
+    let localDateTimeFormatted = MealDateFormatter.shared().localDateTimeFormatter.string(
+      from: localDateTime ?? Date())
+    
+    return self.apolloClient.fetch(query: GraphQLInterface.FacetedSearchQuery(
+      query: query, localDateTime: localDateTimeFormatted)) {
+        result, error in
+        if resultHandler != nil {
+          guard result != nil && error == nil,
+            let facetedResults = result?.data?.facetedSearch else {
+              resultHandler!(nil, error)
+              return
+          }
+          resultHandler!(SearchResults(facetedResults: facetedResults), nil)
+        }
+    }
+  }
+  
   // TODO(vinay): Need to figure out the template which lets us do the unpacking to return the results
   public typealias searchAutoCompleteHandler = (_ result: AutocompelteResults?, _ error: Error?) -> Void
   @discardableResult  public func searchAutocomplete(

@@ -1,0 +1,82 @@
+fragment ItemBasicSearchFragment on ItemBasicSearchType {
+  id
+  name
+}
+
+fragment BrandBasicSearchFragment on BrandBasicSearchType {
+  id
+  name
+}
+
+fragment BrandSummarySearchFragment on BrandSummarySearchType  {
+  id
+  name
+  manufacturer
+  type
+}
+
+fragment ItemSummarySearchFragment on ItemSummarySearchType {
+  id
+  name
+  brand {
+    ...BrandSummarySearchFragment
+  }
+  details
+  isGeneric
+  parents {
+    ...ItemBasicSearchFragment
+  }
+  children {
+    ...ItemBasicSearchFragment
+  }
+}
+
+fragment EntrySummarySearchFragment on EntrySummarySearchType {
+  id
+  servingAmount
+  item {
+    ...ItemSummarySearchFragment
+  }
+  image
+  nutritionFact
+}
+
+query itemsSearch($query: String!) {
+  itemsSearch(query: $query) {
+    items {
+      ...ItemSummarySearchFragment
+    }
+  }
+}
+
+query searchAutocomplete($query: String!) {
+    searchAutocomplete(query: $query) {
+        brands {
+          ...BrandBasicSearchFragment
+        }
+        items {
+          ...ItemBasicSearchFragment
+        }
+    }
+}
+
+query facetedSearch($query: String!, $localDateTime: String) {
+  facetedSearch(query: $query, localDateTime: $localDateTime) {
+    items {
+      ...ItemSummarySearchFragment
+    }
+
+    brands {
+      ...BrandSummarySearchFragment
+    }
+
+    recent {
+      entries {
+        lastEatenAt
+        entry {
+         ...EntrySummarySearchFragment
+        }
+      }
+    }
+  }
+}

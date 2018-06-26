@@ -12,8 +12,11 @@
 		0A512C2220B36EDF0091F3CC /* BiteAIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A512C1420B36EDE0091F3CC /* BiteAIClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A512C4D20B372080091F3CC /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A512C4820B372070091F3CC /* schema.json */; };
 		0A512C4E20B372080091F3CC /* BiteAIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A512C4920B372070091F3CC /* BiteAIClient.h */; };
-		0A512C5020B372080091F3CC /* queries.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0A512C4B20B372070091F3CC /* queries.graphql */; };
 		0A512C5120B372080091F3CC /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A512C4C20B372080091F3CC /* APIClient.swift */; };
+		0A73EEE720DD9D990034C884 /* errors.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0A73EEE620DD9D990034C884 /* errors.graphql */; };
+		0A73EEE920DD9F0F0034C884 /* meal.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0A73EEE820DD9F0F0034C884 /* meal.graphql */; };
+		0A73EEEB20DD9FC70034C884 /* food.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0A73EEEA20DD9FC70034C884 /* food.graphql */; };
+		0A73EEED20DDA03E0034C884 /* search.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0A73EEEC20DDA03E0034C884 /* search.graphql */; };
 		0AE8131520B38871003E989C /* GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE8131420B38871003E989C /* GraphQL.swift */; };
 		0F92A177B2F90CB8DC26DFA2 /* Pods_BiteAIClientTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A066AB2D5231015E000B109 /* Pods_BiteAIClientTests.framework */; };
 		E2342460DF6CEFCF0A41BD3E /* Pods_BiteAIClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA70FF5606CD0D9738DEBFE /* Pods_BiteAIClient.framework */; };
@@ -40,8 +43,11 @@
 		0A512C2120B36EDF0091F3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A512C4820B372070091F3CC /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 		0A512C4920B372070091F3CC /* BiteAIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BiteAIClient.h; sourceTree = "<group>"; };
-		0A512C4B20B372070091F3CC /* queries.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = queries.graphql; sourceTree = "<group>"; };
 		0A512C4C20B372080091F3CC /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		0A73EEE620DD9D990034C884 /* errors.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = errors.graphql; sourceTree = "<group>"; };
+		0A73EEE820DD9F0F0034C884 /* meal.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = meal.graphql; sourceTree = "<group>"; };
+		0A73EEEA20DD9FC70034C884 /* food.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = food.graphql; sourceTree = "<group>"; };
+		0A73EEEC20DDA03E0034C884 /* search.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = search.graphql; sourceTree = "<group>"; };
 		0AE8131420B38871003E989C /* GraphQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQL.swift; sourceTree = "<group>"; };
 		1CA70FF5606CD0D9738DEBFE /* Pods_BiteAIClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BiteAIClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D9B7EA9D8A917E13433302 /* Pods-BiteAIClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiteAIClientTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BiteAIClientTests/Pods-BiteAIClientTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -93,11 +99,11 @@
 		0A512C1320B36EDE0091F3CC /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0A73EEE520DD9D690034C884 /* Queries */,
 				0AE8131420B38871003E989C /* GraphQL.swift */,
 				0A512C4C20B372080091F3CC /* APIClient.swift */,
 				0A512C1420B36EDE0091F3CC /* BiteAIClient.h */,
 				0A512C4920B372070091F3CC /* BiteAIClient.h */,
-				0A512C4B20B372070091F3CC /* queries.graphql */,
 				0A512C4820B372070091F3CC /* schema.json */,
 				0A512C1520B36EDE0091F3CC /* Info.plist */,
 			);
@@ -120,6 +126,17 @@
 				0A066AB2D5231015E000B109 /* Pods_BiteAIClientTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0A73EEE520DD9D690034C884 /* Queries */ = {
+			isa = PBXGroup;
+			children = (
+				0A73EEE620DD9D990034C884 /* errors.graphql */,
+				0A73EEE820DD9F0F0034C884 /* meal.graphql */,
+				0A73EEEA20DD9FC70034C884 /* food.graphql */,
+				0A73EEEC20DDA03E0034C884 /* search.graphql */,
+			);
+			path = Queries;
 			sourceTree = "<group>";
 		};
 		EAE57D2B8CD6B0A8B7A5DB28 /* Pods */ = {
@@ -230,7 +247,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A512C5020B372080091F3CC /* queries.graphql in Resources */,
+				0A73EEE920DD9F0F0034C884 /* meal.graphql in Resources */,
+				0A73EEED20DDA03E0034C884 /* search.graphql in Resources */,
+				0A73EEE720DD9D990034C884 /* errors.graphql in Resources */,
+				0A73EEEB20DD9FC70034C884 /* food.graphql in Resources */,
 				0A512C4D20B372080091F3CC /* schema.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
