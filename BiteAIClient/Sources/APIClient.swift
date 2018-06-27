@@ -28,10 +28,18 @@ public struct BiteAIUser {
 public struct Image {
   public var id: GraphQLID?
   public var url: URL?
+  public var sourceURL: URL?
 
   public init(imageFragment:  GraphQLInterface.ImageFragment) {
     self.id = imageFragment.id
     self.url =  imageFragment.url != nil ?  URL(string: imageFragment.url!) : nil
+  }
+  
+  public init(imageSearchFragment: GraphQLInterface.ImageSearchFragment) {
+    self.id = imageSearchFragment.id
+    self.url = imageSearchFragment.url != nil ? URL(string: imageSearchFragment.url!) : nil
+    self.sourceURL = imageSearchFragment.sourceUrl != nil ?
+      URL(string: imageSearchFragment.sourceUrl!) : nil
   }
 }
 
@@ -423,21 +431,67 @@ class MealDateFormatter {
   }
 }
 
-public struct Meal {
+public class BaseMeal {
   public var id: GraphQLID?
   public var title: String?
   public var description: String?
   public var localEatenAtTime: Date?
   public var utcEatenAtTime: Date?
+
+  public init() { }
+}
+
+public class MealSuggestion : BaseMeal {
+  public var entries: [EntrySummary]
+  public var images: [Image]
+  
+  public override init() {
+    self.entries = [EntrySummary]()
+    self.images = [Image]()
+  }
+  
+  public convenience init(meal: GraphQLInterface.MealSuggestionFragment) {
+    self.init()
+    self.id = meal.id
+    self.title = meal.title
+    self.description = meal.description
+    
+    if meal.localEatenAtTime != nil {
+      self.localEatenAtTime = MealDateFormatter.shared().localDateTimeFormatter.date(
+        from: meal.localEatenAtTime!)
+    }
+    
+    if meal.utcEatenAtTime != nil {
+      self.utcEatenAtTime = MealDateFormatter.shared().localDateTimeFormatter.date(
+        from: meal.utcEatenAtTime!)
+    }
+    
+    if meal.entries != nil {
+      var entriesIterator = meal.entries?.makeIterator()
+      while var entry = entriesIterator?.next() {
+        self.entries.append(EntrySummary(entrySummary: entry!.fragments.entrySummarySearchFragment))
+      }
+    }
+    
+    if meal.images != nil {
+      var imageIterator = meal.images?.makeIterator()
+      while var image = imageIterator?.next() {
+        self.images.append(Image(imageSearchFragment: image!.fragments.imageSearchFragment))
+      }
+    }
+  }
+}
+
+public class Meal : BaseMeal{
   public var entries: [Entry]
   public var images: [Image]
   
-  public init() {
+  public override init() {
     self.entries = [Entry]()
     self.images = [Image]()
   }
   
-  init(meal: GraphQLInterface.MealFragment) {
+  public convenience init(meal: GraphQLInterface.MealFragment) {
     self.init()
     
     self.id = meal.id
@@ -452,7 +506,7 @@ public struct Meal {
       self.utcEatenAtTime = MealDateFormatter.shared().utcDateTimeFormatter.date(
         from: meal.utcEatenAtTime!)
     }
-    
+
     if meal.entries != nil {
       var entryIterator = meal.entries?.edges.makeIterator()
       while var entry = entryIterator?.next() {
@@ -923,7 +977,7 @@ public class BiteAPIClient {
   }
   
   public typealias DeleteEntryFromMeal = (_ meal: Meal?, _ error: Error?) -> Void
-  public func deleteEntryFromMeal(mealID: GraphQLID, entryID: GraphQLID,
+  @discardableResult public func deleteEntryFromMeal(mealID: GraphQLID, entryID: GraphQLID,
                                   resultsHandler: DeleteEntryFromMeal?) -> Cancellable {
     return self.apolloClient.perform(
     mutation: GraphQLInterface.DeleteEntryFromMealMutation(meal: mealID, entry: entryID)) {
@@ -942,8 +996,8 @@ public class BiteAPIClient {
   }
   
   public typealias AddImageToMealHandler = (_ meal: Meal?, _ error: Error?) -> Void
-  public func addImageToMeal(mealID: GraphQLID, imageID: GraphQLID,
-                             resultsHandler: AddImageToMealHandler?) -> Cancellable{
+  @discardableResult public func addImageToMeal(mealID: GraphQLID, imageID: GraphQLID,
+                             resultsHandler: AddImageToMealHandler?) -> Cancellable {
     return self.apolloClient.perform(
       mutation: GraphQLInterface.AddImageToMealMutation(meal: mealID, image: imageID)) {
         results, error in
@@ -961,8 +1015,8 @@ public class BiteAPIClient {
   }
   
   public typealias DeleteImageFromMealHandler = (_ meal: Meal?, _ error: Error?) -> Void
-  public func deleteImageMeal(mealID: GraphQLID, imageID: GraphQLID,
-                              resultsHandler: DeleteImageFromMealHandler?)  -> Cancellable{
+  @discardableResult public func deleteImageMeal(mealID: GraphQLID, imageID: GraphQLID,
+                              resultsHandler: DeleteImageFromMealHandler?)  -> Cancellable {
     return self.apolloClient.perform(mutation: GraphQLInterface.DeleteImageFromMealMutation(
     meal: mealID, image: imageID)) {
       results, error in
@@ -976,6 +1030,33 @@ public class BiteAPIClient {
           return
       }
       resultsHandler!(Meal(meal: mealFragment), nil)
+    }
+  }
+  
+  public typealias MealSuggestionsHandler = (_ meals: [MealSuggestion]?, _ errors: Error?) -> Void
+  @discardableResult public func mealSuggestions(localDateTime: Date?, resultsHandler: MealSuggestionsHandler?) -> Cancellable {
+    let localDateStr = MealDateFormatter.shared().localDateTimeFormatter.string(
+      from: localDateTime ?? Date())
+    return self.apolloClient.fetch(
+    query: GraphQLInterface.MealSuggestionsQuery(localDateTime: localDateStr)) {
+      results, error in
+      guard results != nil else {
+        return
+      }
+      
+      guard error == nil,
+        results?.data?.mealSuggestions?.asErrorsType == nil,
+        let mealSuggestions = results?.data?.mealSuggestions?.asMealSuggestionsType  else {
+          resultsHandler!(nil, error)
+          return
+      }
+      
+      var meals = [MealSuggestion]()
+      var iterator = mealSuggestions.meals?.makeIterator()
+      while let meal = iterator?.next() {
+          meals.append(MealSuggestion(meal: meal!.fragments.mealSuggestionFragment))
+      }
+      resultsHandler!(meals, nil)
     }
   }
 }

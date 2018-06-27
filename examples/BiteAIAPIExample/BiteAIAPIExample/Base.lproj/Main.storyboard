@@ -135,6 +135,58 @@
             </objects>
             <point key="canvasLocation" x="972" y="701.19940029985014"/>
         </scene>
+        <!--Meal Copy-->
+        <scene sceneID="R7h-5c-VIS">
+            <objects>
+                <collectionViewController id="iKa-6M-MJD" customClass="MealSuggestionsCollectionViewController" customModule="BiteAIAPIExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="2k3-vq-zrd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xZI-9J-uPS">
+                            <size key="itemSize" width="150" height="250"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="f6e-Rv-96B" customClass="MealSuggestionCollectionViewCell" customModule="BiteAIAPIExample" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="150" height="250"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="150" height="250"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rfs-sC-ECL">
+                                            <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GqL-Hm-tcs">
+                                            <rect key="frame" x="0.0" y="147" width="150" height="103"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <connections>
+                                    <outlet property="imageView" destination="rfs-sC-ECL" id="5b5-Z6-PXG"/>
+                                    <outlet property="label" destination="GqL-Hm-tcs" id="pxA-X9-6bf"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="iKa-6M-MJD" id="4Zk-0H-Dmx"/>
+                            <outlet property="delegate" destination="iKa-6M-MJD" id="3qS-gJ-uvS"/>
+                        </connections>
+                    </collectionView>
+                    <tabBarItem key="tabBarItem" title="Meal Copy" id="hZ1-vz-iEm"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T0s-jx-f0k" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-828" y="1301.1994002998501"/>
+        </scene>
         <!--Meal Create-->
         <scene sceneID="rQG-bN-fNQ">
             <objects>
@@ -294,6 +346,7 @@
                         <segue destination="sAi-zI-wVw" kind="relationship" relationship="viewControllers" id="lAi-fH-rNV"/>
                         <segue destination="3vV-Hz-Y0R" kind="relationship" relationship="viewControllers" id="S8l-t0-Go1"/>
                         <segue destination="IFk-Iq-4VK" kind="relationship" relationship="viewControllers" id="O4m-Li-jbl"/>
+                        <segue destination="iKa-6M-MJD" kind="relationship" relationship="viewControllers" id="28J-As-pnr"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKT-MV-hI5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -341,7 +394,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2cJ-NW-fDa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-676" y="640.92953523238384"/>
+            <point key="canvasLocation" x="-1332" y="450"/>
         </scene>
     </scenes>
 </document>
