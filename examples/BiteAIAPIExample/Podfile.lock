@@ -1,12 +1,12 @@
 PODS:
-  - Apollo (0.7.0):
-    - Apollo/Core (= 0.7.0)
-  - Apollo/Core (0.7.0)
+  - Apollo (0.8.0):
+    - Apollo/Core (= 0.8.0)
+  - Apollo/Core (0.8.0)
   - BiteAIClient (0.0.1):
-    - Apollo
+    - Apollo (= 0.8.0)
 
 DEPENDENCIES:
-  - Apollo
+  - Apollo (= 0.8.0)
   - BiteAIClient (from `../../BiteAIClient.podspec`)
 
 SPEC REPOS:
@@ -18,9 +18,9 @@ EXTERNAL SOURCES:
     :path: "../../BiteAIClient.podspec"
 
 SPEC CHECKSUMS:
-  Apollo: d6649ac06168660e70c6226c4eadfc0770791ba5
-  BiteAIClient: cd691a0c3a9a00831f48ed438e757d9b2162c162
+  Apollo: 66e0f52289551545adb7ecdd994e713fdbae26eb
+  BiteAIClient: 25c8a8b612c0e77901f3d3a573f928949ed57144
 
-PODFILE CHECKSUM: f2e20e307a1a01432a983f58a9566ab21ff308f3
+PODFILE CHECKSUM: b122aefe0849936e614097a07647282a3b851407
 
 COCOAPODS: 1.5.2
