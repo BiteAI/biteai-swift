@@ -23,6 +23,6 @@ Pod::Spec.new do |s|
 
   s.source_files  = "BiteAIClient/Sources/*.swift", "BiteAIClient/Sources/**/*.swift"
 
-  s.dependency "Apollo"
+  s.dependency  "Apollo", "=0.8.0"
 
 end

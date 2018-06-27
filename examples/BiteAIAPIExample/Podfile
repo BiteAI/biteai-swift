@@ -6,7 +6,7 @@ target 'BiteAIAPIExample' do
   use_frameworks!
 
   # Pods for BiteAIAPIExample
-  pod "Apollo"
+  pod "Apollo", "=0.8.0"
   pod "BiteAIClient", :path => '../../BiteAIClient.podspec'
   
   target 'BiteAIAPIExampleTests' do
