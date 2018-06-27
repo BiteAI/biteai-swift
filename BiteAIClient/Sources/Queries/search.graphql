@@ -1,3 +1,9 @@
+fragment ImageSearchFragment on ImageSearchType {
+  id
+  url
+  sourceUrl
+}
+
 fragment ItemBasicSearchFragment on ItemBasicSearchType {
   id
   name
@@ -41,6 +47,20 @@ fragment EntrySummarySearchFragment on EntrySummarySearchType {
   nutritionFact
 }
 
+fragment MealSuggestionFragment on MealSearchType {
+  id
+  title
+  description
+  localEatenAtTime
+  utcEatenAtTime
+  entries {
+    ...EntrySummarySearchFragment
+  }
+  images {
+    ...ImageSearchFragment
+  }
+}
+
 query itemsSearch($query: String!) {
   itemsSearch(query: $query) {
     items {
@@ -76,6 +96,20 @@ query facetedSearch($query: String!, $localDateTime: String) {
         entry {
          ...EntrySummarySearchFragment
         }
+      }
+    }
+  }
+}
+
+query mealSuggestions($localDateTime: String!) {
+  mealSuggestions(localDateTime: $localDateTime) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealSuggestionsType {
+      meals {
+        ...MealSuggestionFragment
       }
     }
   }
