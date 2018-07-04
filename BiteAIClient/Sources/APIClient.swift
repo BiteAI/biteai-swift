@@ -85,7 +85,7 @@ public struct Serving {
 
 public struct NutritionFactRef {
   public var id: GraphQLID
-  init(id: GraphQLID) {
+  public init(id: GraphQLID) {
     self.id = id
   }
   init(nutritionFactRef: GraphQLInterface.NutritionFactRefFragment) {
