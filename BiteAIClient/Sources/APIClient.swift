@@ -405,7 +405,7 @@ public class Entry : BaseEntry {
   }
 }
 
-public typealias RecentEntry = (lastEatenAt: Date, entry: EntrySummary)
+public typealias RecentEntry = (lastEatenAt: Date?, entry: EntrySummary)
 
 class MealDateFormatter {
   private static var sharedFormatter: MealDateFormatter? = nil
@@ -558,10 +558,12 @@ public struct SearchResults {
     self.recentEntries = [RecentEntry]()
     var recentEntriesIterator = facetedResults.recent?.entries?.makeIterator()
     while var recentEntry = recentEntriesIterator?.next() {
+      // TODO(vinay): This should be returning something unless there is something
+      // wrong with the parser
       let lastEatenAt : Date? = MealDateFormatter.shared().localDateTimeFormatter.date(
         from: recentEntry!.lastEatenAt!)
       self.recentEntries!.append(RecentEntry(
-        lastEatenAt: lastEatenAt!,
+        lastEatenAt: lastEatenAt,
         entry: EntrySummary(entrySummary: recentEntry!.entry!.fragments.entrySummarySearchFragment)))
     }
   }
