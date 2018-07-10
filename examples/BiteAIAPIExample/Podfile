@@ -7,6 +7,7 @@ target 'BiteAIAPIExample' do
 
   # Pods for BiteAIAPIExample
   pod "Apollo", "=0.8.0"
+  pod "Alamofire", "~>4.5"
   pod "BiteAIClient", :path => '../../BiteAIClient.podspec'
   
   target 'BiteAIAPIExampleTests' do

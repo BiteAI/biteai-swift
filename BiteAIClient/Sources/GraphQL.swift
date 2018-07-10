@@ -36,7 +36,7 @@ public enum GraphQLInterface {
       }
 
       public init(itemsIdentifierLookup: ItemsIdentifierLookup? = nil) {
-        self.init(snapshot: ["__typename": "Query", "itemsIdentifierLookup": itemsIdentifierLookup.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Query", "itemsIdentifierLookup": itemsIdentifierLookup.flatMap { (value: ItemsIdentifierLookup) -> Snapshot in value.snapshot }])
       }
 
       public var itemsIdentifierLookup: ItemsIdentifierLookup? {
@@ -63,7 +63,7 @@ public enum GraphQLInterface {
         }
 
         public init(edges: [Edge?]) {
-          self.init(snapshot: ["__typename": "ItemNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+          self.init(snapshot: ["__typename": "ItemNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
         }
 
         public var __typename: String {
@@ -77,10 +77,10 @@ public enum GraphQLInterface {
 
         public var edges: [Edge?] {
           get {
-            return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+            return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
           }
           set {
-            snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+            snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
           }
         }
 
@@ -99,7 +99,7 @@ public enum GraphQLInterface {
           }
 
           public init(node: Node? = nil) {
-            self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -141,7 +141,7 @@ public enum GraphQLInterface {
             }
 
             public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-              self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+              self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
             }
 
             public var __typename: String {
@@ -331,7 +331,7 @@ public enum GraphQLInterface {
       }
 
       public init(itemsBulkLookup: ItemsBulkLookup? = nil) {
-        self.init(snapshot: ["__typename": "Query", "itemsBulkLookup": itemsBulkLookup.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Query", "itemsBulkLookup": itemsBulkLookup.flatMap { (value: ItemsBulkLookup) -> Snapshot in value.snapshot }])
       }
 
       public var itemsBulkLookup: ItemsBulkLookup? {
@@ -358,7 +358,7 @@ public enum GraphQLInterface {
         }
 
         public init(edges: [Edge?]) {
-          self.init(snapshot: ["__typename": "ItemNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+          self.init(snapshot: ["__typename": "ItemNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
         }
 
         public var __typename: String {
@@ -372,10 +372,10 @@ public enum GraphQLInterface {
 
         public var edges: [Edge?] {
           get {
-            return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+            return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
           }
           set {
-            snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+            snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
           }
         }
 
@@ -394,7 +394,7 @@ public enum GraphQLInterface {
           }
 
           public init(node: Node? = nil) {
-            self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -439,7 +439,7 @@ public enum GraphQLInterface {
             }
 
             public init(id: GraphQLID, name: String? = nil, details: String? = nil, brand: Brand? = nil, parents: Parent? = nil, children: Child? = nil, isGeneric: Bool? = nil, nutritionFacts: NutritionFact? = nil) {
-              self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "brand": brand.flatMap { $0.snapshot }, "parents": parents.flatMap { $0.snapshot }, "children": children.flatMap { $0.snapshot }, "isGeneric": isGeneric, "nutritionFacts": nutritionFacts.flatMap { $0.snapshot }])
+              self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "parents": parents.flatMap { (value: Parent) -> Snapshot in value.snapshot }, "children": children.flatMap { (value: Child) -> Snapshot in value.snapshot }, "isGeneric": isGeneric, "nutritionFacts": nutritionFacts.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
             }
 
             public var __typename: String {
@@ -634,7 +634,7 @@ public enum GraphQLInterface {
               }
 
               public init(edges: [Edge?]) {
-                self.init(snapshot: ["__typename": "ItemNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+                self.init(snapshot: ["__typename": "ItemNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
               }
 
               public var __typename: String {
@@ -648,10 +648,10 @@ public enum GraphQLInterface {
 
               public var edges: [Edge?] {
                 get {
-                  return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                  return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
                 }
                 set {
-                  snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                  snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
                 }
               }
 
@@ -670,7 +670,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(node: Node? = nil) {
-                  self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -712,7 +712,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -884,7 +884,7 @@ public enum GraphQLInterface {
               }
 
               public init(pageInfo: PageInfo, edges: [Edge?]) {
-                self.init(snapshot: ["__typename": "ItemNodeConnection", "pageInfo": pageInfo.snapshot, "edges": edges.map { $0.flatMap { $0.snapshot } }])
+                self.init(snapshot: ["__typename": "ItemNodeConnection", "pageInfo": pageInfo.snapshot, "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
               }
 
               public var __typename: String {
@@ -907,10 +907,10 @@ public enum GraphQLInterface {
 
               public var edges: [Edge?] {
                 get {
-                  return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                  return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
                 }
                 set {
-                  snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                  snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
                 }
               }
 
@@ -1000,7 +1000,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(node: Node? = nil) {
-                  self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -1042,7 +1042,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -1213,7 +1213,7 @@ public enum GraphQLInterface {
               }
 
               public init(edges: [Edge?]) {
-                self.init(snapshot: ["__typename": "NutritionNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+                self.init(snapshot: ["__typename": "NutritionNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
               }
 
               public var __typename: String {
@@ -1227,10 +1227,10 @@ public enum GraphQLInterface {
 
               public var edges: [Edge?] {
                 get {
-                  return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                  return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
                 }
                 set {
-                  snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                  snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
                 }
               }
 
@@ -1249,7 +1249,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(node: Node? = nil) {
-                  self.init(snapshot: ["__typename": "NutritionNodeEdge", "node": node.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "NutritionNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -1341,7 +1341,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, isDefault: Bool, servingText: String? = nil, servingsPerPackage: Double? = nil, calories: Double? = nil, totalFat: Double? = nil, saturatedFat: Double? = nil, monounsaturatedFat: Double? = nil, polyunsaturatedFat: Double? = nil, transFat: Double? = nil, totalCarb: Double? = nil, sugars: Double? = nil, fiber: Double? = nil, protein: Double? = nil, cholesterol: Double? = nil, sodium: Double? = nil, potassium: Double? = nil, calcium: Double? = nil, iron: Double? = nil, magnesium: Double? = nil, phosphorus: Double? = nil, zinc: Double? = nil, copper: Double? = nil, manganese: Double? = nil, selenium: Double? = nil, vitaminARae: Double? = nil, vitaminAIu: Double? = nil, retinol: Double? = nil, alphaCarotene: Double? = nil, betaCarotene: Double? = nil, betaCryptoxanthin: Double? = nil, lycopene: Double? = nil, thiamin: Double? = nil, riboflavin: Double? = nil, niacin: Double? = nil, pantothenicAcid: Double? = nil, vitaminB6: Double? = nil, folate: Double? = nil, folicAcid: Double? = nil, vitaminB12: Double? = nil, choline: Double? = nil, vitaminC: Double? = nil, vitaminD: Double? = nil, vitaminE: Double? = nil, vitaminK: Double? = nil, water: Double? = nil, ash: Double? = nil, caffeine: Double? = nil, alcohol: Double? = nil, addedSugars: Double? = nil, omega3: Double? = nil, omega6: Double? = nil, theobromine: Double? = nil, luteinZeaxanthin: Double? = nil, serving: Serving? = nil) {
-                    self.init(snapshot: ["__typename": "NutritionNode", "id": id, "isDefault": isDefault, "servingText": servingText, "servingsPerPackage": servingsPerPackage, "calories": calories, "totalFat": totalFat, "saturatedFat": saturatedFat, "monounsaturatedFat": monounsaturatedFat, "polyunsaturatedFat": polyunsaturatedFat, "transFat": transFat, "totalCarb": totalCarb, "sugars": sugars, "fiber": fiber, "protein": protein, "cholesterol": cholesterol, "sodium": sodium, "potassium": potassium, "calcium": calcium, "iron": iron, "magnesium": magnesium, "phosphorus": phosphorus, "zinc": zinc, "copper": copper, "manganese": manganese, "selenium": selenium, "vitaminARae": vitaminARae, "vitaminAIu": vitaminAIu, "retinol": retinol, "alphaCarotene": alphaCarotene, "betaCarotene": betaCarotene, "betaCryptoxanthin": betaCryptoxanthin, "lycopene": lycopene, "thiamin": thiamin, "riboflavin": riboflavin, "niacin": niacin, "pantothenicAcid": pantothenicAcid, "vitaminB6": vitaminB6, "folate": folate, "folicAcid": folicAcid, "vitaminB12": vitaminB12, "choline": choline, "vitaminC": vitaminC, "vitaminD": vitaminD, "vitaminE": vitaminE, "vitaminK": vitaminK, "water": water, "ash": ash, "caffeine": caffeine, "alcohol": alcohol, "addedSugars": addedSugars, "omega3": omega3, "omega6": omega6, "theobromine": theobromine, "luteinZeaxanthin": luteinZeaxanthin, "serving": serving.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "NutritionNode", "id": id, "isDefault": isDefault, "servingText": servingText, "servingsPerPackage": servingsPerPackage, "calories": calories, "totalFat": totalFat, "saturatedFat": saturatedFat, "monounsaturatedFat": monounsaturatedFat, "polyunsaturatedFat": polyunsaturatedFat, "transFat": transFat, "totalCarb": totalCarb, "sugars": sugars, "fiber": fiber, "protein": protein, "cholesterol": cholesterol, "sodium": sodium, "potassium": potassium, "calcium": calcium, "iron": iron, "magnesium": magnesium, "phosphorus": phosphorus, "zinc": zinc, "copper": copper, "manganese": manganese, "selenium": selenium, "vitaminARae": vitaminARae, "vitaminAIu": vitaminAIu, "retinol": retinol, "alphaCarotene": alphaCarotene, "betaCarotene": betaCarotene, "betaCryptoxanthin": betaCryptoxanthin, "lycopene": lycopene, "thiamin": thiamin, "riboflavin": riboflavin, "niacin": niacin, "pantothenicAcid": pantothenicAcid, "vitaminB6": vitaminB6, "folate": folate, "folicAcid": folicAcid, "vitaminB12": vitaminB12, "choline": choline, "vitaminC": vitaminC, "vitaminD": vitaminD, "vitaminE": vitaminE, "vitaminK": vitaminK, "water": water, "ash": ash, "caffeine": caffeine, "alcohol": alcohol, "addedSugars": addedSugars, "omega3": omega3, "omega6": omega6, "theobromine": theobromine, "luteinZeaxanthin": luteinZeaxanthin, "serving": serving.flatMap { (value: Serving) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -1942,7 +1942,7 @@ public enum GraphQLInterface {
                     }
 
                     public init(grams: Double? = nil, amount: Double? = nil, details: String? = nil, unit: Unit? = nil) {
-                      self.init(snapshot: ["__typename": "ServingNode", "grams": grams, "amount": amount, "details": details, "unit": unit.flatMap { $0.snapshot }])
+                      self.init(snapshot: ["__typename": "ServingNode", "grams": grams, "amount": amount, "details": details, "unit": unit.flatMap { (value: Unit) -> Snapshot in value.snapshot }])
                     }
 
                     public var __typename: String {
@@ -2180,7 +2180,7 @@ public enum GraphQLInterface {
       }
 
       public init(createOrUpdateMeal: CreateOrUpdateMeal? = nil) {
-        self.init(snapshot: ["__typename": "Mutation", "createOrUpdateMeal": createOrUpdateMeal.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Mutation", "createOrUpdateMeal": createOrUpdateMeal.flatMap { (value: CreateOrUpdateMeal) -> Snapshot in value.snapshot }])
       }
 
       public var createOrUpdateMeal: CreateOrUpdateMeal? {
@@ -2211,11 +2211,11 @@ public enum GraphQLInterface {
         }
 
         public static func makeErrorsType(errors: [AsErrorsType.Error?]? = nil) -> CreateOrUpdateMeal {
-          return CreateOrUpdateMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          return CreateOrUpdateMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [AsErrorsType.Error?]) -> [Snapshot?] in value.map { (value: AsErrorsType.Error?) -> Snapshot? in value.flatMap { (value: AsErrorsType.Error) -> Snapshot in value.snapshot } } }])
         }
 
         public static func makeMealNode(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: AsMealNode.Entry? = nil, images: AsMealNode.Image? = nil) -> CreateOrUpdateMeal {
-          return CreateOrUpdateMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+          return CreateOrUpdateMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: AsMealNode.Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: AsMealNode.Image) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -2254,7 +2254,7 @@ public enum GraphQLInterface {
           }
 
           public init(errors: [Error?]? = nil) {
-            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -2268,10 +2268,10 @@ public enum GraphQLInterface {
 
           public var errors: [Error?]? {
             get {
-              return (snapshot["errors"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Error(snapshot: $0) } } }
+              return (snapshot["errors"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Error?] in value.map { (value: Snapshot?) -> Error? in value.flatMap { (value: Snapshot) -> Error in Error(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "errors")
+              snapshot.updateValue(newValue.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }, forKey: "errors")
             }
           }
 
@@ -2380,7 +2380,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: Entry? = nil, images: Image? = nil) {
-            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: Image) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -2511,7 +2511,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -2525,10 +2525,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -2547,7 +2547,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -2589,7 +2589,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -2690,7 +2690,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -2994,7 +2994,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -3008,10 +3008,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -3030,7 +3030,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -3157,7 +3157,7 @@ public enum GraphQLInterface {
       }
 
       public init(deleteMeal: DeleteMeal? = nil) {
-        self.init(snapshot: ["__typename": "Mutation", "deleteMeal": deleteMeal.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Mutation", "deleteMeal": deleteMeal.flatMap { (value: DeleteMeal) -> Snapshot in value.snapshot }])
       }
 
       public var deleteMeal: DeleteMeal? {
@@ -3244,7 +3244,7 @@ public enum GraphQLInterface {
       }
 
       public init(allMeals: AllMeal? = nil) {
-        self.init(snapshot: ["__typename": "Query", "allMeals": allMeals.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Query", "allMeals": allMeals.flatMap { (value: AllMeal) -> Snapshot in value.snapshot }])
       }
 
       public var allMeals: AllMeal? {
@@ -3271,7 +3271,7 @@ public enum GraphQLInterface {
         }
 
         public init(edges: [Edge?]) {
-          self.init(snapshot: ["__typename": "MealNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+          self.init(snapshot: ["__typename": "MealNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
         }
 
         public var __typename: String {
@@ -3285,10 +3285,10 @@ public enum GraphQLInterface {
 
         public var edges: [Edge?] {
           get {
-            return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+            return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
           }
           set {
-            snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+            snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
           }
         }
 
@@ -3307,7 +3307,7 @@ public enum GraphQLInterface {
           }
 
           public init(node: Node? = nil) {
-            self.init(snapshot: ["__typename": "MealNodeEdge", "node": node.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "MealNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -3353,7 +3353,7 @@ public enum GraphQLInterface {
             }
 
             public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: Entry? = nil, images: Image? = nil) {
-              self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+              self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: Image) -> Snapshot in value.snapshot }])
             }
 
             public var __typename: String {
@@ -3484,7 +3484,7 @@ public enum GraphQLInterface {
               }
 
               public init(edges: [Edge?]) {
-                self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+                self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
               }
 
               public var __typename: String {
@@ -3498,10 +3498,10 @@ public enum GraphQLInterface {
 
               public var edges: [Edge?] {
                 get {
-                  return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                  return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
                 }
                 set {
-                  snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                  snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
                 }
               }
 
@@ -3520,7 +3520,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(node: Node? = nil) {
-                  self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -3562,7 +3562,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-                    self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -3663,7 +3663,7 @@ public enum GraphQLInterface {
                     }
 
                     public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                      self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                      self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                     }
 
                     public var __typename: String {
@@ -3967,7 +3967,7 @@ public enum GraphQLInterface {
               }
 
               public init(edges: [Edge?]) {
-                self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+                self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
               }
 
               public var __typename: String {
@@ -3981,10 +3981,10 @@ public enum GraphQLInterface {
 
               public var edges: [Edge?] {
                 get {
-                  return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                  return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
                 }
                 set {
-                  snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                  snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
                 }
               }
 
@@ -4003,7 +4003,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(node: Node? = nil) {
-                  self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -4133,7 +4133,7 @@ public enum GraphQLInterface {
       }
 
       public init(meal: Meal? = nil) {
-        self.init(snapshot: ["__typename": "Query", "meal": meal.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Query", "meal": meal.flatMap { (value: Meal) -> Snapshot in value.snapshot }])
       }
 
       /// The ID of the object
@@ -4170,7 +4170,7 @@ public enum GraphQLInterface {
         }
 
         public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: Entry? = nil, images: Image? = nil) {
-          self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+          self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: Image) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -4301,7 +4301,7 @@ public enum GraphQLInterface {
           }
 
           public init(edges: [Edge?]) {
-            self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+            self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
           }
 
           public var __typename: String {
@@ -4315,10 +4315,10 @@ public enum GraphQLInterface {
 
           public var edges: [Edge?] {
             get {
-              return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+              return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
             }
             set {
-              snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+              snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
             }
           }
 
@@ -4337,7 +4337,7 @@ public enum GraphQLInterface {
             }
 
             public init(node: Node? = nil) {
-              self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { $0.snapshot }])
+              self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
             }
 
             public var __typename: String {
@@ -4379,7 +4379,7 @@ public enum GraphQLInterface {
               }
 
               public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-                self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -4480,7 +4480,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                  self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -4784,7 +4784,7 @@ public enum GraphQLInterface {
           }
 
           public init(edges: [Edge?]) {
-            self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+            self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
           }
 
           public var __typename: String {
@@ -4798,10 +4798,10 @@ public enum GraphQLInterface {
 
           public var edges: [Edge?] {
             get {
-              return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+              return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
             }
             set {
-              snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+              snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
             }
           }
 
@@ -4820,7 +4820,7 @@ public enum GraphQLInterface {
             }
 
             public init(node: Node? = nil) {
-              self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { $0.snapshot }])
+              self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
             }
 
             public var __typename: String {
@@ -4958,7 +4958,7 @@ public enum GraphQLInterface {
       }
 
       public init(addOrUpdateEntryToMeal: AddOrUpdateEntryToMeal? = nil) {
-        self.init(snapshot: ["__typename": "Mutation", "addOrUpdateEntryToMeal": addOrUpdateEntryToMeal.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Mutation", "addOrUpdateEntryToMeal": addOrUpdateEntryToMeal.flatMap { (value: AddOrUpdateEntryToMeal) -> Snapshot in value.snapshot }])
       }
 
       public var addOrUpdateEntryToMeal: AddOrUpdateEntryToMeal? {
@@ -4989,11 +4989,11 @@ public enum GraphQLInterface {
         }
 
         public static func makeErrorsType(errors: [AsErrorsType.Error?]? = nil) -> AddOrUpdateEntryToMeal {
-          return AddOrUpdateEntryToMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          return AddOrUpdateEntryToMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [AsErrorsType.Error?]) -> [Snapshot?] in value.map { (value: AsErrorsType.Error?) -> Snapshot? in value.flatMap { (value: AsErrorsType.Error) -> Snapshot in value.snapshot } } }])
         }
 
         public static func makeMealNode(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: AsMealNode.Entry? = nil, images: AsMealNode.Image? = nil) -> AddOrUpdateEntryToMeal {
-          return AddOrUpdateEntryToMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+          return AddOrUpdateEntryToMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: AsMealNode.Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: AsMealNode.Image) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -5032,7 +5032,7 @@ public enum GraphQLInterface {
           }
 
           public init(errors: [Error?]? = nil) {
-            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -5046,10 +5046,10 @@ public enum GraphQLInterface {
 
           public var errors: [Error?]? {
             get {
-              return (snapshot["errors"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Error(snapshot: $0) } } }
+              return (snapshot["errors"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Error?] in value.map { (value: Snapshot?) -> Error? in value.flatMap { (value: Snapshot) -> Error in Error(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "errors")
+              snapshot.updateValue(newValue.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }, forKey: "errors")
             }
           }
 
@@ -5158,7 +5158,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: Entry? = nil, images: Image? = nil) {
-            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: Image) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -5289,7 +5289,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -5303,10 +5303,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -5325,7 +5325,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -5367,7 +5367,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -5468,7 +5468,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -5772,7 +5772,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -5786,10 +5786,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -5808,7 +5808,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -5939,7 +5939,7 @@ public enum GraphQLInterface {
       }
 
       public init(deleteEntryFromMeal: DeleteEntryFromMeal? = nil) {
-        self.init(snapshot: ["__typename": "Mutation", "deleteEntryFromMeal": deleteEntryFromMeal.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Mutation", "deleteEntryFromMeal": deleteEntryFromMeal.flatMap { (value: DeleteEntryFromMeal) -> Snapshot in value.snapshot }])
       }
 
       public var deleteEntryFromMeal: DeleteEntryFromMeal? {
@@ -5970,11 +5970,11 @@ public enum GraphQLInterface {
         }
 
         public static func makeErrorsType(errors: [AsErrorsType.Error?]? = nil) -> DeleteEntryFromMeal {
-          return DeleteEntryFromMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          return DeleteEntryFromMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [AsErrorsType.Error?]) -> [Snapshot?] in value.map { (value: AsErrorsType.Error?) -> Snapshot? in value.flatMap { (value: AsErrorsType.Error) -> Snapshot in value.snapshot } } }])
         }
 
         public static func makeMealNode(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: AsMealNode.Entry? = nil, images: AsMealNode.Image? = nil) -> DeleteEntryFromMeal {
-          return DeleteEntryFromMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+          return DeleteEntryFromMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: AsMealNode.Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: AsMealNode.Image) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -6013,7 +6013,7 @@ public enum GraphQLInterface {
           }
 
           public init(errors: [Error?]? = nil) {
-            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -6027,10 +6027,10 @@ public enum GraphQLInterface {
 
           public var errors: [Error?]? {
             get {
-              return (snapshot["errors"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Error(snapshot: $0) } } }
+              return (snapshot["errors"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Error?] in value.map { (value: Snapshot?) -> Error? in value.flatMap { (value: Snapshot) -> Error in Error(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "errors")
+              snapshot.updateValue(newValue.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }, forKey: "errors")
             }
           }
 
@@ -6139,7 +6139,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: Entry? = nil, images: Image? = nil) {
-            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: Image) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -6270,7 +6270,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -6284,10 +6284,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -6306,7 +6306,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -6348,7 +6348,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -6449,7 +6449,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -6753,7 +6753,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -6767,10 +6767,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -6789,7 +6789,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -6920,7 +6920,7 @@ public enum GraphQLInterface {
       }
 
       public init(addImageToMeal: AddImageToMeal? = nil) {
-        self.init(snapshot: ["__typename": "Mutation", "addImageToMeal": addImageToMeal.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Mutation", "addImageToMeal": addImageToMeal.flatMap { (value: AddImageToMeal) -> Snapshot in value.snapshot }])
       }
 
       public var addImageToMeal: AddImageToMeal? {
@@ -6951,11 +6951,11 @@ public enum GraphQLInterface {
         }
 
         public static func makeErrorsType(errors: [AsErrorsType.Error?]? = nil) -> AddImageToMeal {
-          return AddImageToMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          return AddImageToMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [AsErrorsType.Error?]) -> [Snapshot?] in value.map { (value: AsErrorsType.Error?) -> Snapshot? in value.flatMap { (value: AsErrorsType.Error) -> Snapshot in value.snapshot } } }])
         }
 
         public static func makeMealNode(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: AsMealNode.Entry? = nil, images: AsMealNode.Image? = nil) -> AddImageToMeal {
-          return AddImageToMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+          return AddImageToMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: AsMealNode.Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: AsMealNode.Image) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -6994,7 +6994,7 @@ public enum GraphQLInterface {
           }
 
           public init(errors: [Error?]? = nil) {
-            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -7008,10 +7008,10 @@ public enum GraphQLInterface {
 
           public var errors: [Error?]? {
             get {
-              return (snapshot["errors"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Error(snapshot: $0) } } }
+              return (snapshot["errors"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Error?] in value.map { (value: Snapshot?) -> Error? in value.flatMap { (value: Snapshot) -> Error in Error(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "errors")
+              snapshot.updateValue(newValue.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }, forKey: "errors")
             }
           }
 
@@ -7120,7 +7120,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: Entry? = nil, images: Image? = nil) {
-            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: Image) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -7251,7 +7251,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -7265,10 +7265,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -7287,7 +7287,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -7329,7 +7329,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -7430,7 +7430,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -7734,7 +7734,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -7748,10 +7748,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -7770,7 +7770,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -7901,7 +7901,7 @@ public enum GraphQLInterface {
       }
 
       public init(deleteImageFromMeal: DeleteImageFromMeal? = nil) {
-        self.init(snapshot: ["__typename": "Mutation", "deleteImageFromMeal": deleteImageFromMeal.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Mutation", "deleteImageFromMeal": deleteImageFromMeal.flatMap { (value: DeleteImageFromMeal) -> Snapshot in value.snapshot }])
       }
 
       public var deleteImageFromMeal: DeleteImageFromMeal? {
@@ -7932,11 +7932,11 @@ public enum GraphQLInterface {
         }
 
         public static func makeErrorsType(errors: [AsErrorsType.Error?]? = nil) -> DeleteImageFromMeal {
-          return DeleteImageFromMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          return DeleteImageFromMeal(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [AsErrorsType.Error?]) -> [Snapshot?] in value.map { (value: AsErrorsType.Error?) -> Snapshot? in value.flatMap { (value: AsErrorsType.Error) -> Snapshot in value.snapshot } } }])
         }
 
         public static func makeMealNode(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: AsMealNode.Entry? = nil, images: AsMealNode.Image? = nil) -> DeleteImageFromMeal {
-          return DeleteImageFromMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+          return DeleteImageFromMeal(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: AsMealNode.Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: AsMealNode.Image) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -7975,7 +7975,7 @@ public enum GraphQLInterface {
           }
 
           public init(errors: [Error?]? = nil) {
-            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -7989,10 +7989,10 @@ public enum GraphQLInterface {
 
           public var errors: [Error?]? {
             get {
-              return (snapshot["errors"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Error(snapshot: $0) } } }
+              return (snapshot["errors"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Error?] in value.map { (value: Snapshot?) -> Error? in value.flatMap { (value: Snapshot) -> Error in Error(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "errors")
+              snapshot.updateValue(newValue.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }, forKey: "errors")
             }
           }
 
@@ -8101,7 +8101,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: Entry? = nil, images: Image? = nil) {
-            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: Image) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -8232,7 +8232,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -8246,10 +8246,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -8268,7 +8268,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -8310,7 +8310,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+                  self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
                 }
 
                 public var __typename: String {
@@ -8411,7 +8411,7 @@ public enum GraphQLInterface {
                   }
 
                   public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+                    self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
                   }
 
                   public var __typename: String {
@@ -8715,7 +8715,7 @@ public enum GraphQLInterface {
             }
 
             public init(edges: [Edge?]) {
-              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+              self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
             }
 
             public var __typename: String {
@@ -8729,10 +8729,10 @@ public enum GraphQLInterface {
 
             public var edges: [Edge?] {
               get {
-                return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+                return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
               }
               set {
-                snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+                snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
               }
             }
 
@@ -8751,7 +8751,7 @@ public enum GraphQLInterface {
               }
 
               public init(node: Node? = nil) {
-                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { $0.snapshot }])
+                self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
               }
 
               public var __typename: String {
@@ -8880,7 +8880,7 @@ public enum GraphQLInterface {
       }
 
       public init(itemsSearch: ItemsSearch? = nil) {
-        self.init(snapshot: ["__typename": "Query", "itemsSearch": itemsSearch.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Query", "itemsSearch": itemsSearch.flatMap { (value: ItemsSearch) -> Snapshot in value.snapshot }])
       }
 
       public var itemsSearch: ItemsSearch? {
@@ -8907,7 +8907,7 @@ public enum GraphQLInterface {
         }
 
         public init(items: [Item?]? = nil) {
-          self.init(snapshot: ["__typename": "ItemSearchType", "items": items.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          self.init(snapshot: ["__typename": "ItemSearchType", "items": items.flatMap { (value: [Item?]) -> [Snapshot?] in value.map { (value: Item?) -> Snapshot? in value.flatMap { (value: Item) -> Snapshot in value.snapshot } } }])
         }
 
         public var __typename: String {
@@ -8921,10 +8921,10 @@ public enum GraphQLInterface {
 
         public var items: [Item?]? {
           get {
-            return (snapshot["items"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Item(snapshot: $0) } } }
+            return (snapshot["items"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Item?] in value.map { (value: Snapshot?) -> Item? in value.flatMap { (value: Snapshot) -> Item in Item(snapshot: value) } } }
           }
           set {
-            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "items")
+            snapshot.updateValue(newValue.flatMap { (value: [Item?]) -> [Snapshot?] in value.map { (value: Item?) -> Snapshot? in value.flatMap { (value: Item) -> Snapshot in value.snapshot } } }, forKey: "items")
           }
         }
 
@@ -8950,7 +8950,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-            self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { $0.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "children": children.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -9009,19 +9009,19 @@ public enum GraphQLInterface {
 
           public var parents: [Parent?]? {
             get {
-              return (snapshot["parents"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Parent(snapshot: $0) } } }
+              return (snapshot["parents"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Parent?] in value.map { (value: Snapshot?) -> Parent? in value.flatMap { (value: Snapshot) -> Parent in Parent(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "parents")
+              snapshot.updateValue(newValue.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, forKey: "parents")
             }
           }
 
           public var children: [Child?]? {
             get {
-              return (snapshot["children"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Child(snapshot: $0) } } }
+              return (snapshot["children"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Child?] in value.map { (value: Snapshot?) -> Child? in value.flatMap { (value: Snapshot) -> Child in Child(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "children")
+              snapshot.updateValue(newValue.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }, forKey: "children")
             }
           }
 
@@ -9311,7 +9311,7 @@ public enum GraphQLInterface {
       }
 
       public init(searchAutocomplete: SearchAutocomplete? = nil) {
-        self.init(snapshot: ["__typename": "Query", "searchAutocomplete": searchAutocomplete.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Query", "searchAutocomplete": searchAutocomplete.flatMap { (value: SearchAutocomplete) -> Snapshot in value.snapshot }])
       }
 
       public var searchAutocomplete: SearchAutocomplete? {
@@ -9339,7 +9339,7 @@ public enum GraphQLInterface {
         }
 
         public init(brands: [Brand?]? = nil, items: [Item?]? = nil) {
-          self.init(snapshot: ["__typename": "FacetedAutocompleteType", "brands": brands.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "items": items.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          self.init(snapshot: ["__typename": "FacetedAutocompleteType", "brands": brands.flatMap { (value: [Brand?]) -> [Snapshot?] in value.map { (value: Brand?) -> Snapshot? in value.flatMap { (value: Brand) -> Snapshot in value.snapshot } } }, "items": items.flatMap { (value: [Item?]) -> [Snapshot?] in value.map { (value: Item?) -> Snapshot? in value.flatMap { (value: Item) -> Snapshot in value.snapshot } } }])
         }
 
         public var __typename: String {
@@ -9353,19 +9353,19 @@ public enum GraphQLInterface {
 
         public var brands: [Brand?]? {
           get {
-            return (snapshot["brands"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Brand(snapshot: $0) } } }
+            return (snapshot["brands"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Brand?] in value.map { (value: Snapshot?) -> Brand? in value.flatMap { (value: Snapshot) -> Brand in Brand(snapshot: value) } } }
           }
           set {
-            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "brands")
+            snapshot.updateValue(newValue.flatMap { (value: [Brand?]) -> [Snapshot?] in value.map { (value: Brand?) -> Snapshot? in value.flatMap { (value: Brand) -> Snapshot in value.snapshot } } }, forKey: "brands")
           }
         }
 
         public var items: [Item?]? {
           get {
-            return (snapshot["items"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Item(snapshot: $0) } } }
+            return (snapshot["items"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Item?] in value.map { (value: Snapshot?) -> Item? in value.flatMap { (value: Snapshot) -> Item in Item(snapshot: value) } } }
           }
           set {
-            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "items")
+            snapshot.updateValue(newValue.flatMap { (value: [Item?]) -> [Snapshot?] in value.map { (value: Item?) -> Snapshot? in value.flatMap { (value: Item) -> Snapshot in value.snapshot } } }, forKey: "items")
           }
         }
 
@@ -9544,7 +9544,7 @@ public enum GraphQLInterface {
       }
 
       public init(facetedSearch: FacetedSearch? = nil) {
-        self.init(snapshot: ["__typename": "Query", "facetedSearch": facetedSearch.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Query", "facetedSearch": facetedSearch.flatMap { (value: FacetedSearch) -> Snapshot in value.snapshot }])
       }
 
       public var facetedSearch: FacetedSearch? {
@@ -9573,7 +9573,7 @@ public enum GraphQLInterface {
         }
 
         public init(items: [Item?]? = nil, brands: [Brand?]? = nil, recent: Recent? = nil) {
-          self.init(snapshot: ["__typename": "FacetedSearchType", "items": items.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "brands": brands.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "recent": recent.flatMap { $0.snapshot }])
+          self.init(snapshot: ["__typename": "FacetedSearchType", "items": items.flatMap { (value: [Item?]) -> [Snapshot?] in value.map { (value: Item?) -> Snapshot? in value.flatMap { (value: Item) -> Snapshot in value.snapshot } } }, "brands": brands.flatMap { (value: [Brand?]) -> [Snapshot?] in value.map { (value: Brand?) -> Snapshot? in value.flatMap { (value: Brand) -> Snapshot in value.snapshot } } }, "recent": recent.flatMap { (value: Recent) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -9587,19 +9587,19 @@ public enum GraphQLInterface {
 
         public var items: [Item?]? {
           get {
-            return (snapshot["items"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Item(snapshot: $0) } } }
+            return (snapshot["items"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Item?] in value.map { (value: Snapshot?) -> Item? in value.flatMap { (value: Snapshot) -> Item in Item(snapshot: value) } } }
           }
           set {
-            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "items")
+            snapshot.updateValue(newValue.flatMap { (value: [Item?]) -> [Snapshot?] in value.map { (value: Item?) -> Snapshot? in value.flatMap { (value: Item) -> Snapshot in value.snapshot } } }, forKey: "items")
           }
         }
 
         public var brands: [Brand?]? {
           get {
-            return (snapshot["brands"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Brand(snapshot: $0) } } }
+            return (snapshot["brands"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Brand?] in value.map { (value: Snapshot?) -> Brand? in value.flatMap { (value: Snapshot) -> Brand in Brand(snapshot: value) } } }
           }
           set {
-            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "brands")
+            snapshot.updateValue(newValue.flatMap { (value: [Brand?]) -> [Snapshot?] in value.map { (value: Brand?) -> Snapshot? in value.flatMap { (value: Brand) -> Snapshot in value.snapshot } } }, forKey: "brands")
           }
         }
 
@@ -9634,7 +9634,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-            self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { $0.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "children": children.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -9693,19 +9693,19 @@ public enum GraphQLInterface {
 
           public var parents: [Parent?]? {
             get {
-              return (snapshot["parents"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Parent(snapshot: $0) } } }
+              return (snapshot["parents"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Parent?] in value.map { (value: Snapshot?) -> Parent? in value.flatMap { (value: Snapshot) -> Parent in Parent(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "parents")
+              snapshot.updateValue(newValue.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, forKey: "parents")
             }
           }
 
           public var children: [Child?]? {
             get {
-              return (snapshot["children"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Child(snapshot: $0) } } }
+              return (snapshot["children"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Child?] in value.map { (value: Snapshot?) -> Child? in value.flatMap { (value: Snapshot) -> Child in Child(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "children")
+              snapshot.updateValue(newValue.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }, forKey: "children")
             }
           }
 
@@ -10067,7 +10067,7 @@ public enum GraphQLInterface {
           }
 
           public init(entries: [Entry?]? = nil) {
-            self.init(snapshot: ["__typename": "RecentSearchType", "entries": entries.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "RecentSearchType", "entries": entries.flatMap { (value: [Entry?]) -> [Snapshot?] in value.map { (value: Entry?) -> Snapshot? in value.flatMap { (value: Entry) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -10081,10 +10081,10 @@ public enum GraphQLInterface {
 
           public var entries: [Entry?]? {
             get {
-              return (snapshot["entries"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Entry(snapshot: $0) } } }
+              return (snapshot["entries"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Entry?] in value.map { (value: Snapshot?) -> Entry? in value.flatMap { (value: Snapshot) -> Entry in Entry(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "entries")
+              snapshot.updateValue(newValue.flatMap { (value: [Entry?]) -> [Snapshot?] in value.map { (value: Entry?) -> Snapshot? in value.flatMap { (value: Entry) -> Snapshot in value.snapshot } } }, forKey: "entries")
             }
           }
 
@@ -10104,7 +10104,7 @@ public enum GraphQLInterface {
             }
 
             public init(lastEatenAt: String? = nil, entry: Entry? = nil) {
-              self.init(snapshot: ["__typename": "RecentEntrySearchType", "lastEatenAt": lastEatenAt, "entry": entry.flatMap { $0.snapshot }])
+              self.init(snapshot: ["__typename": "RecentEntrySearchType", "lastEatenAt": lastEatenAt, "entry": entry.flatMap { (value: Entry) -> Snapshot in value.snapshot }])
             }
 
             public var __typename: String {
@@ -10154,7 +10154,7 @@ public enum GraphQLInterface {
               }
 
               public init(id: GraphQLID? = nil, servingAmount: Double? = nil, item: Item? = nil, image: GraphQLID? = nil, nutritionFact: GraphQLID? = nil) {
-                self.init(snapshot: ["__typename": "EntrySummarySearchType", "id": id, "servingAmount": servingAmount, "item": item.flatMap { $0.snapshot }, "image": image, "nutritionFact": nutritionFact])
+                self.init(snapshot: ["__typename": "EntrySummarySearchType", "id": id, "servingAmount": servingAmount, "item": item.flatMap { (value: Item) -> Snapshot in value.snapshot }, "image": image, "nutritionFact": nutritionFact])
               }
 
               public var __typename: String {
@@ -10255,7 +10255,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-                  self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { $0.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "children": children.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+                  self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
                 }
 
                 public var __typename: String {
@@ -10314,19 +10314,19 @@ public enum GraphQLInterface {
 
                 public var parents: [Parent?]? {
                   get {
-                    return (snapshot["parents"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Parent(snapshot: $0) } } }
+                    return (snapshot["parents"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Parent?] in value.map { (value: Snapshot?) -> Parent? in value.flatMap { (value: Snapshot) -> Parent in Parent(snapshot: value) } } }
                   }
                   set {
-                    snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "parents")
+                    snapshot.updateValue(newValue.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, forKey: "parents")
                   }
                 }
 
                 public var children: [Child?]? {
                   get {
-                    return (snapshot["children"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Child(snapshot: $0) } } }
+                    return (snapshot["children"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Child?] in value.map { (value: Snapshot?) -> Child? in value.flatMap { (value: Snapshot) -> Child in Child(snapshot: value) } } }
                   }
                   set {
-                    snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "children")
+                    snapshot.updateValue(newValue.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }, forKey: "children")
                   }
                 }
 
@@ -10619,7 +10619,7 @@ public enum GraphQLInterface {
       }
 
       public init(mealSuggestions: MealSuggestion? = nil) {
-        self.init(snapshot: ["__typename": "Query", "mealSuggestions": mealSuggestions.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "Query", "mealSuggestions": mealSuggestions.flatMap { (value: MealSuggestion) -> Snapshot in value.snapshot }])
       }
 
       public var mealSuggestions: MealSuggestion? {
@@ -10650,11 +10650,11 @@ public enum GraphQLInterface {
         }
 
         public static func makeErrorsType(errors: [AsErrorsType.Error?]? = nil) -> MealSuggestion {
-          return MealSuggestion(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          return MealSuggestion(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [AsErrorsType.Error?]) -> [Snapshot?] in value.map { (value: AsErrorsType.Error?) -> Snapshot? in value.flatMap { (value: AsErrorsType.Error) -> Snapshot in value.snapshot } } }])
         }
 
         public static func makeMealSuggestionsType(meals: [AsMealSuggestionsType.Meal?]? = nil) -> MealSuggestion {
-          return MealSuggestion(snapshot: ["__typename": "MealSuggestionsType", "meals": meals.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          return MealSuggestion(snapshot: ["__typename": "MealSuggestionsType", "meals": meals.flatMap { (value: [AsMealSuggestionsType.Meal?]) -> [Snapshot?] in value.map { (value: AsMealSuggestionsType.Meal?) -> Snapshot? in value.flatMap { (value: AsMealSuggestionsType.Meal) -> Snapshot in value.snapshot } } }])
         }
 
         public var __typename: String {
@@ -10693,7 +10693,7 @@ public enum GraphQLInterface {
           }
 
           public init(errors: [Error?]? = nil) {
-            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -10707,10 +10707,10 @@ public enum GraphQLInterface {
 
           public var errors: [Error?]? {
             get {
-              return (snapshot["errors"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Error(snapshot: $0) } } }
+              return (snapshot["errors"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Error?] in value.map { (value: Snapshot?) -> Error? in value.flatMap { (value: Snapshot) -> Error in Error(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "errors")
+              snapshot.updateValue(newValue.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }, forKey: "errors")
             }
           }
 
@@ -10810,7 +10810,7 @@ public enum GraphQLInterface {
           }
 
           public init(meals: [Meal?]? = nil) {
-            self.init(snapshot: ["__typename": "MealSuggestionsType", "meals": meals.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+            self.init(snapshot: ["__typename": "MealSuggestionsType", "meals": meals.flatMap { (value: [Meal?]) -> [Snapshot?] in value.map { (value: Meal?) -> Snapshot? in value.flatMap { (value: Meal) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -10824,10 +10824,10 @@ public enum GraphQLInterface {
 
           public var meals: [Meal?]? {
             get {
-              return (snapshot["meals"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Meal(snapshot: $0) } } }
+              return (snapshot["meals"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Meal?] in value.map { (value: Snapshot?) -> Meal? in value.flatMap { (value: Snapshot) -> Meal in Meal(snapshot: value) } } }
             }
             set {
-              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "meals")
+              snapshot.updateValue(newValue.flatMap { (value: [Meal?]) -> [Snapshot?] in value.map { (value: Meal?) -> Snapshot? in value.flatMap { (value: Meal) -> Snapshot in value.snapshot } } }, forKey: "meals")
             }
           }
 
@@ -10853,7 +10853,7 @@ public enum GraphQLInterface {
             }
 
             public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, entries: [Entry?]? = nil, images: [Image?]? = nil) {
-              self.init(snapshot: ["__typename": "MealSearchType", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "entries": entries.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "images": images.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+              self.init(snapshot: ["__typename": "MealSearchType", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "entries": entries.flatMap { (value: [Entry?]) -> [Snapshot?] in value.map { (value: Entry?) -> Snapshot? in value.flatMap { (value: Entry) -> Snapshot in value.snapshot } } }, "images": images.flatMap { (value: [Image?]) -> [Snapshot?] in value.map { (value: Image?) -> Snapshot? in value.flatMap { (value: Image) -> Snapshot in value.snapshot } } }])
             }
 
             public var __typename: String {
@@ -10912,19 +10912,19 @@ public enum GraphQLInterface {
 
             public var entries: [Entry?]? {
               get {
-                return (snapshot["entries"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Entry(snapshot: $0) } } }
+                return (snapshot["entries"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Entry?] in value.map { (value: Snapshot?) -> Entry? in value.flatMap { (value: Snapshot) -> Entry in Entry(snapshot: value) } } }
               }
               set {
-                snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "entries")
+                snapshot.updateValue(newValue.flatMap { (value: [Entry?]) -> [Snapshot?] in value.map { (value: Entry?) -> Snapshot? in value.flatMap { (value: Entry) -> Snapshot in value.snapshot } } }, forKey: "entries")
               }
             }
 
             public var images: [Image?]? {
               get {
-                return (snapshot["images"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Image(snapshot: $0) } } }
+                return (snapshot["images"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Image?] in value.map { (value: Snapshot?) -> Image? in value.flatMap { (value: Snapshot) -> Image in Image(snapshot: value) } } }
               }
               set {
-                snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "images")
+                snapshot.updateValue(newValue.flatMap { (value: [Image?]) -> [Snapshot?] in value.map { (value: Image?) -> Snapshot? in value.flatMap { (value: Image) -> Snapshot in value.snapshot } } }, forKey: "images")
               }
             }
 
@@ -10970,7 +10970,7 @@ public enum GraphQLInterface {
               }
 
               public init(id: GraphQLID? = nil, servingAmount: Double? = nil, item: Item? = nil, image: GraphQLID? = nil, nutritionFact: GraphQLID? = nil) {
-                self.init(snapshot: ["__typename": "EntrySummarySearchType", "id": id, "servingAmount": servingAmount, "item": item.flatMap { $0.snapshot }, "image": image, "nutritionFact": nutritionFact])
+                self.init(snapshot: ["__typename": "EntrySummarySearchType", "id": id, "servingAmount": servingAmount, "item": item.flatMap { (value: Item) -> Snapshot in value.snapshot }, "image": image, "nutritionFact": nutritionFact])
               }
 
               public var __typename: String {
@@ -11071,7 +11071,7 @@ public enum GraphQLInterface {
                 }
 
                 public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-                  self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { $0.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "children": children.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+                  self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
                 }
 
                 public var __typename: String {
@@ -11130,19 +11130,19 @@ public enum GraphQLInterface {
 
                 public var parents: [Parent?]? {
                   get {
-                    return (snapshot["parents"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Parent(snapshot: $0) } } }
+                    return (snapshot["parents"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Parent?] in value.map { (value: Snapshot?) -> Parent? in value.flatMap { (value: Snapshot) -> Parent in Parent(snapshot: value) } } }
                   }
                   set {
-                    snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "parents")
+                    snapshot.updateValue(newValue.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, forKey: "parents")
                   }
                 }
 
                 public var children: [Child?]? {
                   get {
-                    return (snapshot["children"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Child(snapshot: $0) } } }
+                    return (snapshot["children"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Child?] in value.map { (value: Snapshot?) -> Child? in value.flatMap { (value: Snapshot) -> Child in Child(snapshot: value) } } }
                   }
                   set {
-                    snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "children")
+                    snapshot.updateValue(newValue.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }, forKey: "children")
                   }
                 }
 
@@ -11503,7 +11503,7 @@ public enum GraphQLInterface {
     }
 
     public init(errors: [Error?]? = nil) {
-      self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+      self.init(snapshot: ["__typename": "ErrorsType", "errors": errors.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }])
     }
 
     public var __typename: String {
@@ -11517,10 +11517,10 @@ public enum GraphQLInterface {
 
     public var errors: [Error?]? {
       get {
-        return (snapshot["errors"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Error(snapshot: $0) } } }
+        return (snapshot["errors"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Error?] in value.map { (value: Snapshot?) -> Error? in value.flatMap { (value: Snapshot) -> Error in Error(snapshot: value) } } }
       }
       set {
-        snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "errors")
+        snapshot.updateValue(newValue.flatMap { (value: [Error?]) -> [Snapshot?] in value.map { (value: Error?) -> Snapshot? in value.flatMap { (value: Error) -> Snapshot in value.snapshot } } }, forKey: "errors")
       }
     }
 
@@ -11796,7 +11796,7 @@ public enum GraphQLInterface {
     }
 
     public init(grams: Double? = nil, amount: Double? = nil, details: String? = nil, unit: Unit? = nil) {
-      self.init(snapshot: ["__typename": "ServingNode", "grams": grams, "amount": amount, "details": details, "unit": unit.flatMap { $0.snapshot }])
+      self.init(snapshot: ["__typename": "ServingNode", "grams": grams, "amount": amount, "details": details, "unit": unit.flatMap { (value: Unit) -> Snapshot in value.snapshot }])
     }
 
     public var __typename: String {
@@ -12038,7 +12038,7 @@ public enum GraphQLInterface {
     }
 
     public init(id: GraphQLID, isDefault: Bool, servingText: String? = nil, servingsPerPackage: Double? = nil, calories: Double? = nil, totalFat: Double? = nil, saturatedFat: Double? = nil, monounsaturatedFat: Double? = nil, polyunsaturatedFat: Double? = nil, transFat: Double? = nil, totalCarb: Double? = nil, sugars: Double? = nil, fiber: Double? = nil, protein: Double? = nil, cholesterol: Double? = nil, sodium: Double? = nil, potassium: Double? = nil, calcium: Double? = nil, iron: Double? = nil, magnesium: Double? = nil, phosphorus: Double? = nil, zinc: Double? = nil, copper: Double? = nil, manganese: Double? = nil, selenium: Double? = nil, vitaminARae: Double? = nil, vitaminAIu: Double? = nil, retinol: Double? = nil, alphaCarotene: Double? = nil, betaCarotene: Double? = nil, betaCryptoxanthin: Double? = nil, lycopene: Double? = nil, thiamin: Double? = nil, riboflavin: Double? = nil, niacin: Double? = nil, pantothenicAcid: Double? = nil, vitaminB6: Double? = nil, folate: Double? = nil, folicAcid: Double? = nil, vitaminB12: Double? = nil, choline: Double? = nil, vitaminC: Double? = nil, vitaminD: Double? = nil, vitaminE: Double? = nil, vitaminK: Double? = nil, water: Double? = nil, ash: Double? = nil, caffeine: Double? = nil, alcohol: Double? = nil, addedSugars: Double? = nil, omega3: Double? = nil, omega6: Double? = nil, theobromine: Double? = nil, luteinZeaxanthin: Double? = nil, serving: Serving? = nil) {
-      self.init(snapshot: ["__typename": "NutritionNode", "id": id, "isDefault": isDefault, "servingText": servingText, "servingsPerPackage": servingsPerPackage, "calories": calories, "totalFat": totalFat, "saturatedFat": saturatedFat, "monounsaturatedFat": monounsaturatedFat, "polyunsaturatedFat": polyunsaturatedFat, "transFat": transFat, "totalCarb": totalCarb, "sugars": sugars, "fiber": fiber, "protein": protein, "cholesterol": cholesterol, "sodium": sodium, "potassium": potassium, "calcium": calcium, "iron": iron, "magnesium": magnesium, "phosphorus": phosphorus, "zinc": zinc, "copper": copper, "manganese": manganese, "selenium": selenium, "vitaminARae": vitaminARae, "vitaminAIu": vitaminAIu, "retinol": retinol, "alphaCarotene": alphaCarotene, "betaCarotene": betaCarotene, "betaCryptoxanthin": betaCryptoxanthin, "lycopene": lycopene, "thiamin": thiamin, "riboflavin": riboflavin, "niacin": niacin, "pantothenicAcid": pantothenicAcid, "vitaminB6": vitaminB6, "folate": folate, "folicAcid": folicAcid, "vitaminB12": vitaminB12, "choline": choline, "vitaminC": vitaminC, "vitaminD": vitaminD, "vitaminE": vitaminE, "vitaminK": vitaminK, "water": water, "ash": ash, "caffeine": caffeine, "alcohol": alcohol, "addedSugars": addedSugars, "omega3": omega3, "omega6": omega6, "theobromine": theobromine, "luteinZeaxanthin": luteinZeaxanthin, "serving": serving.flatMap { $0.snapshot }])
+      self.init(snapshot: ["__typename": "NutritionNode", "id": id, "isDefault": isDefault, "servingText": servingText, "servingsPerPackage": servingsPerPackage, "calories": calories, "totalFat": totalFat, "saturatedFat": saturatedFat, "monounsaturatedFat": monounsaturatedFat, "polyunsaturatedFat": polyunsaturatedFat, "transFat": transFat, "totalCarb": totalCarb, "sugars": sugars, "fiber": fiber, "protein": protein, "cholesterol": cholesterol, "sodium": sodium, "potassium": potassium, "calcium": calcium, "iron": iron, "magnesium": magnesium, "phosphorus": phosphorus, "zinc": zinc, "copper": copper, "manganese": manganese, "selenium": selenium, "vitaminARae": vitaminARae, "vitaminAIu": vitaminAIu, "retinol": retinol, "alphaCarotene": alphaCarotene, "betaCarotene": betaCarotene, "betaCryptoxanthin": betaCryptoxanthin, "lycopene": lycopene, "thiamin": thiamin, "riboflavin": riboflavin, "niacin": niacin, "pantothenicAcid": pantothenicAcid, "vitaminB6": vitaminB6, "folate": folate, "folicAcid": folicAcid, "vitaminB12": vitaminB12, "choline": choline, "vitaminC": vitaminC, "vitaminD": vitaminD, "vitaminE": vitaminE, "vitaminK": vitaminK, "water": water, "ash": ash, "caffeine": caffeine, "alcohol": alcohol, "addedSugars": addedSugars, "omega3": omega3, "omega6": omega6, "theobromine": theobromine, "luteinZeaxanthin": luteinZeaxanthin, "serving": serving.flatMap { (value: Serving) -> Snapshot in value.snapshot }])
     }
 
     public var __typename: String {
@@ -12617,7 +12617,7 @@ public enum GraphQLInterface {
       }
 
       public init(grams: Double? = nil, amount: Double? = nil, details: String? = nil, unit: Unit? = nil) {
-        self.init(snapshot: ["__typename": "ServingNode", "grams": grams, "amount": amount, "details": details, "unit": unit.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "ServingNode", "grams": grams, "amount": amount, "details": details, "unit": unit.flatMap { (value: Unit) -> Snapshot in value.snapshot }])
       }
 
       public var __typename: String {
@@ -12873,7 +12873,7 @@ public enum GraphQLInterface {
     }
 
     public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-      self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+      self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
     }
 
     public var __typename: String {
@@ -13030,7 +13030,7 @@ public enum GraphQLInterface {
     }
 
     public init(id: GraphQLID, name: String? = nil, details: String? = nil, brand: Brand? = nil, parents: Parent? = nil, children: Child? = nil, isGeneric: Bool? = nil, nutritionFacts: NutritionFact? = nil) {
-      self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "brand": brand.flatMap { $0.snapshot }, "parents": parents.flatMap { $0.snapshot }, "children": children.flatMap { $0.snapshot }, "isGeneric": isGeneric, "nutritionFacts": nutritionFacts.flatMap { $0.snapshot }])
+      self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "parents": parents.flatMap { (value: Parent) -> Snapshot in value.snapshot }, "children": children.flatMap { (value: Child) -> Snapshot in value.snapshot }, "isGeneric": isGeneric, "nutritionFacts": nutritionFacts.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
     }
 
     public var __typename: String {
@@ -13203,7 +13203,7 @@ public enum GraphQLInterface {
       }
 
       public init(edges: [Edge?]) {
-        self.init(snapshot: ["__typename": "ItemNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+        self.init(snapshot: ["__typename": "ItemNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
       }
 
       public var __typename: String {
@@ -13217,10 +13217,10 @@ public enum GraphQLInterface {
 
       public var edges: [Edge?] {
         get {
-          return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+          return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
         }
         set {
-          snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+          snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
         }
       }
 
@@ -13239,7 +13239,7 @@ public enum GraphQLInterface {
         }
 
         public init(node: Node? = nil) {
-          self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { $0.snapshot }])
+          self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -13281,7 +13281,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-            self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -13453,7 +13453,7 @@ public enum GraphQLInterface {
       }
 
       public init(pageInfo: PageInfo, edges: [Edge?]) {
-        self.init(snapshot: ["__typename": "ItemNodeConnection", "pageInfo": pageInfo.snapshot, "edges": edges.map { $0.flatMap { $0.snapshot } }])
+        self.init(snapshot: ["__typename": "ItemNodeConnection", "pageInfo": pageInfo.snapshot, "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
       }
 
       public var __typename: String {
@@ -13476,10 +13476,10 @@ public enum GraphQLInterface {
 
       public var edges: [Edge?] {
         get {
-          return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+          return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
         }
         set {
-          snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+          snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
         }
       }
 
@@ -13569,7 +13569,7 @@ public enum GraphQLInterface {
         }
 
         public init(node: Node? = nil) {
-          self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { $0.snapshot }])
+          self.init(snapshot: ["__typename": "ItemNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -13611,7 +13611,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-            self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -13782,7 +13782,7 @@ public enum GraphQLInterface {
       }
 
       public init(edges: [Edge?]) {
-        self.init(snapshot: ["__typename": "NutritionNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+        self.init(snapshot: ["__typename": "NutritionNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
       }
 
       public var __typename: String {
@@ -13796,10 +13796,10 @@ public enum GraphQLInterface {
 
       public var edges: [Edge?] {
         get {
-          return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+          return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
         }
         set {
-          snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+          snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
         }
       }
 
@@ -13818,7 +13818,7 @@ public enum GraphQLInterface {
         }
 
         public init(node: Node? = nil) {
-          self.init(snapshot: ["__typename": "NutritionNodeEdge", "node": node.flatMap { $0.snapshot }])
+          self.init(snapshot: ["__typename": "NutritionNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -13910,7 +13910,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, isDefault: Bool, servingText: String? = nil, servingsPerPackage: Double? = nil, calories: Double? = nil, totalFat: Double? = nil, saturatedFat: Double? = nil, monounsaturatedFat: Double? = nil, polyunsaturatedFat: Double? = nil, transFat: Double? = nil, totalCarb: Double? = nil, sugars: Double? = nil, fiber: Double? = nil, protein: Double? = nil, cholesterol: Double? = nil, sodium: Double? = nil, potassium: Double? = nil, calcium: Double? = nil, iron: Double? = nil, magnesium: Double? = nil, phosphorus: Double? = nil, zinc: Double? = nil, copper: Double? = nil, manganese: Double? = nil, selenium: Double? = nil, vitaminARae: Double? = nil, vitaminAIu: Double? = nil, retinol: Double? = nil, alphaCarotene: Double? = nil, betaCarotene: Double? = nil, betaCryptoxanthin: Double? = nil, lycopene: Double? = nil, thiamin: Double? = nil, riboflavin: Double? = nil, niacin: Double? = nil, pantothenicAcid: Double? = nil, vitaminB6: Double? = nil, folate: Double? = nil, folicAcid: Double? = nil, vitaminB12: Double? = nil, choline: Double? = nil, vitaminC: Double? = nil, vitaminD: Double? = nil, vitaminE: Double? = nil, vitaminK: Double? = nil, water: Double? = nil, ash: Double? = nil, caffeine: Double? = nil, alcohol: Double? = nil, addedSugars: Double? = nil, omega3: Double? = nil, omega6: Double? = nil, theobromine: Double? = nil, luteinZeaxanthin: Double? = nil, serving: Serving? = nil) {
-            self.init(snapshot: ["__typename": "NutritionNode", "id": id, "isDefault": isDefault, "servingText": servingText, "servingsPerPackage": servingsPerPackage, "calories": calories, "totalFat": totalFat, "saturatedFat": saturatedFat, "monounsaturatedFat": monounsaturatedFat, "polyunsaturatedFat": polyunsaturatedFat, "transFat": transFat, "totalCarb": totalCarb, "sugars": sugars, "fiber": fiber, "protein": protein, "cholesterol": cholesterol, "sodium": sodium, "potassium": potassium, "calcium": calcium, "iron": iron, "magnesium": magnesium, "phosphorus": phosphorus, "zinc": zinc, "copper": copper, "manganese": manganese, "selenium": selenium, "vitaminARae": vitaminARae, "vitaminAIu": vitaminAIu, "retinol": retinol, "alphaCarotene": alphaCarotene, "betaCarotene": betaCarotene, "betaCryptoxanthin": betaCryptoxanthin, "lycopene": lycopene, "thiamin": thiamin, "riboflavin": riboflavin, "niacin": niacin, "pantothenicAcid": pantothenicAcid, "vitaminB6": vitaminB6, "folate": folate, "folicAcid": folicAcid, "vitaminB12": vitaminB12, "choline": choline, "vitaminC": vitaminC, "vitaminD": vitaminD, "vitaminE": vitaminE, "vitaminK": vitaminK, "water": water, "ash": ash, "caffeine": caffeine, "alcohol": alcohol, "addedSugars": addedSugars, "omega3": omega3, "omega6": omega6, "theobromine": theobromine, "luteinZeaxanthin": luteinZeaxanthin, "serving": serving.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "NutritionNode", "id": id, "isDefault": isDefault, "servingText": servingText, "servingsPerPackage": servingsPerPackage, "calories": calories, "totalFat": totalFat, "saturatedFat": saturatedFat, "monounsaturatedFat": monounsaturatedFat, "polyunsaturatedFat": polyunsaturatedFat, "transFat": transFat, "totalCarb": totalCarb, "sugars": sugars, "fiber": fiber, "protein": protein, "cholesterol": cholesterol, "sodium": sodium, "potassium": potassium, "calcium": calcium, "iron": iron, "magnesium": magnesium, "phosphorus": phosphorus, "zinc": zinc, "copper": copper, "manganese": manganese, "selenium": selenium, "vitaminARae": vitaminARae, "vitaminAIu": vitaminAIu, "retinol": retinol, "alphaCarotene": alphaCarotene, "betaCarotene": betaCarotene, "betaCryptoxanthin": betaCryptoxanthin, "lycopene": lycopene, "thiamin": thiamin, "riboflavin": riboflavin, "niacin": niacin, "pantothenicAcid": pantothenicAcid, "vitaminB6": vitaminB6, "folate": folate, "folicAcid": folicAcid, "vitaminB12": vitaminB12, "choline": choline, "vitaminC": vitaminC, "vitaminD": vitaminD, "vitaminE": vitaminE, "vitaminK": vitaminK, "water": water, "ash": ash, "caffeine": caffeine, "alcohol": alcohol, "addedSugars": addedSugars, "omega3": omega3, "omega6": omega6, "theobromine": theobromine, "luteinZeaxanthin": luteinZeaxanthin, "serving": serving.flatMap { (value: Serving) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -14511,7 +14511,7 @@ public enum GraphQLInterface {
             }
 
             public init(grams: Double? = nil, amount: Double? = nil, details: String? = nil, unit: Unit? = nil) {
-              self.init(snapshot: ["__typename": "ServingNode", "grams": grams, "amount": amount, "details": details, "unit": unit.flatMap { $0.snapshot }])
+              self.init(snapshot: ["__typename": "ServingNode", "grams": grams, "amount": amount, "details": details, "unit": unit.flatMap { (value: Unit) -> Snapshot in value.snapshot }])
             }
 
             public var __typename: String {
@@ -14729,7 +14729,7 @@ public enum GraphQLInterface {
     }
 
     public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-      self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+      self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
     }
 
     public var __typename: String {
@@ -14808,7 +14808,7 @@ public enum GraphQLInterface {
       }
 
       public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-        self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+        self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
       }
 
       public var __typename: String {
@@ -15121,7 +15121,7 @@ public enum GraphQLInterface {
     }
 
     public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, timeCreated: String, timeModified: String, entries: Entry? = nil, images: Image? = nil) {
-      self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { $0.snapshot }, "images": images.flatMap { $0.snapshot }])
+      self.init(snapshot: ["__typename": "MealNode", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "timeCreated": timeCreated, "timeModified": timeModified, "entries": entries.flatMap { (value: Entry) -> Snapshot in value.snapshot }, "images": images.flatMap { (value: Image) -> Snapshot in value.snapshot }])
     }
 
     public var __typename: String {
@@ -15230,7 +15230,7 @@ public enum GraphQLInterface {
       }
 
       public init(edges: [Edge?]) {
-        self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+        self.init(snapshot: ["__typename": "EntryNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
       }
 
       public var __typename: String {
@@ -15244,10 +15244,10 @@ public enum GraphQLInterface {
 
       public var edges: [Edge?] {
         get {
-          return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+          return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
         }
         set {
-          snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+          snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
         }
       }
 
@@ -15266,7 +15266,7 @@ public enum GraphQLInterface {
         }
 
         public init(node: Node? = nil) {
-          self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { $0.snapshot }])
+          self.init(snapshot: ["__typename": "EntryNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -15308,7 +15308,7 @@ public enum GraphQLInterface {
           }
 
           public init(id: GraphQLID, servingAmount: Double? = nil, item: Item, image: Image? = nil, nutritionFact: NutritionFact? = nil) {
-            self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { $0.snapshot }, "nutritionFact": nutritionFact.flatMap { $0.snapshot }])
+            self.init(snapshot: ["__typename": "EntryNode", "id": id, "servingAmount": servingAmount, "item": item.snapshot, "image": image.flatMap { (value: Image) -> Snapshot in value.snapshot }, "nutritionFact": nutritionFact.flatMap { (value: NutritionFact) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -15409,7 +15409,7 @@ public enum GraphQLInterface {
             }
 
             public init(id: GraphQLID, name: String? = nil, details: String? = nil, isGeneric: Bool? = nil, brand: Brand? = nil) {
-              self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { $0.snapshot }])
+              self.init(snapshot: ["__typename": "ItemNode", "id": id, "name": name, "details": details, "isGeneric": isGeneric, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }])
             }
 
             public var __typename: String {
@@ -15713,7 +15713,7 @@ public enum GraphQLInterface {
       }
 
       public init(edges: [Edge?]) {
-        self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { $0.flatMap { $0.snapshot } }])
+        self.init(snapshot: ["__typename": "ImageNodeConnection", "edges": edges.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }])
       }
 
       public var __typename: String {
@@ -15727,10 +15727,10 @@ public enum GraphQLInterface {
 
       public var edges: [Edge?] {
         get {
-          return (snapshot["edges"] as! [Snapshot?]).map { $0.flatMap { Edge(snapshot: $0) } }
+          return (snapshot["edges"] as! [Snapshot?]).map { (value: Snapshot?) -> Edge? in value.flatMap { (value: Snapshot) -> Edge in Edge(snapshot: value) } }
         }
         set {
-          snapshot.updateValue(newValue.map { $0.flatMap { $0.snapshot } }, forKey: "edges")
+          snapshot.updateValue(newValue.map { (value: Edge?) -> Snapshot? in value.flatMap { (value: Edge) -> Snapshot in value.snapshot } }, forKey: "edges")
         }
       }
 
@@ -15749,7 +15749,7 @@ public enum GraphQLInterface {
         }
 
         public init(node: Node? = nil) {
-          self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { $0.snapshot }])
+          self.init(snapshot: ["__typename": "ImageNodeEdge", "node": node.flatMap { (value: Node) -> Snapshot in value.snapshot }])
         }
 
         public var __typename: String {
@@ -16099,7 +16099,7 @@ public enum GraphQLInterface {
     }
 
     public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-      self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { $0.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "children": children.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+      self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
     }
 
     public var __typename: String {
@@ -16158,19 +16158,19 @@ public enum GraphQLInterface {
 
     public var parents: [Parent?]? {
       get {
-        return (snapshot["parents"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Parent(snapshot: $0) } } }
+        return (snapshot["parents"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Parent?] in value.map { (value: Snapshot?) -> Parent? in value.flatMap { (value: Snapshot) -> Parent in Parent(snapshot: value) } } }
       }
       set {
-        snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "parents")
+        snapshot.updateValue(newValue.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, forKey: "parents")
       }
     }
 
     public var children: [Child?]? {
       get {
-        return (snapshot["children"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Child(snapshot: $0) } } }
+        return (snapshot["children"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Child?] in value.map { (value: Snapshot?) -> Child? in value.flatMap { (value: Snapshot) -> Child in Child(snapshot: value) } } }
       }
       set {
-        snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "children")
+        snapshot.updateValue(newValue.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }, forKey: "children")
       }
     }
 
@@ -16427,7 +16427,7 @@ public enum GraphQLInterface {
     }
 
     public init(id: GraphQLID? = nil, servingAmount: Double? = nil, item: Item? = nil, image: GraphQLID? = nil, nutritionFact: GraphQLID? = nil) {
-      self.init(snapshot: ["__typename": "EntrySummarySearchType", "id": id, "servingAmount": servingAmount, "item": item.flatMap { $0.snapshot }, "image": image, "nutritionFact": nutritionFact])
+      self.init(snapshot: ["__typename": "EntrySummarySearchType", "id": id, "servingAmount": servingAmount, "item": item.flatMap { (value: Item) -> Snapshot in value.snapshot }, "image": image, "nutritionFact": nutritionFact])
     }
 
     public var __typename: String {
@@ -16506,7 +16506,7 @@ public enum GraphQLInterface {
       }
 
       public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-        self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { $0.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "children": children.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+        self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
       }
 
       public var __typename: String {
@@ -16565,19 +16565,19 @@ public enum GraphQLInterface {
 
       public var parents: [Parent?]? {
         get {
-          return (snapshot["parents"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Parent(snapshot: $0) } } }
+          return (snapshot["parents"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Parent?] in value.map { (value: Snapshot?) -> Parent? in value.flatMap { (value: Snapshot) -> Parent in Parent(snapshot: value) } } }
         }
         set {
-          snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "parents")
+          snapshot.updateValue(newValue.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, forKey: "parents")
         }
       }
 
       public var children: [Child?]? {
         get {
-          return (snapshot["children"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Child(snapshot: $0) } } }
+          return (snapshot["children"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Child?] in value.map { (value: Snapshot?) -> Child? in value.flatMap { (value: Snapshot) -> Child in Child(snapshot: value) } } }
         }
         set {
-          snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "children")
+          snapshot.updateValue(newValue.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }, forKey: "children")
         }
       }
 
@@ -16859,7 +16859,7 @@ public enum GraphQLInterface {
     }
 
     public init(id: GraphQLID, title: String? = nil, description: String? = nil, localEatenAtTime: String? = nil, utcEatenAtTime: String? = nil, entries: [Entry?]? = nil, images: [Image?]? = nil) {
-      self.init(snapshot: ["__typename": "MealSearchType", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "entries": entries.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "images": images.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+      self.init(snapshot: ["__typename": "MealSearchType", "id": id, "title": title, "description": description, "localEatenAtTime": localEatenAtTime, "utcEatenAtTime": utcEatenAtTime, "entries": entries.flatMap { (value: [Entry?]) -> [Snapshot?] in value.map { (value: Entry?) -> Snapshot? in value.flatMap { (value: Entry) -> Snapshot in value.snapshot } } }, "images": images.flatMap { (value: [Image?]) -> [Snapshot?] in value.map { (value: Image?) -> Snapshot? in value.flatMap { (value: Image) -> Snapshot in value.snapshot } } }])
     }
 
     public var __typename: String {
@@ -16918,19 +16918,19 @@ public enum GraphQLInterface {
 
     public var entries: [Entry?]? {
       get {
-        return (snapshot["entries"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Entry(snapshot: $0) } } }
+        return (snapshot["entries"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Entry?] in value.map { (value: Snapshot?) -> Entry? in value.flatMap { (value: Snapshot) -> Entry in Entry(snapshot: value) } } }
       }
       set {
-        snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "entries")
+        snapshot.updateValue(newValue.flatMap { (value: [Entry?]) -> [Snapshot?] in value.map { (value: Entry?) -> Snapshot? in value.flatMap { (value: Entry) -> Snapshot in value.snapshot } } }, forKey: "entries")
       }
     }
 
     public var images: [Image?]? {
       get {
-        return (snapshot["images"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Image(snapshot: $0) } } }
+        return (snapshot["images"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Image?] in value.map { (value: Snapshot?) -> Image? in value.flatMap { (value: Snapshot) -> Image in Image(snapshot: value) } } }
       }
       set {
-        snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "images")
+        snapshot.updateValue(newValue.flatMap { (value: [Image?]) -> [Snapshot?] in value.map { (value: Image?) -> Snapshot? in value.flatMap { (value: Image) -> Snapshot in value.snapshot } } }, forKey: "images")
       }
     }
 
@@ -16954,7 +16954,7 @@ public enum GraphQLInterface {
       }
 
       public init(id: GraphQLID? = nil, servingAmount: Double? = nil, item: Item? = nil, image: GraphQLID? = nil, nutritionFact: GraphQLID? = nil) {
-        self.init(snapshot: ["__typename": "EntrySummarySearchType", "id": id, "servingAmount": servingAmount, "item": item.flatMap { $0.snapshot }, "image": image, "nutritionFact": nutritionFact])
+        self.init(snapshot: ["__typename": "EntrySummarySearchType", "id": id, "servingAmount": servingAmount, "item": item.flatMap { (value: Item) -> Snapshot in value.snapshot }, "image": image, "nutritionFact": nutritionFact])
       }
 
       public var __typename: String {
@@ -17055,7 +17055,7 @@ public enum GraphQLInterface {
         }
 
         public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-          self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { $0.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "children": children.flatMap { $0.map { $0.flatMap { $0.snapshot } } }])
+          self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
         }
 
         public var __typename: String {
@@ -17114,19 +17114,19 @@ public enum GraphQLInterface {
 
         public var parents: [Parent?]? {
           get {
-            return (snapshot["parents"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Parent(snapshot: $0) } } }
+            return (snapshot["parents"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Parent?] in value.map { (value: Snapshot?) -> Parent? in value.flatMap { (value: Snapshot) -> Parent in Parent(snapshot: value) } } }
           }
           set {
-            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "parents")
+            snapshot.updateValue(newValue.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, forKey: "parents")
           }
         }
 
         public var children: [Child?]? {
           get {
-            return (snapshot["children"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Child(snapshot: $0) } } }
+            return (snapshot["children"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Child?] in value.map { (value: Snapshot?) -> Child? in value.flatMap { (value: Snapshot) -> Child in Child(snapshot: value) } } }
           }
           set {
-            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "children")
+            snapshot.updateValue(newValue.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }, forKey: "children")
           }
         }
 

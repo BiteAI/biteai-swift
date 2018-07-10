@@ -1,18 +1,22 @@
 PODS:
-  - Apollo (0.7.0):
-    - Apollo/Core (= 0.7.0)
-  - Apollo/Core (0.7.0)
+  - Alamofire (4.7.2)
+  - Apollo (0.8.0):
+    - Apollo/Core (= 0.8.0)
+  - Apollo/Core (0.8.0)
 
 DEPENDENCIES:
-  - Apollo
+  - Alamofire (~> 4.5)
+  - Apollo (= 0.8.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
     - Apollo
 
 SPEC CHECKSUMS:
-  Apollo: d6649ac06168660e70c6226c4eadfc0770791ba5
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  Apollo: 66e0f52289551545adb7ecdd994e713fdbae26eb
 
-PODFILE CHECKSUM: b6e604c600964076e3ed451b3a8b9f967f2badeb
+PODFILE CHECKSUM: 8c966841fba5b891dcaa2011c3cc4ce8a54f15b6
 
 COCOAPODS: 1.5.2

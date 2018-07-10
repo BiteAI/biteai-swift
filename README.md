@@ -3,14 +3,15 @@ iOS Client for the Bite API
 
 
 # iOS Project Setup
-1. Add `Apollo` as a dependency to your project
+1. Add the dependencies  to your project
     ```
-    pod "Apollo"
+    pod "Apollo", "=0.8.0"
+    pod "Alamofire", "~>4.5"
     ```
 
 1. Add `BiteAIClient` pod to your project
     ```
-    pod "BiteAIClient", :git => 'git@github.com:BiteAI/biteai-swift.git', :tag => 'v0.0.1-alpha'
+    pod "BiteAIClient", :git => 'git@github.com:BiteAI/biteai-swift.git', :tag => 'v0.0.4'
     ```
 
 1. Setup Info in Plist

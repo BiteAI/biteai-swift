@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 import Apollo
 
 
@@ -17,6 +18,35 @@ public enum BiteAIClientError: Error {
   case userCreationError
   case userKeychainStorageDataUndecodable
   case userKeychainStorageUnknownError(status: OSStatus)
+  case imageUploadEncodingError
+  case imageUploadTransportError(underlyingError: AFError)
+  case imageUploadUnknownTransportError(underlyingError: Error)
+  case badID
+  case encodingIDError
+  case imageSuggestionsDecodingError
+  case entryDecodingError
+  case itemDecodingError
+  case brandDecodingError
+}
+
+extension GraphQLID {
+  func decodeTypeUUID() -> (String, String)? {
+    guard let data = Data(base64Encoded: self) else { return nil }
+    let typeName = String(data: data, encoding: .utf8)
+    let typeNameArr = typeName?.components(separatedBy: ":")
+    // TODO(vinay): extract out the ID
+    guard  typeNameArr?.count == 2 else { return nil }
+    return (typeNameArr![0], typeNameArr![1])
+  }
+  
+  init(typename: String, uuid: String) throws {
+    let graphqlID = "\(typename):\(uuid)"
+    let dataToEncode = graphqlID.data(using: String.Encoding.utf8)
+    guard let encoded = dataToEncode?.base64EncodedString() else {
+      throw BiteAIClientError.encodingIDError
+    }
+   self.init(stringLiteral: encoded)
+  }
 }
 
 public struct BiteAIUser {
@@ -40,6 +70,21 @@ public struct Image {
     self.url = imageSearchFragment.url != nil ? URL(string: imageSearchFragment.url!) : nil
     self.sourceURL = imageSearchFragment.sourceUrl != nil ?
       URL(string: imageSearchFragment.sourceUrl!) : nil
+  }
+  
+  public init(imageResponse: Dictionary<String, Any>) throws {
+    self.id = try GraphQLID(
+      typename: GraphQLInterface.ImageFragment.possibleTypes.first!,
+      uuid: imageResponse["id"] as! String)
+    let urlStr = imageResponse["url"] as? String
+    if urlStr != nil {
+      self.url = URL(string: urlStr!)
+    }
+    
+    let sourceUrlStr = imageResponse["source_url"] as? String
+    if sourceUrlStr != nil {
+      self.sourceURL =  URL(string: sourceUrlStr!)
+    }
   }
 }
 
@@ -90,6 +135,12 @@ public struct NutritionFactRef {
   }
   init(nutritionFactRef: GraphQLInterface.NutritionFactRefFragment) {
     self.id = nutritionFactRef.id
+  }
+  public init(uuid: String) throws {
+    self.id = try GraphQLID(
+      typename: GraphQLInterface.NutritionFactRefFragment.possibleTypes.first!,
+      uuid: uuid
+    )
   }
 }
 
@@ -230,6 +281,17 @@ public struct Brand {
     self.id = brand.id
     self.name = brand.name
   }
+  
+  public init(brandResponse: Dictionary<String, Any>) throws {
+    guard let uuid = brandResponse["id"] as? String else {
+      throw BiteAIClientError.brandDecodingError
+    }
+    self.id = try GraphQLID(
+      typename: GraphQLInterface.BrandFragment.possibleTypes.first!,
+      uuid: uuid
+    )
+    self.name = brandResponse["name"] as? String
+  }
 }
 
 public class  ItemSummary {
@@ -301,6 +363,24 @@ public class  ItemSummary {
       if childItem != nil {
         self.children.append(ItemSummary(itemBasic: childItem!.fragments.itemBasicSearchFragment))
       }
+    }
+  }
+  
+  convenience init(itemResponse: Dictionary<String, Any>) throws {
+    self.init()
+    guard let uuid = itemResponse["id"] as? String else {
+      throw BiteAIClientError.entryDecodingError
+    }
+    self.id =  try GraphQLID(
+      typename: GraphQLInterface.ItemSummaryFragment.possibleTypes.first!,
+      uuid: uuid
+    )
+    self.name = itemResponse["name"] as? String
+    self.details = itemResponse["details"] as? String
+    self.isGeneric = itemResponse["is_generic"] as? Bool
+    let brandResponse = itemResponse["brand"] as? Dictionary<String, Any>
+    if brandResponse != nil {
+      self.brand = try Brand(brandResponse: brandResponse!)
     }
   }
 }
@@ -387,6 +467,39 @@ public class EntrySummary : BaseEntry {
     
     if entrySummary.nutritionFact != nil {
       self.nutritionFactRef = NutritionFactRef(id: entrySummary.nutritionFact!)
+    }
+  }
+  
+  public init(entryResponse: Dictionary<String, Any>) throws {
+    super.init()
+    
+    guard let uuid = entryResponse["id"] as? String else {
+      throw BiteAIClientError.entryDecodingError
+    }
+    
+    self.id = try GraphQLID(
+      typename: GraphQLInterface.EntryFragment.possibleTypes.first!,
+      uuid: uuid
+    )
+    self.servingAmount = entryResponse["serving_amount"] as? Double
+    guard let itemResponse = entryResponse["item"] as? Dictionary<String, Any> else {
+      throw BiteAIClientError.entryDecodingError
+    }
+    self.item = try ItemSummary(itemResponse: itemResponse)
+    
+    let nutritionUUID = entryResponse["nutrition_fact"] as? String
+    if nutritionUUID != nil {
+      guard let nutritionFactRef = try? NutritionFactRef(uuid: nutritionUUID!) else {
+        throw BiteAIClientError.entryDecodingError
+      }
+      self.nutritionFactRef = nutritionFactRef
+    }
+    
+    let imageUUID = entryResponse["image"] as? String
+    if imageUUID != nil {
+      self.imageRef = try? GraphQLID(
+        typename: GraphQLInterface.ImageFragment.possibleTypes.first!,
+        uuid: imageUUID!)
     }
   }
 }
@@ -569,6 +682,72 @@ public struct SearchResults {
   }
 }
 
+public typealias Score = Double
+public class MealImageSuggestions {
+  public var image : Image
+  public var suggestedEntries : [EntrySummary]
+  public var similarImages : [(Image, [EntrySummary], Score)]
+  public var suggestedItems : [(ItemSummary, Score)]
+  
+  public init(suggestionsResponse: Dictionary<String, Any>)  throws {
+    guard let image = try? Image(imageResponse: suggestionsResponse) else {
+      throw BiteAIClientError.imageSuggestionsDecodingError
+    }
+    self.image = image
+    
+    guard let suggestions = suggestionsResponse["suggestions"] as? Dictionary<String, Any> else {
+      throw BiteAIClientError.imageSuggestionsDecodingError
+    }
+    
+    self.suggestedEntries = [EntrySummary]()
+    let suggestedEntriesResponse = suggestions["entries"] as? Array<Dictionary<String, Any>>
+    var suggestedEntriesIterator = suggestedEntriesResponse?.makeIterator()
+    while let scoredEntryResponse = suggestedEntriesIterator?.next() {
+      guard
+        let entryResponse = scoredEntryResponse["entry"] as? Dictionary<String, Any>,
+        let entrySummary =  try? EntrySummary(entryResponse: entryResponse) else {
+        throw BiteAIClientError.imageUploadEncodingError
+      }
+      self.suggestedEntries.append(entrySummary)
+    }
+    
+    self.similarImages = [(Image, [EntrySummary], Score)]()
+    let scoredImagesResponse = suggestions["images"] as? Array<Dictionary<String, Any>>
+    var scoredImagesIterator = scoredImagesResponse?.makeIterator()
+    while let scoredImage = scoredImagesIterator?.next() {
+      guard let imageResponse = scoredImage["image"] as? Dictionary<String, Any>,
+        let image = try? Image(imageResponse: imageResponse),
+        let score = scoredImage["score"] as? Score else {
+          throw BiteAIClientError.imageSuggestionsDecodingError
+      }
+      
+      var entries = [EntrySummary]()
+      let entriesResponse = scoredImage["entries"] as? Array<Dictionary<String, Any>>
+      var entriesIterator = entriesResponse?.makeIterator()
+      while let entryResponse = entriesIterator?.next() {
+        guard let entry = try? EntrySummary(entryResponse: entryResponse) else {
+          throw BiteAIClientError.imageSuggestionsDecodingError
+        }
+        entries.append(entry)
+      }
+      
+      self.similarImages.append((image, entries, score))
+    }
+    
+    self.suggestedItems = [(ItemSummary, Score)]()
+    let scoredItemsResponse = suggestions["items"] as? Array<Dictionary<String, Any>>
+    var scoredItemsIterator = scoredItemsResponse?.makeIterator()
+    while let scoredItemResponse = scoredItemsIterator?.next() {
+      guard let itemResponse = scoredItemResponse["item"] as? Dictionary<String, Any>,
+        let suggestedItem = try? ItemSummary(itemResponse: itemResponse),
+        let score = scoredItemResponse["score"] as? Score else {
+        throw BiteAIClientError.imageUploadEncodingError
+      }
+      self.suggestedItems.append((suggestedItem, score))
+    }
+  }
+}
+
 public struct AutocompelteResults {
   public var brands: [Brand]
   public var items: [ItemSummary]
@@ -595,6 +774,16 @@ public struct AutocompelteResults {
     }
   }
 }
+
+public enum ImageType : String {
+  case JPEG = "jpeg"
+  case PNG = "png"
+}
+
+fileprivate let ImageMimeTypes: [ImageType: String] = [
+  ImageType.JPEG : "image/jpeg",
+  ImageType.PNG : "image/png"
+]
 
 fileprivate class UserKeychainStorage : NSObject {
   static private let StorageClass = kSecClassInternetPassword
@@ -645,7 +834,6 @@ fileprivate class UserKeychainStorage : NSObject {
   }
 }
 
-
 public class BiteAPIClient {
   
   private static var sharedClient: BiteAPIClient? = nil
@@ -656,10 +844,12 @@ public class BiteAPIClient {
 
   let graphlQLURL: URL
   let apolloClient: ApolloClient
+  let userToken:  String
   
   private init(graphQLURL: URL, userToken: String) {
     self.graphlQLURL = graphQLURL
-
+    self.userToken = userToken
+    
     let configuration = URLSessionConfiguration.default
     configuration.httpAdditionalHeaders = ["Authorization": "Bearer \(userToken)"]
     self.apolloClient = ApolloClient(
@@ -679,7 +869,11 @@ public class BiteAPIClient {
   
   class private func getBaseURL() throws -> URL {
     if BiteAPIClient._baseURL == nil {
-      let url = try BiteAPIClient.getStringKeyFromBundle(key: "BaseURL")
+      var url = try BiteAPIClient.getStringKeyFromBundle(key: "BaseURL")
+      if url.hasSuffix("/") {
+        url = String(url.dropLast())
+      }
+
       BiteAPIClient._baseURL = URL(string: url)!
     }
     return BiteAPIClient._baseURL!
@@ -695,7 +889,7 @@ public class BiteAPIClient {
   
   
   class private func getBaseURLHost() throws -> String {
-    return try BiteAPIClient.getBaseURL().host!
+    return  try BiteAPIClient.getBaseURL().host!
   }
   
   
@@ -712,6 +906,10 @@ public class BiteAPIClient {
     }
   }
   
+  private class func setBearerTokenForRequest(request : inout URLRequest, bearerToken: String) {
+    request.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
+  }
+  
   public class func createUser(resultHandler: @escaping (
     _ success: Bool, _ username: String?, _ error: BiteAIClientError?) -> Void) throws {
     // Ensure there isn't an existing user
@@ -720,12 +918,12 @@ public class BiteAPIClient {
       return
     }
     
+    // TODO(vinay): Change this to use Almaofire
     var request = try URLRequest(
       url: BiteAPIClient.getBaseURL().appendingPathComponent("/applications/users/"),
       cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData)
     request.httpMethod = "POST"
-    let appKey = try BiteAPIClient.getAppKey()
-    request.setValue("Bearer \(appKey)", forHTTPHeaderField: "Authorization")
+    setBearerTokenForRequest(request: &request, bearerToken: try BiteAPIClient.getAppKey())
     let task = URLSession.shared.dataTask(with: request) {
       data, response, error in
       guard error == nil,
@@ -1014,6 +1212,75 @@ public class BiteAPIClient {
         resultsHandler!(Meal(meal: mealFragment), nil)
         
     }
+  }
+  
+  // TODO(vinay): Add method to write image to a cache locally
+  // TODO(vinay): Add a way to have a thumbnail and a large image. The thumbnail gets sent first
+  // and the large image gets sent later
+  public typealias ImageSuggestionHandler = (_ mealImageSuggestions: MealImageSuggestions?, _ error: Error?) -> Void
+  public func addImageToMealByData(mealID: GraphQLID, image: Data, imageType: ImageType,
+                             resultsHandler: ImageSuggestionHandler?) throws {
+    guard let decodeTuple = mealID.decodeTypeUUID() else {
+        throw BiteAIClientError.badID
+    }
+    
+    let (_, mealUUID) = decodeTuple
+    var mealURL = try! BiteAPIClient.getBaseURL()
+    mealURL.appendPathComponent("/meals/\(mealUUID)/images/")
+    let user =  try! BiteAPIClient.getUser()
+
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(user.token)",
+      "Content-type": "multipart/form-data"
+    ]
+    Alamofire.upload(
+      multipartFormData: {
+        (multipartFromData) in
+        multipartFromData.append(
+          image, withName: "file",
+          fileName: "image.\(imageType.rawValue)",
+          mimeType: ImageMimeTypes[imageType]!)
+    },
+      to: mealURL.absoluteString ,
+      method: .post,
+      headers: headers,
+      encodingCompletion: {
+        (encodingResult) in
+        switch encodingResult {
+        case .success(let request, _, _) :
+          request.responseJSON {
+            response in
+            if resultsHandler != nil {
+              switch response.result {
+              case .success( _):
+                guard let responseDict = response.result.value as? Dictionary<String, Any>,
+                  let mealImageSuggestions = try? MealImageSuggestions(
+                    suggestionsResponse: responseDict) else {
+                  resultsHandler!(nil, BiteAIClientError.imageSuggestionsDecodingError)
+                  return
+                }
+                // TODO(vinay): Need to mutate the cache with adding the image to the meal
+                resultsHandler!(mealImageSuggestions, nil)
+              case .failure(let responseError):
+                if let aeError = responseError as? AFError {
+                  resultsHandler!(
+                    nil,
+                    BiteAIClientError.imageUploadTransportError(underlyingError: aeError))
+                } else {
+                  resultsHandler!(
+                    nil,
+                    BiteAIClientError.imageUploadUnknownTransportError(underlyingError: responseError))
+                }
+              }
+            }
+          }
+        case .failure ( _) :
+          if resultsHandler != nil {
+            resultsHandler!(nil, BiteAIClientError.imageUploadEncodingError)
+          }
+        }
+      }
+    )
   }
   
   public typealias DeleteImageFromMealHandler = (_ meal: Meal?, _ error: Error?) -> Void

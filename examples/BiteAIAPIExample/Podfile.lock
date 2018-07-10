@@ -1,16 +1,20 @@
 PODS:
+  - Alamofire (4.5.0)
   - Apollo (0.8.0):
     - Apollo/Core (= 0.8.0)
   - Apollo/Core (0.8.0)
   - BiteAIClient (0.0.1):
+    - Alamofire (~> 4.0)
     - Apollo (= 0.8.0)
 
 DEPENDENCIES:
+  - Alamofire (~> 4.5)
   - Apollo (= 0.8.0)
   - BiteAIClient (from `../../BiteAIClient.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
     - Apollo
 
 EXTERNAL SOURCES:
@@ -18,9 +22,10 @@ EXTERNAL SOURCES:
     :path: "../../BiteAIClient.podspec"
 
 SPEC CHECKSUMS:
+  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   Apollo: 66e0f52289551545adb7ecdd994e713fdbae26eb
-  BiteAIClient: 25c8a8b612c0e77901f3d3a573f928949ed57144
+  BiteAIClient: 397e350e0e6a680cd3ae0bef9e8ff452932951e4
 
-PODFILE CHECKSUM: b122aefe0849936e614097a07647282a3b851407
+PODFILE CHECKSUM: aad6ccb0d9ca05007d02acf3d44b0c64830d5c69
 
 COCOAPODS: 1.5.2
