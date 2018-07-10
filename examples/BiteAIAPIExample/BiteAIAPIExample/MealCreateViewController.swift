@@ -12,10 +12,10 @@ import BiteAIClient
 
 class MealCreateViewController: UIViewController {
 
-
   @IBOutlet weak var mealInfoLabel: UILabel!
   @IBOutlet weak var itemID: UITextField!
   @IBOutlet weak var entryOutput: UILabel!
+  @IBOutlet weak var imageLabelOutput: UILabel!
   
   override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +56,32 @@ class MealCreateViewController: UIViewController {
     }
   }
   
-    /*
+  @IBAction func addTestImage(_ sender: UIButton, forEvent event: UIEvent) {
+    let testImage = UIImage(named: "TestImage")
+    let data = UIImageJPEGRepresentation(testImage!, 0.7)
+    if self.mealInfoLabel?.text != nil  {
+      let client = try! BiteAPIClient.shared()
+      try! client.addImageToMealByData(
+        mealID: self.mealInfoLabel.text!,
+        image: data!,
+        imageType: ImageType.JPEG) {
+          [weak self] mealImageSuggestions, error in
+          if error != nil {
+            self?.imageLabelOutput.text =  error?.localizedDescription
+          } else {
+            var itemsArray = [String]()
+            var scoredItemsIterator = mealImageSuggestions!.suggestedItems.makeIterator()
+            while let (item, score) = scoredItemsIterator.next()  {
+              if item.name != nil {
+                itemsArray.append(item.name!)
+              }
+            }
+            self?.imageLabelOutput.text = itemsArray.compactMap{$0}.joined(separator: " ,")          
+          }
+      }
+    }
+  }
+  /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -12,6 +12,7 @@ target 'BiteAIClient' do
     # Pods for testing
   end
 
-  pod "Apollo"
+  pod "Apollo", "=0.8.0"
+  pod "Alamofire", "~> 4.5"
 
 end
