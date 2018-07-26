@@ -61,8 +61,8 @@ fragment MealSuggestionFragment on MealSearchType {
   }
 }
 
-query itemsSearch($query: String!) {
-  itemsSearch(query: $query) {
+query itemsSearch($query: String!, $hasNutritionFacts: Boolean) {
+  itemsSearch(query: $query, hasNutritionFacts: $hasNutritionFacts) {
     items {
       ...ItemSummarySearchFragment
     }
@@ -80,8 +80,8 @@ query searchAutocomplete($query: String!) {
     }
 }
 
-query facetedSearch($query: String!, $localDateTime: String) {
-  facetedSearch(query: $query, localDateTime: $localDateTime) {
+query facetedSearch($query: String!, $localDateTime: String, $hasNutritionFacts: Boolean) {
+facetedSearch(query: $query, localDateTime: $localDateTime, hasNutritionFacts: $hasNutritionFacts) {
     items {
       ...ItemSummarySearchFragment
     }

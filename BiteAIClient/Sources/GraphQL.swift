@@ -8852,25 +8852,27 @@ public enum GraphQLInterface {
 
   public final class ItemsSearchQuery: GraphQLQuery {
     public static let operationString =
-      "query itemsSearch($query: String!) {\n  itemsSearch(query: $query) {\n    __typename\n    items {\n      __typename\n      ...ItemSummarySearchFragment\n    }\n  }\n}"
+      "query itemsSearch($query: String!, $hasNutritionFacts: Boolean) {\n  itemsSearch(query: $query, hasNutritionFacts: $hasNutritionFacts) {\n    __typename\n    items {\n      __typename\n      ...ItemSummarySearchFragment\n    }\n  }\n}"
 
     public static var requestString: String { return operationString.appending(ItemSummarySearchFragment.fragmentString).appending(BrandSummarySearchFragment.fragmentString).appending(ItemBasicSearchFragment.fragmentString) }
 
     public var query: String
+    public var hasNutritionFacts: Bool?
 
-    public init(query: String) {
+    public init(query: String, hasNutritionFacts: Bool? = nil) {
       self.query = query
+      self.hasNutritionFacts = hasNutritionFacts
     }
 
     public var variables: GraphQLMap? {
-      return ["query": query]
+      return ["query": query, "hasNutritionFacts": hasNutritionFacts]
     }
 
     public struct Data: GraphQLSelectionSet {
       public static let possibleTypes = ["Query"]
 
       public static let selections: [GraphQLSelection] = [
-        GraphQLField("itemsSearch", arguments: ["query": GraphQLVariable("query")], type: .object(ItemsSearch.selections)),
+        GraphQLField("itemsSearch", arguments: ["query": GraphQLVariable("query"), "hasNutritionFacts": GraphQLVariable("hasNutritionFacts")], type: .object(ItemsSearch.selections)),
       ]
 
       public var snapshot: Snapshot
@@ -9514,27 +9516,29 @@ public enum GraphQLInterface {
 
   public final class FacetedSearchQuery: GraphQLQuery {
     public static let operationString =
-      "query facetedSearch($query: String!, $localDateTime: String) {\n  facetedSearch(query: $query, localDateTime: $localDateTime) {\n    __typename\n    items {\n      __typename\n      ...ItemSummarySearchFragment\n    }\n    brands {\n      __typename\n      ...BrandSummarySearchFragment\n    }\n    recent {\n      __typename\n      entries {\n        __typename\n        lastEatenAt\n        entry {\n          __typename\n          ...EntrySummarySearchFragment\n        }\n      }\n    }\n  }\n}"
+      "query facetedSearch($query: String!, $localDateTime: String, $hasNutritionFacts: Boolean) {\n  facetedSearch(query: $query, localDateTime: $localDateTime, hasNutritionFacts: $hasNutritionFacts) {\n    __typename\n    items {\n      __typename\n      ...ItemSummarySearchFragment\n    }\n    brands {\n      __typename\n      ...BrandSummarySearchFragment\n    }\n    recent {\n      __typename\n      entries {\n        __typename\n        lastEatenAt\n        entry {\n          __typename\n          ...EntrySummarySearchFragment\n        }\n      }\n    }\n  }\n}"
 
     public static var requestString: String { return operationString.appending(ItemSummarySearchFragment.fragmentString).appending(BrandSummarySearchFragment.fragmentString).appending(ItemBasicSearchFragment.fragmentString).appending(EntrySummarySearchFragment.fragmentString) }
 
     public var query: String
     public var localDateTime: String?
+    public var hasNutritionFacts: Bool?
 
-    public init(query: String, localDateTime: String? = nil) {
+    public init(query: String, localDateTime: String? = nil, hasNutritionFacts: Bool? = nil) {
       self.query = query
       self.localDateTime = localDateTime
+      self.hasNutritionFacts = hasNutritionFacts
     }
 
     public var variables: GraphQLMap? {
-      return ["query": query, "localDateTime": localDateTime]
+      return ["query": query, "localDateTime": localDateTime, "hasNutritionFacts": hasNutritionFacts]
     }
 
     public struct Data: GraphQLSelectionSet {
       public static let possibleTypes = ["Query"]
 
       public static let selections: [GraphQLSelection] = [
-        GraphQLField("facetedSearch", arguments: ["query": GraphQLVariable("query"), "localDateTime": GraphQLVariable("localDateTime")], type: .object(FacetedSearch.selections)),
+        GraphQLField("facetedSearch", arguments: ["query": GraphQLVariable("query"), "localDateTime": GraphQLVariable("localDateTime"), "hasNutritionFacts": GraphQLVariable("hasNutritionFacts")], type: .object(FacetedSearch.selections)),
       ]
 
       public var snapshot: Snapshot
