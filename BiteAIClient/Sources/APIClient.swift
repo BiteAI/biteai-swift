@@ -973,9 +973,11 @@ public class BiteAPIClient {
   }
   
   public typealias searchHandler = (_ result: SearchResults?, _ error: Error?) -> Void
-  @discardableResult public func itemsSearch(query: String, resultHandler: searchHandler?) -> Cancellable {
+  @discardableResult public func itemsSearch(query: String,
+                                             hasNutritionFacts: Bool? = nil,
+                                             resultHandler: searchHandler?) -> Cancellable {
     return self.apolloClient.fetch(
-    query: GraphQLInterface.ItemsSearchQuery(query: query),
+    query: GraphQLInterface.ItemsSearchQuery(query: query, hasNutritionFacts: hasNutritionFacts),
     cachePolicy: CachePolicy.fetchIgnoringCacheData) {
       results, error in
       if resultHandler != nil {
@@ -992,12 +994,15 @@ public class BiteAPIClient {
   @discardableResult public func facetedSearch(
     query: String,
     localDateTime: Date?,
+    hasNutritionFacts: Bool? = nil,
     resultHandler: searchHandler?) -> Cancellable {
     let localDateTimeFormatted = MealDateFormatter.shared().localDateTimeFormatter.string(
       from: localDateTime ?? Date())
     
     return self.apolloClient.fetch(query: GraphQLInterface.FacetedSearchQuery(
-      query: query, localDateTime: localDateTimeFormatted)) {
+      query: query,
+      localDateTime: localDateTimeFormatted,
+      hasNutritionFacts: hasNutritionFacts)) {
         result, error in
         if resultHandler != nil {
           guard result != nil && error == nil,
