@@ -55,6 +55,12 @@ public struct BiteAIUser {
   public var token: String
   public var id: String
   public var username: String?
+  
+  public init(token: String, id: String, username: String?) {
+    self.token = token
+    self.id = id
+    self.username = username
+  }
 }
 
 public struct Image {
