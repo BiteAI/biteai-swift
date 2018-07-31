@@ -54,5 +54,21 @@ class ViewController: UIViewController {
       }
     }
   }
+  
+  @IBAction func restoreExistingUser(_ sender: UIButton) {
+    let user = try! BiteAPIClient.getUser()
+    
+    try! BiteAPIClient.restoreUser(user: user) {
+      [weak self] (result, username, error) in
+      DispatchQueue.main.async {
+        if (result) {
+          self?.userStatusLabel.text = "User restored"
+        } else {
+            self?.userStatusLabel.text = "User restored failed"
+        }
+      }
+    }
+  }
+  
 }
 

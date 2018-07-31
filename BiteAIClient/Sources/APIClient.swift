@@ -16,6 +16,8 @@ public enum BiteAIClientError: Error {
   case userNotFound
   case userAlreadyExists
   case userCreationError
+  case userRestorationError(underlyingError: Error?)
+  case userRestorationBadTokenError
   case userKeychainStorageDataUndecodable
   case userKeychainStorageUnknownError(status: OSStatus)
   case imageUploadEncodingError
@@ -817,19 +819,33 @@ fileprivate class UserKeychainStorage : NSObject {
   
   fileprivate class func setUser(server: String, user: BiteAIUser) throws {
     let tokenData = user.token.data(using: String.Encoding.utf8)!
-    var query: [String: Any] = [
+    var secData: [String: Any] = [
       kSecClass as String: UserKeychainStorage.StorageClass,
       kSecAttrServer as String: server,
       kSecValueData as String: tokenData,
       kSecAttrAccount as String: user.id
     ]
     if user.username != nil {
-      query[kSecAttrLabel as String] =  user.username!
+      secData[kSecAttrLabel as String] =  user.username!
+    }    
+    
+    var secItemStatus = SecItemAdd(secData as CFDictionary, nil)
+    if (secItemStatus == errSecDuplicateKeychain) {
+      let updateQuery: [String: Any] = [
+        kSecClass as String: UserKeychainStorage.StorageClass,
+        kSecAttrServer as String: server
+      ]
+      secData.removeValue(forKey: kSecClass as String)
+      secData.removeValue(forKey: kSecAttrServer as String)
+      
+      secItemStatus = SecItemUpdate(updateQuery as CFDictionary, secData as CFDictionary)
     }
     
-    let addStatus = SecItemAdd(query as CFDictionary, nil)
-    guard addStatus == errSecSuccess else {
-      throw BiteAIClientError.userKeychainStorageUnknownError(status: addStatus)
+    guard secItemStatus == errSecSuccess else {
+//      if #available(iOS 11.3, *) {
+//        print(SecCopyErrorMessageString(secItemStatus, nil))
+//      }
+      throw BiteAIClientError.userKeychainStorageUnknownError(status: secItemStatus)
     }
   }
 }
@@ -910,15 +926,20 @@ public class BiteAPIClient {
     request.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
   }
   
-  public class func createUser(resultHandler: @escaping (
-    _ success: Bool, _ username: String?, _ error: BiteAIClientError?) -> Void) throws {
+  public typealias UserResultHandler = (_ success: Bool, _ username: String?,
+    _ error: BiteAIClientError?) -> Void
+  
+  private class func storeUser(user: BiteAIUser) throws {
+    try UserKeychainStorage.setUser(server: BiteAPIClient.getBaseURLHost(), user: user)
+  }
+  
+  public class func createUser(resultHandler: @escaping UserResultHandler) throws {
     // Ensure there isn't an existing user
     guard (try? getUser()) == nil else {
       resultHandler(false, nil, BiteAIClientError.userAlreadyExists)
       return
     }
     
-    // TODO(vinay): Change this to use Almaofire
     var request = try URLRequest(
       url: BiteAPIClient.getBaseURL().appendingPathComponent("/applications/users/"),
       cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData)
@@ -961,6 +982,47 @@ public class BiteAPIClient {
       }
     }
     task.resume()
+  }
+  
+  public class func restoreUser(user: BiteAIUser, resultHandler: @escaping UserResultHandler)
+    throws {
+      var request = try URLRequest(
+        url: BiteAPIClient.getBaseURL().appendingPathComponent("/me/"),
+        cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData)
+      BiteAPIClient.setBearerTokenForRequest(request: &request, bearerToken: user.token)
+      let task = URLSession.shared.dataTask(with: request) {
+        data, response, error in
+        guard error == nil,
+          let httpStatus = response as? HTTPURLResponse else {
+            resultHandler(
+              false,
+              nil,
+              BiteAIClientError.userRestorationError(underlyingError: error))
+            return
+        }
+        
+        guard httpStatus.statusCode <= 200 && httpStatus.statusCode <= 299 else {
+          resultHandler(
+              false,
+              nil,
+              (httpStatus.statusCode == 401 || httpStatus.statusCode == 403) ?
+                BiteAIClientError.userRestorationBadTokenError :
+                nil
+          )
+          return
+        }
+        
+        do {
+            try BiteAPIClient.storeUser(user: user)
+        } catch let storageError {
+          let storageErrorConverted = storageError as? BiteAIClientError
+          resultHandler(false, nil, storageErrorConverted)
+        }
+        
+        resultHandler(true, user.username, nil)
+      }
+      
+      task.resume()
   }
 
   public class func shared() throws -> BiteAPIClient {
