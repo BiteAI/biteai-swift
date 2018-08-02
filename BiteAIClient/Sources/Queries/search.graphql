@@ -29,6 +29,8 @@ fragment ItemSummarySearchFragment on ItemSummarySearchType {
   }
   details
   isGeneric
+  hasNutritionFacts
+  childrenCount
   parents {
     ...ItemBasicSearchFragment
   }
