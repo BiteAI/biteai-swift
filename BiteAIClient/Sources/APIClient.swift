@@ -310,7 +310,8 @@ public class  ItemSummary {
   public var isGeneric: Bool?
   public var parents: [ItemSummary]
   public var children: [ItemSummary]
-  
+  public var childrenCount: Int?
+  public var hasNutritionFacts: Bool?
   public init() {
     self.parents = [ItemSummary]()
     self.children = [ItemSummary]()
@@ -372,6 +373,10 @@ public class  ItemSummary {
         self.children.append(ItemSummary(itemBasic: childItem!.fragments.itemBasicSearchFragment))
       }
     }
+    
+    self.childrenCount = itemSummary.childrenCount
+    
+    self.hasNutritionFacts = itemSummary.hasNutritionFacts
   }
   
   convenience init(itemResponse: Dictionary<String, Any>) throws {

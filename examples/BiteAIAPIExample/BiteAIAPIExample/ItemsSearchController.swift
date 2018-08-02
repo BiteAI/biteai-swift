@@ -37,7 +37,13 @@ class ItemsSearchController: UIViewController, UISearchBarDelegate, UITableViewD
       return cell
     }
     let item = searchData[indexPath.row]
-    let display_text: [String?] = [item.brand?.name, item.name, item.details]
+    let display_text: [String?] = [
+      item.brand?.name,
+      item.name,
+      item.details,
+      item.childrenCount != nil ? " - " + String(item.childrenCount!) : nil,
+      item.hasNutritionFacts != nil ? String(item.hasNutritionFacts!) : nil
+      ]
     cell.textLabel?.text = display_text.compactMap{$0}.joined(separator: " ")
     return cell
   }
