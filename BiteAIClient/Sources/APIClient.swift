@@ -321,6 +321,7 @@ public class  ItemSummary {
     self.init()
     self.id = itemBasic.id
     self.name = itemBasic.name
+    self.details = itemBasic.details
   }
   
   convenience init(itemSummary: GraphQLInterface.ItemSummaryFragment) {
@@ -367,7 +368,7 @@ public class  ItemSummary {
       }
     }
     
-    var childrenIterator = itemSummary.parents?.makeIterator()
+    var childrenIterator = itemSummary.children?.makeIterator()
     while var childItem = childrenIterator?.next() {
       if childItem != nil {
         self.children.append(ItemSummary(itemBasic: childItem!.fragments.itemBasicSearchFragment))

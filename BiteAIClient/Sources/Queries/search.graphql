@@ -7,6 +7,7 @@ fragment ImageSearchFragment on ImageSearchType {
 fragment ItemBasicSearchFragment on ItemBasicSearchType {
   id
   name
+  details
 }
 
 fragment BrandBasicSearchFragment on BrandBasicSearchType {

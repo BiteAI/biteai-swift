@@ -9167,6 +9167,7 @@ public enum GraphQLInterface {
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
               GraphQLField("name", type: .scalar(String.self)),
+              GraphQLField("details", type: .scalar(String.self)),
             ]
 
             public var snapshot: Snapshot
@@ -9175,8 +9176,8 @@ public enum GraphQLInterface {
               self.snapshot = snapshot
             }
 
-            public init(id: GraphQLID, name: String? = nil) {
-              self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+            public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+              self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
             }
 
             public var __typename: String {
@@ -9203,6 +9204,15 @@ public enum GraphQLInterface {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "name")
+              }
+            }
+
+            public var details: String? {
+              get {
+                return snapshot["details"] as? String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "details")
               }
             }
 
@@ -9237,6 +9247,7 @@ public enum GraphQLInterface {
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
               GraphQLField("name", type: .scalar(String.self)),
+              GraphQLField("details", type: .scalar(String.self)),
             ]
 
             public var snapshot: Snapshot
@@ -9245,8 +9256,8 @@ public enum GraphQLInterface {
               self.snapshot = snapshot
             }
 
-            public init(id: GraphQLID, name: String? = nil) {
-              self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+            public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+              self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
             }
 
             public var __typename: String {
@@ -9273,6 +9284,15 @@ public enum GraphQLInterface {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "name")
+              }
+            }
+
+            public var details: String? {
+              get {
+                return snapshot["details"] as? String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "details")
               }
             }
 
@@ -9469,6 +9489,7 @@ public enum GraphQLInterface {
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
             GraphQLField("name", type: .scalar(String.self)),
+            GraphQLField("details", type: .scalar(String.self)),
           ]
 
           public var snapshot: Snapshot
@@ -9477,8 +9498,8 @@ public enum GraphQLInterface {
             self.snapshot = snapshot
           }
 
-          public init(id: GraphQLID, name: String? = nil) {
-            self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+          public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+            self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
           }
 
           public var __typename: String {
@@ -9505,6 +9526,15 @@ public enum GraphQLInterface {
             }
             set {
               snapshot.updateValue(newValue, forKey: "name")
+            }
+          }
+
+          public var details: String? {
+            get {
+              return snapshot["details"] as? String
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "details")
             }
           }
 
@@ -9873,6 +9903,7 @@ public enum GraphQLInterface {
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
               GraphQLField("name", type: .scalar(String.self)),
+              GraphQLField("details", type: .scalar(String.self)),
             ]
 
             public var snapshot: Snapshot
@@ -9881,8 +9912,8 @@ public enum GraphQLInterface {
               self.snapshot = snapshot
             }
 
-            public init(id: GraphQLID, name: String? = nil) {
-              self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+            public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+              self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
             }
 
             public var __typename: String {
@@ -9909,6 +9940,15 @@ public enum GraphQLInterface {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "name")
+              }
+            }
+
+            public var details: String? {
+              get {
+                return snapshot["details"] as? String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "details")
               }
             }
 
@@ -9943,6 +9983,7 @@ public enum GraphQLInterface {
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
               GraphQLField("name", type: .scalar(String.self)),
+              GraphQLField("details", type: .scalar(String.self)),
             ]
 
             public var snapshot: Snapshot
@@ -9951,8 +9992,8 @@ public enum GraphQLInterface {
               self.snapshot = snapshot
             }
 
-            public init(id: GraphQLID, name: String? = nil) {
-              self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+            public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+              self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
             }
 
             public var __typename: String {
@@ -9979,6 +10020,15 @@ public enum GraphQLInterface {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "name")
+              }
+            }
+
+            public var details: String? {
+              get {
+                return snapshot["details"] as? String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "details")
               }
             }
 
@@ -10514,6 +10564,7 @@ public enum GraphQLInterface {
                     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                     GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
                     GraphQLField("name", type: .scalar(String.self)),
+                    GraphQLField("details", type: .scalar(String.self)),
                   ]
 
                   public var snapshot: Snapshot
@@ -10522,8 +10573,8 @@ public enum GraphQLInterface {
                     self.snapshot = snapshot
                   }
 
-                  public init(id: GraphQLID, name: String? = nil) {
-                    self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+                  public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+                    self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
                   }
 
                   public var __typename: String {
@@ -10550,6 +10601,15 @@ public enum GraphQLInterface {
                     }
                     set {
                       snapshot.updateValue(newValue, forKey: "name")
+                    }
+                  }
+
+                  public var details: String? {
+                    get {
+                      return snapshot["details"] as? String
+                    }
+                    set {
+                      snapshot.updateValue(newValue, forKey: "details")
                     }
                   }
 
@@ -10584,6 +10644,7 @@ public enum GraphQLInterface {
                     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                     GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
                     GraphQLField("name", type: .scalar(String.self)),
+                    GraphQLField("details", type: .scalar(String.self)),
                   ]
 
                   public var snapshot: Snapshot
@@ -10592,8 +10653,8 @@ public enum GraphQLInterface {
                     self.snapshot = snapshot
                   }
 
-                  public init(id: GraphQLID, name: String? = nil) {
-                    self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+                  public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+                    self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
                   }
 
                   public var __typename: String {
@@ -10620,6 +10681,15 @@ public enum GraphQLInterface {
                     }
                     set {
                       snapshot.updateValue(newValue, forKey: "name")
+                    }
+                  }
+
+                  public var details: String? {
+                    get {
+                      return snapshot["details"] as? String
+                    }
+                    set {
+                      snapshot.updateValue(newValue, forKey: "details")
                     }
                   }
 
@@ -11350,6 +11420,7 @@ public enum GraphQLInterface {
                     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                     GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
                     GraphQLField("name", type: .scalar(String.self)),
+                    GraphQLField("details", type: .scalar(String.self)),
                   ]
 
                   public var snapshot: Snapshot
@@ -11358,8 +11429,8 @@ public enum GraphQLInterface {
                     self.snapshot = snapshot
                   }
 
-                  public init(id: GraphQLID, name: String? = nil) {
-                    self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+                  public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+                    self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
                   }
 
                   public var __typename: String {
@@ -11386,6 +11457,15 @@ public enum GraphQLInterface {
                     }
                     set {
                       snapshot.updateValue(newValue, forKey: "name")
+                    }
+                  }
+
+                  public var details: String? {
+                    get {
+                      return snapshot["details"] as? String
+                    }
+                    set {
+                      snapshot.updateValue(newValue, forKey: "details")
                     }
                   }
 
@@ -11420,6 +11500,7 @@ public enum GraphQLInterface {
                     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
                     GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
                     GraphQLField("name", type: .scalar(String.self)),
+                    GraphQLField("details", type: .scalar(String.self)),
                   ]
 
                   public var snapshot: Snapshot
@@ -11428,8 +11509,8 @@ public enum GraphQLInterface {
                     self.snapshot = snapshot
                   }
 
-                  public init(id: GraphQLID, name: String? = nil) {
-                    self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+                  public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+                    self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
                   }
 
                   public var __typename: String {
@@ -11456,6 +11537,15 @@ public enum GraphQLInterface {
                     }
                     set {
                       snapshot.updateValue(newValue, forKey: "name")
+                    }
+                  }
+
+                  public var details: String? {
+                    get {
+                      return snapshot["details"] as? String
+                    }
+                    set {
+                      snapshot.updateValue(newValue, forKey: "details")
                     }
                   }
 
@@ -15991,7 +16081,7 @@ public enum GraphQLInterface {
 
   public struct ItemBasicSearchFragment: GraphQLFragment {
     public static let fragmentString =
-      "fragment ItemBasicSearchFragment on ItemBasicSearchType {\n  __typename\n  id\n  name\n}"
+      "fragment ItemBasicSearchFragment on ItemBasicSearchType {\n  __typename\n  id\n  name\n  details\n}"
 
     public static let possibleTypes = ["ItemBasicSearchType"]
 
@@ -15999,6 +16089,7 @@ public enum GraphQLInterface {
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("name", type: .scalar(String.self)),
+      GraphQLField("details", type: .scalar(String.self)),
     ]
 
     public var snapshot: Snapshot
@@ -16007,8 +16098,8 @@ public enum GraphQLInterface {
       self.snapshot = snapshot
     }
 
-    public init(id: GraphQLID, name: String? = nil) {
-      self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+    public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+      self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
     }
 
     public var __typename: String {
@@ -16035,6 +16126,15 @@ public enum GraphQLInterface {
       }
       set {
         snapshot.updateValue(newValue, forKey: "name")
+      }
+    }
+
+    public var details: String? {
+      get {
+        return snapshot["details"] as? String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "details")
       }
     }
   }
@@ -16376,6 +16476,7 @@ public enum GraphQLInterface {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("name", type: .scalar(String.self)),
+        GraphQLField("details", type: .scalar(String.self)),
       ]
 
       public var snapshot: Snapshot
@@ -16384,8 +16485,8 @@ public enum GraphQLInterface {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, name: String? = nil) {
-        self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+      public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+        self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
       }
 
       public var __typename: String {
@@ -16412,6 +16513,15 @@ public enum GraphQLInterface {
         }
         set {
           snapshot.updateValue(newValue, forKey: "name")
+        }
+      }
+
+      public var details: String? {
+        get {
+          return snapshot["details"] as? String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "details")
         }
       }
 
@@ -16446,6 +16556,7 @@ public enum GraphQLInterface {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("name", type: .scalar(String.self)),
+        GraphQLField("details", type: .scalar(String.self)),
       ]
 
       public var snapshot: Snapshot
@@ -16454,8 +16565,8 @@ public enum GraphQLInterface {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, name: String? = nil) {
-        self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+      public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+        self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
       }
 
       public var __typename: String {
@@ -16482,6 +16593,15 @@ public enum GraphQLInterface {
         }
         set {
           snapshot.updateValue(newValue, forKey: "name")
+        }
+      }
+
+      public var details: String? {
+        get {
+          return snapshot["details"] as? String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "details")
         }
       }
 
@@ -16825,6 +16945,7 @@ public enum GraphQLInterface {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("name", type: .scalar(String.self)),
+          GraphQLField("details", type: .scalar(String.self)),
         ]
 
         public var snapshot: Snapshot
@@ -16833,8 +16954,8 @@ public enum GraphQLInterface {
           self.snapshot = snapshot
         }
 
-        public init(id: GraphQLID, name: String? = nil) {
-          self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+        public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+          self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
         }
 
         public var __typename: String {
@@ -16861,6 +16982,15 @@ public enum GraphQLInterface {
           }
           set {
             snapshot.updateValue(newValue, forKey: "name")
+          }
+        }
+
+        public var details: String? {
+          get {
+            return snapshot["details"] as? String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "details")
           }
         }
 
@@ -16895,6 +17025,7 @@ public enum GraphQLInterface {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("name", type: .scalar(String.self)),
+          GraphQLField("details", type: .scalar(String.self)),
         ]
 
         public var snapshot: Snapshot
@@ -16903,8 +17034,8 @@ public enum GraphQLInterface {
           self.snapshot = snapshot
         }
 
-        public init(id: GraphQLID, name: String? = nil) {
-          self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+        public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+          self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
         }
 
         public var __typename: String {
@@ -16931,6 +17062,15 @@ public enum GraphQLInterface {
           }
           set {
             snapshot.updateValue(newValue, forKey: "name")
+          }
+        }
+
+        public var details: String? {
+          get {
+            return snapshot["details"] as? String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "details")
           }
         }
 
@@ -17394,6 +17534,7 @@ public enum GraphQLInterface {
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
             GraphQLField("name", type: .scalar(String.self)),
+            GraphQLField("details", type: .scalar(String.self)),
           ]
 
           public var snapshot: Snapshot
@@ -17402,8 +17543,8 @@ public enum GraphQLInterface {
             self.snapshot = snapshot
           }
 
-          public init(id: GraphQLID, name: String? = nil) {
-            self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+          public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+            self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
           }
 
           public var __typename: String {
@@ -17430,6 +17571,15 @@ public enum GraphQLInterface {
             }
             set {
               snapshot.updateValue(newValue, forKey: "name")
+            }
+          }
+
+          public var details: String? {
+            get {
+              return snapshot["details"] as? String
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "details")
             }
           }
 
@@ -17464,6 +17614,7 @@ public enum GraphQLInterface {
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
             GraphQLField("name", type: .scalar(String.self)),
+            GraphQLField("details", type: .scalar(String.self)),
           ]
 
           public var snapshot: Snapshot
@@ -17472,8 +17623,8 @@ public enum GraphQLInterface {
             self.snapshot = snapshot
           }
 
-          public init(id: GraphQLID, name: String? = nil) {
-            self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name])
+          public init(id: GraphQLID, name: String? = nil, details: String? = nil) {
+            self.init(snapshot: ["__typename": "ItemBasicSearchType", "id": id, "name": name, "details": details])
           }
 
           public var __typename: String {
@@ -17500,6 +17651,15 @@ public enum GraphQLInterface {
             }
             set {
               snapshot.updateValue(newValue, forKey: "name")
+            }
+          }
+
+          public var details: String? {
+            get {
+              return snapshot["details"] as? String
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "details")
             }
           }
 
