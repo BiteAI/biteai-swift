@@ -17,6 +17,7 @@ class ViewController: UIViewController {
   @IBOutlet weak var userStatusLabel: UILabel!
   @IBOutlet weak var userIDLabel: UILabel!
   @IBOutlet weak var tokenLabel: UILabel!
+  @IBOutlet weak var shouldClearUserSwitch: UISwitch!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -41,7 +42,8 @@ class ViewController: UIViewController {
   }
   
   @IBAction func createUser(_ sender: UIButton) {
-    try! BiteAPIClient.createUser() {[weak self] (result, username, error) in
+    try! BiteAPIClient.createUser(removeUser: self.shouldClearUserSwitch.isOn) {
+      [weak self] (result, username, error) in
       guard result == true else {
         DispatchQueue.main.async {
           self?.userStatusLabel.text = "Error creating"

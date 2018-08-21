@@ -481,7 +481,13 @@ public class EntrySummary : BaseEntry {
     
     if entrySummary.nutritionFact != nil {
       self.nutritionFactRef = NutritionFactRef(id: entrySummary.nutritionFact!)
+      // This ensure the ItemSummaries have all the data they can incase clients are depending on
+      // the hasNutritionFacts flag
+      if self.item?.hasNutritionFacts == nil {
+        self.item?.hasNutritionFacts = true
+      }
     }
+    
   }
   
   public init(entryResponse: Dictionary<String, Any>) throws {
@@ -860,6 +866,19 @@ fileprivate class UserKeychainStorage : NSObject {
       throw BiteAIClientError.userKeychainStorageUnknownError(status: secItemStatus)
     }
   }
+  
+  fileprivate class func removeUser(server: String, user: BiteAIUser) throws -> Bool {
+    let query: [String: Any] = [
+      kSecClass as String: UserKeychainStorage.StorageClass,
+      kSecAttrServer as String: server,
+      kSecAttrAccount as String: user.id
+    ]
+    let secItemStatus = SecItemDelete(query as CFDictionary)
+    guard secItemStatus == errSecSuccess || secItemStatus == errSecItemNotFound else {
+      throw BiteAIClientError.userKeychainStorageUnknownError(status: secItemStatus)
+    }
+    return secItemStatus == errSecSuccess
+  }
 }
 
 public class BiteAPIClient {
@@ -945,11 +964,20 @@ public class BiteAPIClient {
     try UserKeychainStorage.setUser(server: BiteAPIClient.getBaseURLHost(), user: user)
   }
   
-  public class func createUser(resultHandler: @escaping UserResultHandler) throws {
+  public class func createUser(removeUser: Bool = false, resultHandler: @escaping UserResultHandler) throws {
     // Ensure there isn't an existing user
-    guard (try? getUser()) == nil else {
-      resultHandler(false, nil, BiteAIClientError.userAlreadyExists)
-      return
+    let server = try BiteAPIClient.getBaseURLHost()
+    
+    let currentUser = try? getUser()
+    if (removeUser) {
+      if (currentUser != nil) {
+        _ = try UserKeychainStorage.removeUser(server: server, user: currentUser!)
+      }
+    } else {
+      guard currentUser == nil else {
+        resultHandler(false, nil, BiteAIClientError.userAlreadyExists)
+        return
+      }
     }
     
     var request = try URLRequest(

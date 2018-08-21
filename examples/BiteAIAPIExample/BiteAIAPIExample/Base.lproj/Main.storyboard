@@ -69,19 +69,31 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6sd-Vd-h1Z">
-                                <rect key="frame" x="6" y="188" width="147" height="30"/>
+                                <rect key="frame" x="6" y="228" width="147" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Restore Existing User"/>
                                 <connections>
                                     <action selector="restoreExistingUser:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8eF-Pc-deA"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" restorationIdentifier="shouldClearUser" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bdo-Sn-kF0">
+                                <rect key="frame" x="137" y="189" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Clear User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ir6-a5-pNH">
+                                <rect key="frame" x="34" y="194" width="95" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Account" id="g5c-vx-2hA"/>
                     <connections>
+                        <outlet property="shouldClearUserSwitch" destination="Bdo-Sn-kF0" id="mfa-bw-WEx"/>
                         <outlet property="tokenLabel" destination="i7t-Fc-cET" id="rvS-sS-rqv"/>
                         <outlet property="userIDLabel" destination="Aa8-Cg-53N" id="kZw-lH-UFP"/>
                         <outlet property="userStatusLabel" destination="5ej-aE-4Zj" id="yYL-LL-W58"/>
