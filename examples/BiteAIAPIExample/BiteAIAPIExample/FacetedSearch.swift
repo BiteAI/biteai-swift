@@ -80,6 +80,11 @@ class FacetedSearch: UITableViewController,  UISearchBarDelegate {
         self?.searchResults.append("Brand - " + brand.name!)
       }
       
+      var entryIterator = result!.recentEntries?.makeIterator()
+      while let entry = entryIterator?.next() {
+        self?.searchResults.append( "Entry - " + (entry.entry.item?.name)!)
+      }
+      
       DispatchQueue.main.async {
         self?.tableView.reloadData()
       }

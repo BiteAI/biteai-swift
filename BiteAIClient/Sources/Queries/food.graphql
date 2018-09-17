@@ -140,6 +140,31 @@ fragment ItemDetailsFragment on ItemNode {
     }
 }
 
+fragment BuilderFragment on BuilderType {
+    ingredients {
+      name
+
+      constraint {
+        required
+        maxCount
+        scales
+      }
+
+      children {
+        ... ItemSummaryFragment
+      }
+    }
+
+    servings {
+      id
+      ratio
+      details
+      unit {
+        ... UnitFragment
+      }
+    }
+}
+
 
 query itemsIdentifierLookup($barcode: String!, $pageSize: Int!) {
   itemsIdentifierLookup(barcode: $barcode, first: $pageSize) {
@@ -157,6 +182,21 @@ query itemsBulkLookup($ids: [ID]!, $pageSize: Int!) {
       node{
         ...ItemDetailsFragment
       }
+    }
+  }
+}
+
+query itemBuilder($itemID: ID!) {
+  itemBuilder(itemId: $itemID) {
+    ... on ErrorsType {
+      errors {
+        field
+        messages
+      }
+    }
+
+    ... on BuilderType {
+      ...BuilderFragment
     }
   }
 }

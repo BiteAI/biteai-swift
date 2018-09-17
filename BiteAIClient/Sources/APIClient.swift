@@ -443,6 +443,64 @@ public class ItemDetails : ItemSummary{
   }
 }
 
+public class ItemBuilderIngredient {
+  public var name: String
+  public var isRequired : Bool
+  public var maxCount: Int?
+  public var scales: Int
+  
+  public var children: [ItemSummary]
+  
+  public init(ingredient: GraphQLInterface.BuilderFragment.Ingredient) {
+    self.name = ingredient.name!
+    self.isRequired = ingredient.constraint!.required!
+    self.maxCount = ingredient.constraint!.maxCount
+    self.scales = ingredient.constraint!.scales!
+    
+    self.children = [ItemSummary]()
+    var childrenIterator = ingredient.children?.makeIterator()
+    while let child = childrenIterator?.next() {
+      self.children.append(ItemSummary(itemSummary: child!.fragments.itemSummaryFragment))
+    }
+  }
+}
+
+public class ItemBuilderServing {
+  public var id: GraphQLID
+  public var ratio: Double
+  public var details: String?
+  public var unit: Unit
+  
+  public init(serving: GraphQLInterface.BuilderFragment.Serving ) {
+    self.id = serving.id
+    self.ratio = serving.ratio!
+    self.details = serving.details
+    self.unit = Unit(unit: serving.unit!.fragments.unitFragment)
+  }
+}
+
+
+public class ItemBuilder {
+  public var ingredients : [ItemBuilderIngredient]
+  public var servings: [ItemBuilderServing]
+  public init(builder: GraphQLInterface.BuilderFragment) {
+    self.ingredients = [ItemBuilderIngredient]()
+    
+    var ingredientIterator = builder.ingredients?.makeIterator()
+    while let ingredient = ingredientIterator?.next() {
+       self.ingredients.append(ItemBuilderIngredient(ingredient: ingredient!))
+    }
+    
+    self.servings = [ItemBuilderServing]()
+    
+    var servingIterator = builder.servings?.makeIterator()
+    while let serving = servingIterator?.next() {
+      self.servings.append(ItemBuilderServing(serving: serving!))
+    }
+  }
+}
+
+
 public class BaseEntry {
   public var id: GraphQLID?
   public var servingAmount: Double?
@@ -481,7 +539,13 @@ public class EntrySummary : BaseEntry {
     
     if entrySummary.nutritionFact != nil {
       self.nutritionFactRef = NutritionFactRef(id: entrySummary.nutritionFact!)
+      // This ensure the ItemSummaries have all the data they can incase clients are depending on
+      // the hasNutritionFacts flag
+      if self.item?.hasNutritionFacts == nil {
+        self.item?.hasNutritionFacts = true
+      }
     }
+    
   }
   
   public init(entryResponse: Dictionary<String, Any>) throws {
@@ -1129,6 +1193,21 @@ public class BiteAPIClient {
     }
   }
   
+  public typealias itemBuilderHandler = (_ result : ItemBuilder?, _ error: Error?) -> Void
+  @discardableResult public func itemBuilder(id: GraphQLID, resultHandler: itemBuilderHandler?) -> Cancellable {
+    return self.apolloClient.fetch(query: GraphQLInterface.ItemBuilderQuery(itemID: id)) {
+      result, error in
+      if resultHandler != nil {
+        guard let builderFragment = result?.data?.itemBuilder?.asBuilderType?.fragments.builderFragment  else {
+          // TODO(vinay): need to handle the error to the call itself not just apollo level ones
+          resultHandler!(nil, error)
+          return
+        }
+        resultHandler!(ItemBuilder(builder: builderFragment), error)
+      }
+    }
+  }
+  
   public typealias itemsIdentifierLookupHandler = (_ result: [ItemSummary]?, _ error: Error?) -> Void
   @discardableResult public func identifierLookup(
     barcode: String,
@@ -1186,6 +1265,7 @@ public class BiteAPIClient {
       }
     }
   }
+  
   public typealias GetMealsHandler = (_ meals: [Meal]?, _ error: Error?) -> Void
   public func getMeals(resultHandler: GetMealsHandler?) -> Cancellable {
     // handle pagination
