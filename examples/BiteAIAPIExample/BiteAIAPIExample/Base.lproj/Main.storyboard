@@ -155,6 +155,64 @@
             </objects>
             <point key="canvasLocation" x="950" y="753"/>
         </scene>
+        <!--Builder-->
+        <scene sceneID="c16-Q3-B7V">
+            <objects>
+                <viewController id="EHo-Lr-jli" customClass="BuilderViewController" customModule="BiteAIAPIExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bOe-LL-ZKQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Item ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZw-Ck-FUb">
+                                <rect key="frame" x="16" y="79" width="59" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tt1-sE-idC">
+                                <rect key="frame" x="16" y="108" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xU-vf-akg">
+                                <rect key="frame" x="16" y="146" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Get Builder"/>
+                                <connections>
+                                    <action selector="onGetBuilder:forEvent:" destination="EHo-Lr-jli" eventType="touchUpInside" id="NYb-WN-LLE"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4Iu-NN-SRf">
+                                <rect key="frame" x="16" y="220" width="343" height="387"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Output" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chH-EM-n6w">
+                                <rect key="frame" x="16" y="197" width="54" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="jbp-L9-Spi"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Builder" id="wTo-jH-CwW"/>
+                    <connections>
+                        <outlet property="itemIDTextField" destination="Tt1-sE-idC" id="whh-5W-JGr"/>
+                        <outlet property="outputTextView" destination="4Iu-NN-SRf" id="k3g-kl-bAg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oHo-ah-ne0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="949.60000000000002" y="1448.7256371814094"/>
+        </scene>
         <!--Meal Copy-->
         <scene sceneID="R7h-5c-VIS">
             <objects>
@@ -384,6 +442,7 @@
                         <segue destination="3vV-Hz-Y0R" kind="relationship" relationship="viewControllers" id="S8l-t0-Go1"/>
                         <segue destination="IFk-Iq-4VK" kind="relationship" relationship="viewControllers" id="O4m-Li-jbl"/>
                         <segue destination="iKa-6M-MJD" kind="relationship" relationship="viewControllers" id="28J-As-pnr"/>
+                        <segue destination="EHo-Lr-jli" kind="relationship" relationship="viewControllers" id="gC7-aI-OWo"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKT-MV-hI5" userLabel="First Responder" sceneMemberID="firstResponder"/>

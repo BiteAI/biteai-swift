@@ -19,6 +19,7 @@
 		0A444A1320A5E5B4003C7B73 /* BiteAIAPIExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A444A1220A5E5B4003C7B73 /* BiteAIAPIExampleTests.swift */; };
 		0A444A1E20A5E5B4003C7B73 /* BiteAIAPIExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A444A1D20A5E5B4003C7B73 /* BiteAIAPIExampleUITests.swift */; };
 		0A464FDB20E18BCF0068478E /* FacetedSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A464FDA20E18BCF0068478E /* FacetedSearch.swift */; };
+		0A58AD982150210F0027401F /* BuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A58AD972150210F0027401F /* BuilderViewController.swift */; };
 		0A5DA5BB20B31483008C7B85 /* MealCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DA5BA20B31483008C7B85 /* MealCreateViewController.swift */; };
 		0A83486E20B67CD800C3D67D /* ItemsSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A83486D20B67CD800C3D67D /* ItemsSearchController.swift */; };
 		0AE140B120A94C6600E7D95D /* BarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE140B020A94C6600E7D95D /* BarcodeViewController.swift */; };
@@ -61,6 +62,7 @@
 		0A444A1D20A5E5B4003C7B73 /* BiteAIAPIExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiteAIAPIExampleUITests.swift; sourceTree = "<group>"; };
 		0A444A1F20A5E5B4003C7B73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A464FDA20E18BCF0068478E /* FacetedSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetedSearch.swift; sourceTree = "<group>"; };
+		0A58AD972150210F0027401F /* BuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderViewController.swift; sourceTree = "<group>"; };
 		0A5DA5BA20B31483008C7B85 /* MealCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealCreateViewController.swift; sourceTree = "<group>"; };
 		0A83486D20B67CD800C3D67D /* ItemsSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsSearchController.swift; sourceTree = "<group>"; };
 		0AE140B020A94C6600E7D95D /* BarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				0A464FDA20E18BCF0068478E /* FacetedSearch.swift */,
 				0A0DAC7A20E30C3000F0D4FA /* MealSuggestionsCollectionViewController.swift */,
 				0A0DAC7C20E3142900F0D4FA /* MealSuggestionCollectionViewCell.swift */,
+				0A58AD972150210F0027401F /* BuilderViewController.swift */,
 			);
 			path = BiteAIAPIExample;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A58AD982150210F0027401F /* BuilderViewController.swift in Sources */,
 				0A0C693320A8DC36007F0156 /* SearchViewController.swift in Sources */,
 				0A5DA5BB20B31483008C7B85 /* MealCreateViewController.swift in Sources */,
 				0A444A0020A5E5B2003C7B73 /* ViewController.swift in Sources */,
