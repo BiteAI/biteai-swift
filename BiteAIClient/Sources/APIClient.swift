@@ -11,6 +11,16 @@ import Alamofire
 import Apollo
 
 
+public class ValidationError: Error{
+  public var field: String
+  public var messages: [String]
+  
+  public init(error: GraphQLInterface.Errors.Error) {
+    self.field = error.field
+    self.messages = error.messages
+  }
+}
+
 public enum BiteAIClientError: Error {
   case clientMisconfigured
   case userNotFound
@@ -29,6 +39,8 @@ public enum BiteAIClientError: Error {
   case entryDecodingError
   case itemDecodingError
   case brandDecodingError
+  case builderError(underlyingErrors: [ValidationError])
+  case builderIngredientMissing(ingredient: ItemBuilderIngredient)
 }
 
 extension GraphQLID {
@@ -481,6 +493,11 @@ public class ItemBuilderServing {
 
 
 public class ItemBuilder {
+  public struct ValidationErrors {
+    public var ingredientsRequired: [ItemBuilderIngredient] = [ItemBuilderIngredient]()
+    public var ingredientsMaxCountExceeded: [ItemBuilderIngredient] = [ItemBuilderIngredient]()
+  }
+  
   public var ingredients : [ItemBuilderIngredient]
   public var servings: [ItemBuilderServing]
   public init(builder: GraphQLInterface.BuilderFragment) {
@@ -497,7 +514,13 @@ public class ItemBuilder {
     while let serving = servingIterator?.next() {
       self.servings.append(ItemBuilderServing(serving: serving!))
     }
-  }
+  }  
+//  public func validateSelections(selectedIngredients:[ItemSummary]) -> (Bool, ValidationErrors) {
+//    for ingredient in self.ingredients {
+//
+//    }
+//    return (true, ValidationErrors())
+//  }
 }
 
 
@@ -1333,9 +1356,10 @@ public class BiteAPIClient {
     }
   }
   
-  public typealias AddEntryToMealHandler = (_ meal: Meal?, _ error: Error?) -> Void
+  public typealias MealHandler = GetMealHandler
+  
   @discardableResult public func addEntryToMeal(mealID: GraphQLID, entry: Entry,
-                             resultHandler: AddEntryToMealHandler?) -> Cancellable {
+                             resultHandler: MealHandler?) -> Cancellable {
     let mutation = GraphQLInterface.AddEntryToMealMutation(
       meal: mealID,
       item: entry.item!.id,
@@ -1357,9 +1381,38 @@ public class BiteAPIClient {
     }
   }
   
-  public typealias DeleteEntryFromMeal = (_ meal: Meal?, _ error: Error?) -> Void
+  @discardableResult public func addEntryToMealFromBuilder(
+    mealID: GraphQLID, itemID: GraphQLID, ingredientIDs: [GraphQLID], servingID: GraphQLID,
+    servingAmount: Double, resultHandler: MealHandler?) -> Cancellable {
+    let mutation = GraphQLInterface.AddEntryToMealFromBuilderMutation(
+      meal: mealID,
+      item: itemID,
+      ingredients: ingredientIDs,
+      serving: servingID,
+      servingAmount: servingAmount)
+    return self.apolloClient.perform(mutation: mutation)  {
+      result, error in
+      guard resultHandler != nil else { return }
+      
+      guard let mealNode = result?.data?.addEntryToMealFromBuilder?.asMealNode else {
+        if result?.data?.addEntryToMealFromBuilder?.asErrorsType != nil {
+          var convertedErrors = [ValidationError]()
+          for anError in result!.data!.addEntryToMealFromBuilder!.asErrorsType!.fragments.errors.errors! {
+            convertedErrors.append(ValidationError(error: anError!))
+          }
+          resultHandler!(nil, BiteAIClientError.builderError(underlyingErrors: convertedErrors))
+        } else {
+          resultHandler!(nil, error)
+        }
+        return
+      }
+      
+      resultHandler!(Meal(meal: mealNode.fragments.mealFragment), nil)
+    }
+  }
+  
   @discardableResult public func deleteEntryFromMeal(mealID: GraphQLID, entryID: GraphQLID,
-                                  resultsHandler: DeleteEntryFromMeal?) -> Cancellable {
+                                  resultsHandler: MealHandler?) -> Cancellable {
     return self.apolloClient.perform(
     mutation: GraphQLInterface.DeleteEntryFromMealMutation(meal: mealID, entry: entryID)) {
       results, error in
@@ -1376,9 +1429,8 @@ public class BiteAPIClient {
     }
   }
   
-  public typealias AddImageToMealHandler = (_ meal: Meal?, _ error: Error?) -> Void
   @discardableResult public func addImageToMeal(mealID: GraphQLID, imageID: GraphQLID,
-                             resultsHandler: AddImageToMealHandler?) -> Cancellable {
+                             resultsHandler: MealHandler?) -> Cancellable {
     return self.apolloClient.perform(
       mutation: GraphQLInterface.AddImageToMealMutation(meal: mealID, image: imageID)) {
         results, error in
@@ -1464,9 +1516,8 @@ public class BiteAPIClient {
     )
   }
   
-  public typealias DeleteImageFromMealHandler = (_ meal: Meal?, _ error: Error?) -> Void
   @discardableResult public func deleteImageMeal(mealID: GraphQLID, imageID: GraphQLID,
-                              resultsHandler: DeleteImageFromMealHandler?)  -> Cancellable {
+                              resultsHandler: MealHandler?)  -> Cancellable {
     return self.apolloClient.perform(mutation: GraphQLInterface.DeleteImageFromMealMutation(
     meal: mealID, image: imageID)) {
       results, error in
