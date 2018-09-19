@@ -122,3 +122,18 @@ mutation deleteImageFromMeal($meal: ID!, $image: ID!) {
     }
   }
 }
+
+
+mutation addEntryToMealFromBuilder($meal: ID!, $item: ID!, $ingredients: [ID!]!, $serving: ID!,
+  $servingAmount: Float!) {
+  addEntryToMealFromBuilder(input: {meal: $meal, item: $item, ingredients: $ingredients,
+    serving: $serving, amount: $servingAmount}) {
+    ... on ErrorsType {
+      ...Errors
+    }
+
+    ... on MealNode {
+      ...MealFragment
+    }
+  }
+}
