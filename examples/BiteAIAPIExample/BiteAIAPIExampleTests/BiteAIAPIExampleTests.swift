@@ -31,6 +31,36 @@ class BiteAIExampleMealTests : XCTestCase {
     }
   }
   
+  func testCreateMealImage() {
+    let client = try! BiteAPIClient.shared()
+    let expectation = self.expectation(description: "meal with image")
+    var meal = Meal()
+    let testImage = UIImage(named: "TestImage")
+    let data = UIImageJPEGRepresentation(testImage!, 0.7)
+    
+    var outputMeal: Meal? = nil
+    
+    client.createOrUpdateMeal(meal: meal) {
+      mealID, error in
+      XCTAssertNotNil(mealID)
+      meal.id = mealID
+      try! client.addImageToMealByData(mealID: meal.id!, image: data!, imageType: ImageType.JPEG) {
+        mealSuggestions, erorr in
+        client.getMeal(id: meal.id!) {
+          retrievedMeal, error in
+          XCTAssertNotNil(retrievedMeal)
+          outputMeal   = retrievedMeal
+          expectation.fulfill()
+        }
+      }
+    }
+    
+    waitForExpectations(timeout: self.TimeOut, handler: nil)
+    XCTAssertNotNil(outputMeal)
+    XCTAssertNotNil(outputMeal?.images.count)
+    XCTAssertEqual(outputMeal?.images.count, 1)    
+  }
+  
   func testGetBuilder() {
     let client = try! BiteAPIClient.shared()
     let expectation = self.expectation(description: "get builder")

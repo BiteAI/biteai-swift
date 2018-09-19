@@ -1312,7 +1312,7 @@ public class BiteAPIClient {
   }
   
   public typealias GetMealsHandler = (_ meals: [Meal]?, _ error: Error?) -> Void
-  public func getMeals(resultHandler: GetMealsHandler?) -> Cancellable {
+  @discardableResult public func getMeals(resultHandler: GetMealsHandler?) -> Cancellable {
     // handle pagination
     return self.apolloClient.fetch(
       query: GraphQLInterface.AllMealsQuery(first: 30),
@@ -1342,7 +1342,7 @@ public class BiteAPIClient {
   }
   
   public typealias GetMealHandler = (_ meal: Meal?, _ error: Error?) -> Void
-  public func getMeal(id: GraphQLID!, resultHandler: GetMealHandler?) -> Cancellable {
+  @discardableResult public func getMeal(id: GraphQLID!, resultHandler: GetMealHandler?) -> Cancellable {
     return self.apolloClient.fetch(query: GraphQLInterface.GetMealQuery(id: id)) {
       results, error in
       guard resultHandler != nil else {
