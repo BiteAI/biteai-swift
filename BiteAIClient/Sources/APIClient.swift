@@ -324,6 +324,8 @@ public class  ItemSummary {
   public var children: [ItemSummary]
   public var childrenCount: Int?
   public var hasNutritionFacts: Bool?
+  public var hasBuilder: Bool?
+  
   public init() {
     self.parents = [ItemSummary]()
     self.children = [ItemSummary]()
@@ -345,7 +347,7 @@ public class  ItemSummary {
     self.isGeneric = itemSummary.isGeneric
     self.brand = itemSummary.brand != nil ?
       Brand(brand: itemSummary.brand!.fragments.brandFragment) :
-    nil
+      nil
   }
   
   convenience init(itemDetails: GraphQLInterface.ItemDetailsFragment) {
@@ -390,6 +392,8 @@ public class  ItemSummary {
     self.childrenCount = itemSummary.childrenCount
     
     self.hasNutritionFacts = itemSummary.hasNutritionFacts
+    
+    self.hasBuilder = itemSummary.hasBuilder
   }
   
   convenience init(itemResponse: Dictionary<String, Any>) throws {
