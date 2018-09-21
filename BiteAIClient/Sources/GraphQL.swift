@@ -10661,6 +10661,7 @@ public enum GraphQLInterface {
             GraphQLField("details", type: .scalar(String.self)),
             GraphQLField("isGeneric", type: .scalar(Bool.self)),
             GraphQLField("hasNutritionFacts", type: .scalar(Bool.self)),
+            GraphQLField("hasBuilder", type: .scalar(Bool.self)),
             GraphQLField("childrenCount", type: .scalar(Int.self)),
             GraphQLField("parents", type: .list(.object(Parent.selections))),
             GraphQLField("children", type: .list(.object(Child.selections))),
@@ -10672,8 +10673,8 @@ public enum GraphQLInterface {
             self.snapshot = snapshot
           }
 
-          public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-            self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
+          public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, hasBuilder: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
+            self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "hasBuilder": hasBuilder, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -10736,6 +10737,15 @@ public enum GraphQLInterface {
             }
             set {
               snapshot.updateValue(newValue, forKey: "hasNutritionFacts")
+            }
+          }
+
+          public var hasBuilder: Bool? {
+            get {
+              return snapshot["hasBuilder"] as? Bool
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "hasBuilder")
             }
           }
 
@@ -11397,6 +11407,7 @@ public enum GraphQLInterface {
             GraphQLField("details", type: .scalar(String.self)),
             GraphQLField("isGeneric", type: .scalar(Bool.self)),
             GraphQLField("hasNutritionFacts", type: .scalar(Bool.self)),
+            GraphQLField("hasBuilder", type: .scalar(Bool.self)),
             GraphQLField("childrenCount", type: .scalar(Int.self)),
             GraphQLField("parents", type: .list(.object(Parent.selections))),
             GraphQLField("children", type: .list(.object(Child.selections))),
@@ -11408,8 +11419,8 @@ public enum GraphQLInterface {
             self.snapshot = snapshot
           }
 
-          public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-            self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
+          public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, hasBuilder: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
+            self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "hasBuilder": hasBuilder, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
           }
 
           public var __typename: String {
@@ -11472,6 +11483,15 @@ public enum GraphQLInterface {
             }
             set {
               snapshot.updateValue(newValue, forKey: "hasNutritionFacts")
+            }
+          }
+
+          public var hasBuilder: Bool? {
+            get {
+              return snapshot["hasBuilder"] as? Bool
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "hasBuilder")
             }
           }
 
@@ -12058,6 +12078,7 @@ public enum GraphQLInterface {
                   GraphQLField("details", type: .scalar(String.self)),
                   GraphQLField("isGeneric", type: .scalar(Bool.self)),
                   GraphQLField("hasNutritionFacts", type: .scalar(Bool.self)),
+                  GraphQLField("hasBuilder", type: .scalar(Bool.self)),
                   GraphQLField("childrenCount", type: .scalar(Int.self)),
                   GraphQLField("parents", type: .list(.object(Parent.selections))),
                   GraphQLField("children", type: .list(.object(Child.selections))),
@@ -12069,8 +12090,8 @@ public enum GraphQLInterface {
                   self.snapshot = snapshot
                 }
 
-                public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-                  self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
+                public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, hasBuilder: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
+                  self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "hasBuilder": hasBuilder, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
                 }
 
                 public var __typename: String {
@@ -12133,6 +12154,15 @@ public enum GraphQLInterface {
                   }
                   set {
                     snapshot.updateValue(newValue, forKey: "hasNutritionFacts")
+                  }
+                }
+
+                public var hasBuilder: Bool? {
+                  get {
+                    return snapshot["hasBuilder"] as? Bool
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "hasBuilder")
                   }
                 }
 
@@ -12914,6 +12944,7 @@ public enum GraphQLInterface {
                   GraphQLField("details", type: .scalar(String.self)),
                   GraphQLField("isGeneric", type: .scalar(Bool.self)),
                   GraphQLField("hasNutritionFacts", type: .scalar(Bool.self)),
+                  GraphQLField("hasBuilder", type: .scalar(Bool.self)),
                   GraphQLField("childrenCount", type: .scalar(Int.self)),
                   GraphQLField("parents", type: .list(.object(Parent.selections))),
                   GraphQLField("children", type: .list(.object(Child.selections))),
@@ -12925,8 +12956,8 @@ public enum GraphQLInterface {
                   self.snapshot = snapshot
                 }
 
-                public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-                  self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
+                public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, hasBuilder: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
+                  self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "hasBuilder": hasBuilder, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
                 }
 
                 public var __typename: String {
@@ -12989,6 +13020,15 @@ public enum GraphQLInterface {
                   }
                   set {
                     snapshot.updateValue(newValue, forKey: "hasNutritionFacts")
+                  }
+                }
+
+                public var hasBuilder: Bool? {
+                  get {
+                    return snapshot["hasBuilder"] as? Bool
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "hasBuilder")
                   }
                 }
 
@@ -18506,7 +18546,7 @@ public enum GraphQLInterface {
 
   public struct ItemSummarySearchFragment: GraphQLFragment {
     public static let fragmentString =
-      "fragment ItemSummarySearchFragment on ItemSummarySearchType {\n  __typename\n  id\n  name\n  brand {\n    __typename\n    ...BrandSummarySearchFragment\n  }\n  details\n  isGeneric\n  hasNutritionFacts\n  childrenCount\n  parents {\n    __typename\n    ...ItemBasicSearchFragment\n  }\n  children {\n    __typename\n    ...ItemBasicSearchFragment\n  }\n}"
+      "fragment ItemSummarySearchFragment on ItemSummarySearchType {\n  __typename\n  id\n  name\n  brand {\n    __typename\n    ...BrandSummarySearchFragment\n  }\n  details\n  isGeneric\n  hasNutritionFacts\n  hasBuilder\n  childrenCount\n  parents {\n    __typename\n    ...ItemBasicSearchFragment\n  }\n  children {\n    __typename\n    ...ItemBasicSearchFragment\n  }\n}"
 
     public static let possibleTypes = ["ItemSummarySearchType"]
 
@@ -18518,6 +18558,7 @@ public enum GraphQLInterface {
       GraphQLField("details", type: .scalar(String.self)),
       GraphQLField("isGeneric", type: .scalar(Bool.self)),
       GraphQLField("hasNutritionFacts", type: .scalar(Bool.self)),
+      GraphQLField("hasBuilder", type: .scalar(Bool.self)),
       GraphQLField("childrenCount", type: .scalar(Int.self)),
       GraphQLField("parents", type: .list(.object(Parent.selections))),
       GraphQLField("children", type: .list(.object(Child.selections))),
@@ -18529,8 +18570,8 @@ public enum GraphQLInterface {
       self.snapshot = snapshot
     }
 
-    public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-      self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
+    public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, hasBuilder: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
+      self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "hasBuilder": hasBuilder, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
     }
 
     public var __typename: String {
@@ -18593,6 +18634,15 @@ public enum GraphQLInterface {
       }
       set {
         snapshot.updateValue(newValue, forKey: "hasNutritionFacts")
+      }
+    }
+
+    public var hasBuilder: Bool? {
+      get {
+        return snapshot["hasBuilder"] as? Bool
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "hasBuilder")
       }
     }
 
@@ -18965,6 +19015,7 @@ public enum GraphQLInterface {
         GraphQLField("details", type: .scalar(String.self)),
         GraphQLField("isGeneric", type: .scalar(Bool.self)),
         GraphQLField("hasNutritionFacts", type: .scalar(Bool.self)),
+        GraphQLField("hasBuilder", type: .scalar(Bool.self)),
         GraphQLField("childrenCount", type: .scalar(Int.self)),
         GraphQLField("parents", type: .list(.object(Parent.selections))),
         GraphQLField("children", type: .list(.object(Child.selections))),
@@ -18976,8 +19027,8 @@ public enum GraphQLInterface {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-        self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
+      public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, hasBuilder: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
+        self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "hasBuilder": hasBuilder, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
       }
 
       public var __typename: String {
@@ -19040,6 +19091,15 @@ public enum GraphQLInterface {
         }
         set {
           snapshot.updateValue(newValue, forKey: "hasNutritionFacts")
+        }
+      }
+
+      public var hasBuilder: Bool? {
+        get {
+          return snapshot["hasBuilder"] as? Bool
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "hasBuilder")
         }
       }
 
@@ -19554,6 +19614,7 @@ public enum GraphQLInterface {
           GraphQLField("details", type: .scalar(String.self)),
           GraphQLField("isGeneric", type: .scalar(Bool.self)),
           GraphQLField("hasNutritionFacts", type: .scalar(Bool.self)),
+          GraphQLField("hasBuilder", type: .scalar(Bool.self)),
           GraphQLField("childrenCount", type: .scalar(Int.self)),
           GraphQLField("parents", type: .list(.object(Parent.selections))),
           GraphQLField("children", type: .list(.object(Child.selections))),
@@ -19565,8 +19626,8 @@ public enum GraphQLInterface {
           self.snapshot = snapshot
         }
 
-        public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
-          self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
+        public init(id: GraphQLID, name: String? = nil, brand: Brand? = nil, details: String? = nil, isGeneric: Bool? = nil, hasNutritionFacts: Bool? = nil, hasBuilder: Bool? = nil, childrenCount: Int? = nil, parents: [Parent?]? = nil, children: [Child?]? = nil) {
+          self.init(snapshot: ["__typename": "ItemSummarySearchType", "id": id, "name": name, "brand": brand.flatMap { (value: Brand) -> Snapshot in value.snapshot }, "details": details, "isGeneric": isGeneric, "hasNutritionFacts": hasNutritionFacts, "hasBuilder": hasBuilder, "childrenCount": childrenCount, "parents": parents.flatMap { (value: [Parent?]) -> [Snapshot?] in value.map { (value: Parent?) -> Snapshot? in value.flatMap { (value: Parent) -> Snapshot in value.snapshot } } }, "children": children.flatMap { (value: [Child?]) -> [Snapshot?] in value.map { (value: Child?) -> Snapshot? in value.flatMap { (value: Child) -> Snapshot in value.snapshot } } }])
         }
 
         public var __typename: String {
@@ -19629,6 +19690,15 @@ public enum GraphQLInterface {
           }
           set {
             snapshot.updateValue(newValue, forKey: "hasNutritionFacts")
+          }
+        }
+
+        public var hasBuilder: Bool? {
+          get {
+            return snapshot["hasBuilder"] as? Bool
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "hasBuilder")
           }
         }
 

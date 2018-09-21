@@ -10,14 +10,9 @@ import XCTest
 import BiteAIClient
 @testable import BiteAIAPIExample
 
+let ExpectationTimeOut = 60.0
 
-class BiteAIExampleMealTests : XCTestCase {
-  let PizzaItemID = "SXRlbU5vZGU6MDY1ZTRkMDMtODQ1YS00MzM1LWI1OGUtYjQxNDA0ZWZlNWJi"
-  let PizzaThinCrust = "SXRlbU5vZGU6N2Y2NmJkZDYtOWQxMC00YzJiLTgxNDUtOWIxMmZlMTk1ZDM0"
-  let PizzaLargeSliceServing = "QnVpbGRlclNlcnZpbmdTaXplVHlwZTo1YmNjZDQyYi05YWQyLTQ5OTctYWY0MC03ZDJkNTZiOTE2ODQ="
-  
-  let TimeOut = 60.0
-  
+class BiteAIExampleBaseTests : XCTestCase {
   override func setUp() {
     super.setUp()
     if (!BiteAPIClient.userExists()) {
@@ -27,14 +22,40 @@ class BiteAIExampleMealTests : XCTestCase {
         XCTAssert(success)
         expectation.fulfill()
       }
-      waitForExpectations(timeout: self.TimeOut, handler: nil)
+      waitForExpectations(timeout: ExpectationTimeOut, handler: nil)
     }
   }
+}
+
+class BiteAIExamplesSearchTests : BiteAIExampleBaseTests {
+  func testItemSearchHasBuilder() {
+    let client = try! BiteAPIClient.shared()
+    let expectation = self.expectation(description: "item search query")
+    client.itemsSearch(query: "Pizza") {
+      result, error in
+      XCTAssertNotNil(result)
+      XCTAssertNotNil(result?.items)
+      
+      for item in (result?.items)! {
+        XCTAssertNotNil(item.hasBuilder)
+      }
+      
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: ExpectationTimeOut, handler: nil)
+  }
   
+}
+
+class BiteAIExampleMealTests : BiteAIExampleBaseTests {
+  let PizzaItemID = "SXRlbU5vZGU6MDY1ZTRkMDMtODQ1YS00MzM1LWI1OGUtYjQxNDA0ZWZlNWJi"
+  let PizzaThinCrust = "SXRlbU5vZGU6N2Y2NmJkZDYtOWQxMC00YzJiLTgxNDUtOWIxMmZlMTk1ZDM0"
+  let PizzaLargeSliceServing = "QnVpbGRlclNlcnZpbmdTaXplVHlwZTo1YmNjZDQyYi05YWQyLTQ5OTctYWY0MC03ZDJkNTZiOTE2ODQ="
+
   func testCreateMealImage() {
     let client = try! BiteAPIClient.shared()
     let expectation = self.expectation(description: "meal with image")
-    var meal = Meal()
+    let meal = Meal()
     let testImage = UIImage(named: "TestImage")
     let data = UIImageJPEGRepresentation(testImage!, 0.7)
     
@@ -55,7 +76,7 @@ class BiteAIExampleMealTests : XCTestCase {
       }
     }
     
-    waitForExpectations(timeout: self.TimeOut, handler: nil)
+    waitForExpectations(timeout: ExpectationTimeOut, handler: nil)
     XCTAssertNotNil(outputMeal)
     XCTAssertNotNil(outputMeal?.images.count)
     XCTAssertEqual(outputMeal?.images.count, 1)    
@@ -72,7 +93,7 @@ class BiteAIExampleMealTests : XCTestCase {
       builder = result
       expectation.fulfill()
     }
-    waitForExpectations(timeout: self.TimeOut, handler: nil)
+    waitForExpectations(timeout: ExpectationTimeOut, handler: nil)
     XCTAssertGreaterThan(builder!.ingredients.count, 0)
   }
   
@@ -96,7 +117,7 @@ class BiteAIExampleMealTests : XCTestCase {
       }
     }
     
-    waitForExpectations(timeout: self.TimeOut, handler: nil)
+    waitForExpectations(timeout: ExpectationTimeOut, handler: nil)
     XCTAssertGreaterThan(newMeal.entries.count, 0)
     let entry = newMeal.entries[0]
     let item = entry.item
