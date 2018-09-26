@@ -1364,8 +1364,33 @@ public class BiteAPIClient {
   
   @discardableResult public func addEntryToMeal(mealID: GraphQLID, entry: Entry,
                              resultHandler: MealHandler?) -> Cancellable {
-    let mutation = GraphQLInterface.AddEntryToMealMutation(
+
+    let mutation = GraphQLInterface.AddOrUpdateEntryToMealMutation(
       meal: mealID,
+      item: entry.item!.id,
+      nutritionFact: entry.nutritionFactRef?.id,
+      image: entry.image?.id,
+      servingAmount: entry.servingAmount)
+    
+    return self.apolloClient.perform(mutation: mutation) {
+      results, error in
+      guard resultHandler != nil else {
+        return
+      }
+      guard results?.data?.addOrUpdateEntryToMeal?.asErrorsType == nil,
+        let mealNode = results?.data?.addOrUpdateEntryToMeal?.asMealNode else {
+          resultHandler!(nil, error)
+          return
+      }
+      resultHandler!(Meal(meal: mealNode.fragments.mealFragment), error)
+    }
+  }
+  
+  @discardableResult public func updateEntryToMeal(mealID: GraphQLID, entry: Entry,
+                                                resultHandler: MealHandler?) -> Cancellable {
+    let mutation = GraphQLInterface.AddOrUpdateEntryToMealMutation(
+      meal: mealID,
+      id: entry.id,
       item: entry.item!.id,
       nutritionFact: entry.nutritionFactRef?.id,
       image: entry.image?.id,

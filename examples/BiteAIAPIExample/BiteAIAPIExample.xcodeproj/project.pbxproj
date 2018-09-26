@@ -110,6 +110,7 @@
 			children = (
 				0A4449FC20A5E5B2003C7B73 /* BiteAIAPIExample */,
 				0A444A1120A5E5B4003C7B73 /* BiteAIAPIExampleTests */,
+				0A444A1C20A5E5B4003C7B73 /* BiteAIAPIExampleUITests */,
 				0A4449FB20A5E5B2003C7B73 /* Products */,
 				4D12BD9D78F912B2DDE822A0 /* Pods */,
 				CEA44D65D3D694AA7FE2C076 /* Frameworks */,
@@ -136,7 +137,6 @@
 				0A444A0420A5E5B3003C7B73 /* Assets.xcassets */,
 				0A444A0620A5E5B3003C7B73 /* LaunchScreen.storyboard */,
 				0A444A0920A5E5B3003C7B73 /* Info.plist */,
-				0A444A1C20A5E5B4003C7B73 /* BiteAIAPIExampleUITests */,
 				0AE140B020A94C6600E7D95D /* BarcodeViewController.swift */,
 				0A5DA5BA20B31483008C7B85 /* MealCreateViewController.swift */,
 				0A83486D20B67CD800C3D67D /* ItemsSearchController.swift */,
