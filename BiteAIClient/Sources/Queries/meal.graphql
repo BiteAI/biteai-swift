@@ -73,7 +73,7 @@ query getMeal($id: ID!) {
   }
 }
 
-mutation addEntryToMeal($meal: ID!, $id: ID, $item: ID,
+mutation addOrUpdateEntryToMeal($meal: ID!, $id: ID, $item: ID,
 $nutritionFact: ID, $image: ID, $servingAmount: Float) {
 addOrUpdateEntryToMeal(input: {meal: $meal, id: $id, item: $item,
   nutritionFact: $nutritionFact, image:  $image,

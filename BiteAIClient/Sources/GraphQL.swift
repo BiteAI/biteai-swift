@@ -5650,9 +5650,9 @@ public enum GraphQLInterface {
     }
   }
 
-  public final class AddEntryToMealMutation: GraphQLMutation {
+  public final class AddOrUpdateEntryToMealMutation: GraphQLMutation {
     public static let operationString =
-      "mutation addEntryToMeal($meal: ID!, $id: ID, $item: ID, $nutritionFact: ID, $image: ID, $servingAmount: Float) {\n  addOrUpdateEntryToMeal(input: {meal: $meal, id: $id, item: $item, nutritionFact: $nutritionFact, image: $image, servingAmount: $servingAmount}) {\n    __typename\n    ... on ErrorsType {\n      ...Errors\n    }\n    ... on MealNode {\n      ...MealFragment\n    }\n  }\n}"
+      "mutation addOrUpdateEntryToMeal($meal: ID!, $id: ID, $item: ID, $nutritionFact: ID, $image: ID, $servingAmount: Float) {\n  addOrUpdateEntryToMeal(input: {meal: $meal, id: $id, item: $item, nutritionFact: $nutritionFact, image: $image, servingAmount: $servingAmount}) {\n    __typename\n    ... on ErrorsType {\n      ...Errors\n    }\n    ... on MealNode {\n      ...MealFragment\n    }\n  }\n}"
 
     public static var requestString: String { return operationString.appending(Errors.fragmentString).appending(MealFragment.fragmentString).appending(EntryFragment.fragmentString).appending(ItemSummaryFragment.fragmentString).appending(BrandFragment.fragmentString).appending(ImageFragment.fragmentString).appending(NutritionFactRefFragment.fragmentString) }
 
