@@ -21,6 +21,19 @@ public class ValidationError: Error{
   }
 }
 
+public class ImageUploadCancellable : Cancellable {
+  public var isCancelled: Bool = false
+  public var uploadRequest: UploadRequest? = nil
+  
+  public func cancel() {
+    if (!self.isCancelled) {
+      self.isCancelled = true
+      self.uploadRequest?.cancel()
+    }
+  }
+}
+
+
 public enum BiteAIClientError: Error {
   case clientMisconfigured
   case userNotFound
@@ -41,6 +54,7 @@ public enum BiteAIClientError: Error {
   case brandDecodingError
   case builderError(underlyingErrors: [ValidationError])
   case builderIngredientMissing(ingredient: ItemBuilderIngredient)
+  case requestCancelledByUser
 }
 
 extension GraphQLID {
@@ -1480,8 +1494,9 @@ public class BiteAPIClient {
   // TODO(vinay): Add a way to have a thumbnail and a large image. The thumbnail gets sent first
   // and the large image gets sent later
   public typealias ImageSuggestionHandler = (_ mealImageSuggestions: MealImageSuggestions?, _ error: Error?) -> Void
+  @discardableResult
   public func addImageToMealByData(mealID: GraphQLID, image: Data, imageType: ImageType,
-                             resultsHandler: ImageSuggestionHandler?) throws {
+                                   resultsHandler: ImageSuggestionHandler?) throws -> Cancellable {
     guard let decodeTuple = mealID.decodeTypeUUID() else {
         throw BiteAIClientError.badID
     }
@@ -1495,7 +1510,8 @@ public class BiteAPIClient {
       "Authorization": "Bearer \(user.token)",
       "Content-type": "multipart/form-data"
     ]
-    Alamofire.upload(
+    let cancellable = ImageUploadCancellable()
+     Alamofire.upload(
       multipartFormData: {
         (multipartFromData) in
         multipartFromData.append(
@@ -1508,9 +1524,16 @@ public class BiteAPIClient {
       headers: headers,
       encodingCompletion: {
         (encodingResult) in
+        // If the upload was cancelled before encoding finished then return an error
+        guard !cancellable.isCancelled  else {
+          if resultsHandler != nil {
+            resultsHandler!(nil, BiteAIClientError.requestCancelledByUser)
+          }
+          return
+        }
         switch encodingResult {
         case .success(let request, _, _) :
-          request.responseJSON {
+          cancellable.uploadRequest = request.responseJSON {
             response in
             if resultsHandler != nil {
               switch response.result {
@@ -1543,6 +1566,7 @@ public class BiteAPIClient {
         }
       }
     )
+    return cancellable
   }
   
   @discardableResult public func deleteImageMeal(mealID: GraphQLID, imageID: GraphQLID,
