@@ -8,7 +8,7 @@
 
 import UIKit
 import BiteAIClient
-
+import Apollo
 
 class MealCreateViewController: UIViewController {
 
@@ -17,6 +17,7 @@ class MealCreateViewController: UIViewController {
   @IBOutlet weak var entryOutput: UILabel!
   @IBOutlet weak var imageLabelOutput: UILabel!
   
+  private var imageUploadCancellable: Cancellable?
   override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -61,11 +62,12 @@ class MealCreateViewController: UIViewController {
     let data = UIImageJPEGRepresentation(testImage!, 0.7)
     if self.mealInfoLabel?.text != nil  {
       let client = try! BiteAPIClient.shared()
-      try! client.addImageToMealByData(
+      self.imageUploadCancellable = try! client.addImageToMealByData(
         mealID: self.mealInfoLabel.text!,
         image: data!,
         imageType: ImageType.JPEG) {
           [weak self] mealImageSuggestions, error in
+          self?.imageUploadCancellable = nil
           if error != nil {
             self?.imageLabelOutput.text =  error?.localizedDescription
           } else {
@@ -81,6 +83,14 @@ class MealCreateViewController: UIViewController {
       }
     }
   }
+  
+  @IBAction func onCancel(_ sender: Any, forEvent event: UIEvent) {
+    if self.imageUploadCancellable != nil {
+      self.imageUploadCancellable!.cancel()
+      print("Cancelled")
+    }
+  }
+
   /*
     // MARK: - Navigation
 
