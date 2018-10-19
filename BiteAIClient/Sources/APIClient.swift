@@ -1045,16 +1045,9 @@ fileprivate class UserKeychainStorage : NSObject {
       secData[kSecAttrLabel as String] =  user.username!
     }    
     
-    var secItemStatus = SecItemAdd(secData as CFDictionary, nil)
-    if (secItemStatus == errSecDuplicateKeychain) {
-      let updateQuery: [String: Any] = [
-        kSecClass as String: UserKeychainStorage.StorageClass,
-        kSecAttrServer as String: server
-      ]
-      secData.removeValue(forKey: kSecClass as String)
-      secData.removeValue(forKey: kSecAttrServer as String)
-      
-      secItemStatus = SecItemUpdate(updateQuery as CFDictionary, secData as CFDictionary)
+    let secItemStatus = SecItemAdd(secData as CFDictionary, nil)
+    if (secItemStatus == errSecDuplicateItem) {
+      throw BiteAIClientError.userAlreadyExists
     }
     
     guard secItemStatus == errSecSuccess else {
@@ -1163,14 +1156,24 @@ public class BiteAPIClient {
     try UserKeychainStorage.setUser(server: BiteAPIClient.getBaseURLHost(), user: user)
   }
   
+  private class func removeUser(user: BiteAIUser, server: String? ) throws {
+    _ = try UserKeychainStorage.removeUser(
+      server: server == nil ? try BiteAPIClient.getBaseURLHost() : server!,
+      user: user)
+  }
+  
   public class func createUser(removeUser: Bool = false, resultHandler: @escaping UserResultHandler) throws {
-    // Ensure there isn't an existing user
     let server = try BiteAPIClient.getBaseURLHost()
-    
     let currentUser = try? getUser()
     if (removeUser) {
-      if (currentUser != nil) {
-        _ = try UserKeychainStorage.removeUser(server: server, user: currentUser!)
+      do {
+        try BiteAPIClient.removeUser(user: currentUser!, server: server)
+      } catch BiteAIClientError.userKeychainStorageUnknownError(let status) {
+        resultHandler(
+          false,
+          currentUser!.username,
+          BiteAIClientError.userKeychainStorageUnknownError(status: status))
+        return
       }
     } else {
       guard currentUser == nil else {
@@ -1250,9 +1253,13 @@ public class BiteAPIClient {
           )
           return
         }
-        
+
         do {
-            try BiteAPIClient.storeUser(user: user)
+          let currentUser = try? getUser()
+          if (currentUser != nil) {
+            try BiteAPIClient.removeUser(user: currentUser!, server: nil)
+          }
+          try BiteAPIClient.storeUser(user: user)
         } catch let storageError {
           let storageErrorConverted = storageError as? BiteAIClientError
           resultHandler(false, nil, storageErrorConverted)
@@ -1767,8 +1774,10 @@ public class BiteAPIClient {
   @discardableResult public func mealSuggestions(localDateTime: Date?, resultsHandler: MealSuggestionsHandler?) -> Cancellable {
     let localDateStr = MealDateFormatter.shared().localDateTimeFormatter.string(
       from: localDateTime ?? Date())
+    
     return self.apolloClient.fetch(
-    query: GraphQLInterface.MealSuggestionsQuery(localDateTime: localDateStr)) {
+      query: GraphQLInterface.MealSuggestionsQuery(localDateTime: localDateStr),
+      cachePolicy: CachePolicy.fetchIgnoringCacheData) {
       results, error in
       guard results != nil else {
         return
