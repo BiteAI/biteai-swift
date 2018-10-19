@@ -11,6 +11,6 @@ iOS Client for the Bite API
 # iOS Setup
 1. Introspect Schema to file, `schema.json`
      ```
-     apollo-codegen introspect-schema "https://api-beta..bite.ai/graphql" --header "Authorization: Bearer [insert_token]" --output schema.json
+     apollo-codegen introspect-schema "https://api-beta.bite.ai/graphql" --header "Authorization: Bearer [insert_token]" --output schema.json
      ```
 

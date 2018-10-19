@@ -73,6 +73,14 @@ query itemsSearch($query: String!, $hasNutritionFacts: Boolean) {
   }
 }
 
+query unitSearch($query: String!) {
+    unitSearch(query: $query) {
+        units {
+          ...UnitFragment
+        }
+    }
+	}
+
 query searchAutocomplete($query: String!) {
     searchAutocomplete(query: $query) {
         brands {

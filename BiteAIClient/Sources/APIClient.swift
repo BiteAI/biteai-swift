@@ -145,6 +145,19 @@ public struct Unit {
   }
 }
 
+extension GraphQLInterface.UnitCreateMutationInput {
+  public init(_ unit: Unit) {
+    self.graphQLMap = GraphQLMap()
+    
+    self.singularName = unit.singularName
+    self.abbreviatedSingularName = unit.abbreviatedSingularName
+    self.pluralName = unit.pluralName
+    self.abbreviatedPluralName = unit.abbreviatedPluralName
+    self.details = unit.details
+    self.granularity = unit.granulairty
+  }
+}
+
 public struct Serving {
   public var grams: Double?
   public var amount: Double?
@@ -192,12 +205,12 @@ public struct NutritionFact {
   public var transFat: Double?
   public var totalCarb: Double?
   public var sugars: Double?
-  public var  fiber: Double?
-  public var  protein: Double?
+  public var fiber: Double?
+  public var protein: Double?
   public var cholesterol: Double?
   public var sodium: Double?
   public var potassium: Double?
-  public var  calcium: Double?
+  public var calcium: Double?
   public var iron: Double?
   public var magnesium: Double?
   public var phosphorus: Double?
@@ -231,7 +244,7 @@ public struct NutritionFact {
   public var alcohol: Double?
   public var addedSugars: Double?
   public var omega3: Double?
-  public var  omega6: Double?
+  public var omega6: Double?
   public var theobromine: Double?
   public var luteinZeaxanthin: Double?
   
@@ -291,6 +304,82 @@ public struct NutritionFact {
     if nutritionFact.serving != nil {
       self.serving =  Serving(serving: nutritionFact.serving!.fragments.servingFragment)
     }
+  }
+}
+
+extension GraphQLInterface.NutritionSerializerMutationInput {
+  init(nutritionFact: NutritionFact) {
+    self.graphQLMap = GraphQLMap()
+    self.calories = nutritionFact.calories
+    self.totalFat = nutritionFact.totalFat
+    self.saturatedFat = nutritionFact.saturatedFat
+    self.monounsaturatedFat = nutritionFact.monounsaturatedFat
+    self.polyunsaturatedFat = nutritionFact.polyunsaturatedFat
+    self.transFat = nutritionFact.transFat
+    self.totalCarb = nutritionFact.totalCarb
+    self.sugars = nutritionFact.sugars
+    self.fiber = nutritionFact.fiber
+    self.protein = nutritionFact.protein
+    self.cholesterol = nutritionFact.cholesterol
+    self.sodium = nutritionFact.sodium
+    self.potassium = nutritionFact.potassium
+    self.calcium = nutritionFact.calcium
+    self.iron = nutritionFact.iron
+    self.magnesium = nutritionFact.magnesium
+    self.selenium = nutritionFact.selenium
+    self.vitaminARae = nutritionFact.vitaminARae
+    self.vitaminAIu = nutritionFact.vitaminAIu
+    self.retinol = nutritionFact.retinol
+    self.alphaCarotene = nutritionFact.alphaCarotene
+    self.betaCarotene = nutritionFact.betaCarotene
+    self.betaCryptoxanthin = nutritionFact.betaCryptoxanthin
+    self.lycopene = nutritionFact.lycopene
+    self.thiamin = nutritionFact.thiamin
+    self.riboflavin = nutritionFact.riboflavin
+    self.niacin = nutritionFact.niacin
+    self.pantothenicAcid = nutritionFact.pantothenicAcid
+    self.vitaminB6 = nutritionFact.vitaminB6
+    self.folate = nutritionFact.folate
+    self.folicAcid = nutritionFact.folicAcid
+    self.vitaminB12 = nutritionFact.vitaminB12
+    self.choline = nutritionFact.choline
+    self.vitaminC = nutritionFact.vitaminC
+    self.vitaminD = nutritionFact.vitaminD
+    self.vitaminE = nutritionFact.vitaminE
+    self.vitaminK = nutritionFact.vitaminK
+    self.water = nutritionFact.water
+    self.ash = nutritionFact.ash
+    self.caffeine = nutritionFact.caffeine
+    self.alcohol   = nutritionFact.alcohol
+    self.addedSugars = nutritionFact.addedSugars
+    self.omega3 = nutritionFact.omega3
+    self.omega6 = nutritionFact.omega6
+    self.theobromine = nutritionFact.theobromine
+    self.luteinZeaxanthin = nutritionFact.luteinZeaxanthin
+  }
+}
+
+extension GraphQLInterface.ServingSerializerMutationInput {
+  init(serving: Serving?) {
+    self.graphQLMap = GraphQLMap()
+    self.amount = serving?.amount
+    self.details = serving?.details
+    self.grams = serving?.grams
+    self.unit = serving?.unit?.id
+  }
+}
+
+extension GraphQLInterface.NutritionCreateOrUpdateInput {
+  init(itemID: GraphQLID, nutritionFact: NutritionFact) {
+    self.graphQLMap = GraphQLMap()
+    self.item = itemID
+    
+    self.id = nutritionFact.id
+    self.isDefault = nutritionFact.isDefault
+    self.servingsPerPackage = nutritionFact.servingsPerPackage
+    self.nutrition = GraphQLInterface.NutritionSerializerMutationInput(
+      nutritionFact: nutritionFact)
+    self.serving = GraphQLInterface.ServingSerializerMutationInput(serving: nutritionFact.serving)
   }
 }
 
@@ -426,6 +515,16 @@ public class  ItemSummary {
     if brandResponse != nil {
       self.brand = try Brand(brandResponse: brandResponse!)
     }
+  }
+}
+
+extension GraphQLInterface.ItemCreateOrUpdateMutationInput {
+  init(_ item : ItemSummary) {
+    self.graphQLMap = GraphQLMap()
+    self.id = item.id
+    self.brand = item.brand?.id
+    self.name = item.name
+    self.details = item.details
   }
 }
 
@@ -980,6 +1079,8 @@ fileprivate class UserKeychainStorage : NSObject {
   }
 }
 
+
+public typealias ResponseHandler<T> = (_ result: T?, _ error: Error?) -> Void
 public class BiteAPIClient {
   
   private static var sharedClient: BiteAPIClient? = nil
@@ -1003,7 +1104,6 @@ public class BiteAPIClient {
     self.apolloClient.cacheKeyForObject =  { $0["id"] }
   }
   
-  // TODO(vinay): Make this a generic incase we need to pull out other types
   class private func getStringKeyFromBundle(key: String) throws -> String {
     guard let infoPlist = Bundle.main.infoDictionary,
           let config = infoPlist["BiteAI"] as? Dictionary<String, AnyObject>,
@@ -1235,6 +1335,27 @@ public class BiteAPIClient {
     }
   }
   
+  public typealias unitSearchHandler = (_ result: [Unit]?, _ error: Error?) -> Void
+  @discardableResult public func unitSearch(_ query:String, _ resultHandler: unitSearchHandler?) ->
+    Cancellable {
+    return self.apolloClient.fetch(query: GraphQLInterface.UnitSearchQuery(query: query)) {
+      results, error in
+      if resultHandler != nil {
+        guard results != nil && error == nil,
+          let unitResults = results?.data?.unitSearch?.units
+        else {
+          resultHandler!(nil, error)
+          return
+        }
+        var units = [Unit]()
+        for unit in unitResults {
+          units.append(Unit(unit: unit!.fragments.unitFragment))
+        }
+        resultHandler!(units, error)
+      }
+    }
+  }
+  
   // TODO(vinay): Add function to which checks the cache for a detail view and gets the ones
   // thats needed
 
@@ -1262,11 +1383,27 @@ public class BiteAPIClient {
       result, error in
       if resultHandler != nil {
         guard let builderFragment = result?.data?.itemBuilder?.asBuilderType?.fragments.builderFragment  else {
-          // TODO(vinay): need to handle the error to the call itself not just apollo level ones
           resultHandler!(nil, error)
           return
         }
         resultHandler!(ItemBuilder(builder: builderFragment), error)
+      }
+    }
+  }
+  
+  public typealias uniteCreateHandler = (_ result: Unit?, _ error: Error?) -> Void
+  @discardableResult public func unitCreate(_ unit: Unit, resultHandler: uniteCreateHandler?) -> Cancellable {
+    let mutation = GraphQLInterface.UnitCreateMutation(
+      input: GraphQLInterface.UnitCreateMutationInput(unit))
+    return self.apolloClient.perform(mutation: mutation) {
+      result, error in
+      if resultHandler != nil {
+        guard error == nil,
+          let unitFragment = result?.data?.unitCreate?.asUnitNode?.fragments.unitFragment else {
+            resultHandler!(nil, error)
+            return
+        }
+        resultHandler!(Unit(unit: unitFragment), nil)
       }
     }
   }
@@ -1290,7 +1427,46 @@ public class BiteAPIClient {
     }
   }
   
-  // TODO(vinay): figure out a way to get rid of edges.node thing. It's annoying
+  @discardableResult public func itemCreateOrUpdate(
+    item: ItemSummary,
+    _ resultsHandler: ResponseHandler<ItemSummary?>?) -> Cancellable {
+    let mutation = GraphQLInterface.ItemCreateOrUpdateMutation(
+      input: GraphQLInterface.ItemCreateOrUpdateMutationInput(item))
+    return self.apolloClient.perform(mutation: mutation) {
+        result, error in
+        if resultsHandler != nil {
+          guard error == nil,
+            let itemSummary = result?.data?.itemCreateOrUpdate?.asItemNode?.fragments.itemSummaryFragment else {
+              resultsHandler!(nil, error)
+              return
+          }
+          resultsHandler!(ItemSummary(itemSummary: itemSummary), nil)
+        }
+    }
+  }
+  
+  @discardableResult public func nutritionCreateOrUpdate(
+    itemID: GraphQLID, nutritionFact: NutritionFact,
+    _ resultsHandler: ResponseHandler<NutritionFact?>?) -> Cancellable {
+    let mutation = GraphQLInterface.NutritionCreateOrUpdateMutation(
+      input: GraphQLInterface.NutritionCreateOrUpdateInput(
+        itemID: itemID,
+        nutritionFact: nutritionFact))
+    return self.apolloClient.perform(mutation: mutation) {
+      results, error in
+      if resultsHandler != nil {
+        guard error == nil,
+          let fragment = results?.data?.nutritionCreateOrUpdate?.asNutritionNode?.fragments.nutritionFactFragment
+        else {
+          resultsHandler!(nil, error)
+          return
+        }
+        resultsHandler!(NutritionFact(nutritionFact: fragment), nil)
+      }
+    }
+  }
+  
+  
   public typealias MealMutationHandler = (_ mealID: GraphQLID?, _ error: Error?) -> Void
   @discardableResult public func createOrUpdateMeal(meal: Meal, resultHandler: MealMutationHandler?)  -> Cancellable {
     let now = Date()
