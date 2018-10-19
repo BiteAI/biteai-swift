@@ -14,6 +14,8 @@ fragment UnitFragment on UnitNode {
   abbreviatedSingularName
   pluralName
   abbreviatedPluralName
+  measureType
+  measureSystem
   details
   granularity
 }
@@ -182,6 +184,42 @@ query itemsBulkLookup($ids: [ID]!, $pageSize: Int!) {
       node{
         ...ItemDetailsFragment
       }
+    }
+  }
+}
+
+mutation unitCreate($input: UnitCreateMutationInput!) {
+  unitCreate(input: $input) {
+    ... on ErrorsType {
+      ...Errors
+    }
+    ... on UnitNode {
+      ...UnitFragment
+    }
+  }
+}
+
+mutation itemCreateOrUpdate($input: ItemCreateOrUpdateMutationInput!) {
+  itemCreateOrUpdate(input: $input) {
+    ... on ErrorsType {
+      ... Errors
+    }
+    ... on ItemNode {
+      ...ItemSummaryFragment
+    }
+  }
+}
+
+mutation nutritionCreateOrUpdate($input: NutritionCreateOrUpdateInput!) {
+  nutritionCreateOrUpdate(input: $input) {
+    ... on ErrorsType {
+      errors {
+        field
+        messages
+      }
+    }
+    ... on NutritionNode {
+      ...NutritionFactFragment
     }
   }
 }

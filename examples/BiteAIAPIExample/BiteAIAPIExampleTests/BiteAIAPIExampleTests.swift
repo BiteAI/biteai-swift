@@ -27,6 +27,21 @@ class BiteAIExampleBaseTests : XCTestCase {
   }
 }
 
+class BiteAIExamplesUnitTests : BiteAIExampleBaseTests {
+  func testUnitSearch() {
+    let client = try! BiteAPIClient.shared()
+    let expectation = self.expectation(description: "unit search")
+    client.unitSearch("cup") {
+      units, error in
+      XCTAssertNotNil(units)
+      XCTAssertNil(error)
+      XCTAssertGreaterThan(units!.count, 0)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: ExpectationTimeOut, handler: nil)
+  }
+}
+
 class BiteAIExamplesSearchTests : BiteAIExampleBaseTests {
   func testItemSearchHasBuilder() {
     let client = try! BiteAPIClient.shared()
