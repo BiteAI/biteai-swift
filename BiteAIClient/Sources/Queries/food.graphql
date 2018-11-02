@@ -133,6 +133,7 @@ fragment ItemDetailsFragment on ItemNode {
     }
 
     isGeneric
+    nutritionCount
     nutritionFacts   {
       edges{
         node {
@@ -195,6 +196,19 @@ mutation unitCreate($input: UnitCreateMutationInput!) {
     }
     ... on UnitNode {
       ...UnitFragment
+    }
+  }
+}
+
+query items($pageSize: Int!, $nextPage: String) {
+  items(first: $pageSize, after: $nextPage) {
+    pageInfo {
+      ...PageInfoFragment
+    }
+    edges {
+      node {
+        ...ItemDetailsFragment
+      }
     }
   }
 }

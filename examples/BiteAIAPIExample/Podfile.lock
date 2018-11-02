@@ -3,7 +3,7 @@ PODS:
   - Apollo (0.8.0):
     - Apollo/Core (= 0.8.0)
   - Apollo/Core (0.8.0)
-  - BiteAIClient (0.0.1):
+  - BiteAIClient (0.1.4):
     - Alamofire (~> 4.0)
     - Apollo (= 0.8.0)
 
@@ -24,7 +24,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   Apollo: 66e0f52289551545adb7ecdd994e713fdbae26eb
-  BiteAIClient: 397e350e0e6a680cd3ae0bef9e8ff452932951e4
+  BiteAIClient: 00601a4ad6d06166b5083a82a93e2873e84f4e7a
 
 PODFILE CHECKSUM: aad6ccb0d9ca05007d02acf3d44b0c64830d5c69
 
