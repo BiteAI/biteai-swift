@@ -77,6 +77,16 @@ extension GraphQLID {
   }
 }
 
+public struct Paginator {
+  var hasNextPage: Bool = false
+  var nextPageCursor: String? = nil
+  
+  public init(pageInfo: GraphQLInterface.PageInfoFragment) {
+    self.hasNextPage = pageInfo.hasNextPage
+    self.nextPageCursor = pageInfo.endCursor
+  }
+}
+
 public struct BiteAIUser {
   public var token: String
   public var id: String
@@ -427,6 +437,7 @@ public class  ItemSummary {
   public var children: [ItemSummary]
   public var childrenCount: Int?
   public var hasNutritionFacts: Bool?
+  public var nutritionCount: Int?
   public var hasBuilder: Bool?
   
   public init() {
@@ -462,6 +473,7 @@ public class  ItemSummary {
     self.brand = itemDetails.brand != nil ?
       Brand(brand: itemDetails.brand!.fragments.brandFragment) :
     nil
+    self.nutritionCount = itemDetails.nutritionCount
   }
   
   convenience init(itemSummary: GraphQLInterface.ItemSummarySearchFragment) {
@@ -495,6 +507,7 @@ public class  ItemSummary {
     self.childrenCount = itemSummary.childrenCount
     
     self.hasNutritionFacts = itemSummary.hasNutritionFacts
+    self.nutritionCount = itemSummary.nutritionCount
     
     self.hasBuilder = itemSummary.hasBuilder
   }
@@ -860,6 +873,7 @@ public class Meal : BaseMeal{
 
 public struct SearchResults {
   public var items: [ItemSummary]?
+  public var userItems: [ItemSummary]?
   public var brands: [Brand]?
   public var recentEntries: [RecentEntry]?
 
@@ -878,6 +892,12 @@ public struct SearchResults {
     var itemsIterator = facetedResults.items?.makeIterator()
     while var item = itemsIterator?.next() {
       self.items!.append(ItemSummary(itemSummary: item!.fragments.itemSummarySearchFragment))
+    }
+    
+    self.userItems = [ItemSummary]()
+    var userItemsIterator = facetedResults.userItems?.makeIterator()
+    while var item = userItemsIterator?.next() {
+      self.userItems!.append(ItemSummary(itemSummary: item!.fragments.itemSummarySearchFragment))
     }
     
     self.brands = [Brand]()
@@ -1074,6 +1094,8 @@ fileprivate class UserKeychainStorage : NSObject {
 
 
 public typealias ResponseHandler<T> = (_ result: T?, _ error: Error?) -> Void
+public typealias PaginatedResponseHandler<T> = (_ result: T?, _ pageInfo: Paginator?,
+  _ error : Error?) -> Void
 public class BiteAPIClient {
   
   private static var sharedClient: BiteAPIClient? = nil
@@ -1280,13 +1302,16 @@ public class BiteAPIClient {
     return BiteAPIClient.sharedClient!
   }
   
-  public typealias searchHandler = (_ result: SearchResults?, _ error: Error?) -> Void
-  @discardableResult public func itemsSearch(query: String,
-                                             hasNutritionFacts: Bool? = nil,
-                                             resultHandler: searchHandler?) -> Cancellable {
-    return self.apolloClient.fetch(
-    query: GraphQLInterface.ItemsSearchQuery(query: query, hasNutritionFacts: hasNutritionFacts),
-    cachePolicy: CachePolicy.fetchIgnoringCacheData) {
+  @discardableResult public func itemsSearch(
+    query: String, hasNutritionFacts: Bool? = nil, nutrition: Bool? = nil, userItems: Bool? = nil,
+    resultHandler:  ResponseHandler<SearchResults>?) -> Cancellable {
+    let owner = userItems != nil && userItems! == true ?  GraphQLInterface.OwnerEnum.me : nil
+    let query = GraphQLInterface.ItemsSearchQuery(
+      query: query,
+      hasNutritionFacts: hasNutritionFacts,
+      nutrition: nutrition,
+      owner: owner)
+    return self.apolloClient.fetch(query: query,  cachePolicy: CachePolicy.fetchIgnoringCacheData) {
       results, error in
       if resultHandler != nil {
         guard error == nil else {
@@ -1303,14 +1328,16 @@ public class BiteAPIClient {
     query: String,
     localDateTime: Date?,
     hasNutritionFacts: Bool? = nil,
-    resultHandler: searchHandler?) -> Cancellable {
+    nutrition: Bool? = nil,
+    resultHandler: ResponseHandler<SearchResults>?) -> Cancellable {
     let localDateTimeFormatted = MealDateFormatter.shared().localDateTimeFormatter.string(
       from: localDateTime ?? Date())
-    
-    return self.apolloClient.fetch(query: GraphQLInterface.FacetedSearchQuery(
+    let query = GraphQLInterface.FacetedSearchQuery(
       query: query,
       localDateTime: localDateTimeFormatted,
-      hasNutritionFacts: hasNutritionFacts)) {
+      hasNutritionFacts: hasNutritionFacts,
+      nutrition: nutrition)
+    return self.apolloClient.fetch(query: query) {
         result, error in
         if resultHandler != nil {
           guard result != nil && error == nil,
@@ -1431,6 +1458,31 @@ public class BiteAPIClient {
         }
         resultHandler!(output, error)
       }
+    }
+  }
+  
+  @discardableResult public func itemsList(
+    paginator: Paginator?,
+    pageSize: Int = 10,
+    _ resultsHandler: PaginatedResponseHandler<[ItemDetails]>?) -> Cancellable {
+    return self.apolloClient.fetch(query:
+      GraphQLInterface.ItemsQuery(pageSize: pageSize, nextPage: paginator?.nextPageCursor)) {
+        result, error in
+        if resultsHandler != nil {
+          guard error == nil,
+            let pageInfoFragment = result?.data?.items?.pageInfo.fragments.pageInfoFragment,
+            let items = result?.data?.items?.edges else {
+              resultsHandler!(nil, nil, error)
+              return
+          }
+          var output: [ItemDetails] = []
+          for item in items {
+            if (item != nil) {
+              output.append(ItemDetails(itemDetails: item!.node!.fragments.itemDetailsFragment))
+            }
+          }
+          resultsHandler!(output, Paginator(pageInfo: pageInfoFragment), nil)
+        }
     }
   }
   

@@ -17,6 +17,7 @@
 		0A73EEE920DD9F0F0034C884 /* meal.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0A73EEE820DD9F0F0034C884 /* meal.graphql */; };
 		0A73EEEB20DD9FC70034C884 /* food.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0A73EEEA20DD9FC70034C884 /* food.graphql */; };
 		0A73EEED20DDA03E0034C884 /* search.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0A73EEEC20DDA03E0034C884 /* search.graphql */; };
+		0ACEC31B218BFE8E00BB5B66 /* pagination.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0ACEC31A218BFE8E00BB5B66 /* pagination.graphql */; };
 		0AE8131520B38871003E989C /* GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE8131420B38871003E989C /* GraphQL.swift */; };
 		0F92A177B2F90CB8DC26DFA2 /* Pods_BiteAIClientTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A066AB2D5231015E000B109 /* Pods_BiteAIClientTests.framework */; };
 		E2342460DF6CEFCF0A41BD3E /* Pods_BiteAIClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA70FF5606CD0D9738DEBFE /* Pods_BiteAIClient.framework */; };
@@ -48,6 +49,7 @@
 		0A73EEE820DD9F0F0034C884 /* meal.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = meal.graphql; sourceTree = "<group>"; };
 		0A73EEEA20DD9FC70034C884 /* food.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = food.graphql; sourceTree = "<group>"; };
 		0A73EEEC20DDA03E0034C884 /* search.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = search.graphql; sourceTree = "<group>"; };
+		0ACEC31A218BFE8E00BB5B66 /* pagination.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = pagination.graphql; sourceTree = "<group>"; };
 		0AE8131420B38871003E989C /* GraphQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphQL.swift; sourceTree = "<group>"; };
 		1CA70FF5606CD0D9738DEBFE /* Pods_BiteAIClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BiteAIClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D9B7EA9D8A917E13433302 /* Pods-BiteAIClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BiteAIClientTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BiteAIClientTests/Pods-BiteAIClientTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				0A73EEE820DD9F0F0034C884 /* meal.graphql */,
 				0A73EEEA20DD9FC70034C884 /* food.graphql */,
 				0A73EEEC20DDA03E0034C884 /* search.graphql */,
+				0ACEC31A218BFE8E00BB5B66 /* pagination.graphql */,
 			);
 			path = Queries;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				0A73EEE920DD9F0F0034C884 /* meal.graphql in Resources */,
 				0A73EEED20DDA03E0034C884 /* search.graphql in Resources */,
 				0A73EEE720DD9D990034C884 /* errors.graphql in Resources */,
+				0ACEC31B218BFE8E00BB5B66 /* pagination.graphql in Resources */,
 				0A73EEEB20DD9FC70034C884 /* food.graphql in Resources */,
 				0A512C4D20B372080091F3CC /* schema.json in Resources */,
 			);

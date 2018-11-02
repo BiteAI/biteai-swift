@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "BiteAIClient"
-  s.version      = "0.1.2"
+  s.version      = "0.1.4"
   s.summary      = "API client for iOS."
   s.description  = <<-DESC
  Bite AI Client. This allows for searching for items, logging meals, and retriving meals.

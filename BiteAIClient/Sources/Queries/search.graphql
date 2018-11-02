@@ -31,6 +31,7 @@ fragment ItemSummarySearchFragment on ItemSummarySearchType {
   details
   isGeneric
   hasNutritionFacts
+  nutritionCount
   hasBuilder
   childrenCount
   parents {
@@ -65,8 +66,10 @@ fragment MealSuggestionFragment on MealSearchType {
   }
 }
 
-query itemsSearch($query: String!, $hasNutritionFacts: Boolean) {
-  itemsSearch(query: $query, hasNutritionFacts: $hasNutritionFacts) {
+query itemsSearch($query: String!, $hasNutritionFacts: Boolean, $nutrition: Boolean,
+    $owner: OwnerEnum) {
+  itemsSearch(query: $query, hasNutritionFacts: $hasNutritionFacts, nutrition: $nutrition,
+    owner: $owner) {
     items {
       ...ItemSummarySearchFragment
     }
@@ -92,25 +95,31 @@ query searchAutocomplete($query: String!) {
     }
 }
 
-query facetedSearch($query: String!, $localDateTime: String, $hasNutritionFacts: Boolean) {
-facetedSearch(query: $query, localDateTime: $localDateTime, hasNutritionFacts: $hasNutritionFacts) {
-    items {
-      ...ItemSummarySearchFragment
-    }
+query facetedSearch($query: String!, $localDateTime: String, $hasNutritionFacts: Boolean,
+  $nutrition: Boolean) {
+  facetedSearch(query: $query, localDateTime: $localDateTime,
+      hasNutritionFacts: $hasNutritionFacts, nutrition: $nutrition) {
+      items {
+        ...ItemSummarySearchFragment
+      }
 
-    brands {
-      ...BrandSummarySearchFragment
-    }
+      userItems {
+        ...ItemSummarySearchFragment
+      }
 
-    recent {
-      entries {
-        lastEatenAt
-        entry {
-         ...EntrySummarySearchFragment
+      brands {
+        ...BrandSummarySearchFragment
+      }
+
+      recent {
+        entries {
+          lastEatenAt
+          entry {
+           ...EntrySummarySearchFragment
+          }
         }
       }
     }
-  }
 }
 
 query mealSuggestions($localDateTime: String!) {
